@@ -1,2 +1,2 @@
-# Portofolio
-This reposistory will contain porfolio!
+# Portfolio
+This reposistory will contain portfolio!
