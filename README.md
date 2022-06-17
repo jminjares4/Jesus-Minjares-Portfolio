@@ -1,9 +1,5 @@
 # Portfolio
-This reposistory will contain portfolio!
-
-
-
-
+This is my personal portfolio! I used [iPortfolio](https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/) as a template and added new pages to showcase my projects!
 
 ## **Author:**
 * [**Jesus Minjares**](https://github.com/jminjares4)<br>
