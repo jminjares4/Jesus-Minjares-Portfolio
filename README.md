@@ -10,7 +10,7 @@ This is my personal portfolio! I used [iPortfolio](https://bootstrapmade.com/ipo
   - List hardware and software skills
 - Resume :page_facing_up:
   - Latest resume
-- Portfolio file_folder:
+- Portfolio :file_folder:
   - List of most interesting projects
 - Contact :telephone_receiver:
   - Social media
