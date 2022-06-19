@@ -1,5 +1,19 @@
 # Portfolio
-This is my personal portfolio! I used [iPortfolio](https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/) as a template and added new pages to showcase my projects!
+This is my personal portfolio! I used [iPortfolio](https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/) as a template and added new pages to showcase my projects! 
+
+# Table of Content
+- Home :bust_in_silhouette:
+  - Quick introduction
+- About :memo: 
+  - Brief description about me
+- Skills :hammer_and_pick:
+  - List hardware and software skills
+- Resume :page_facing_up:
+  - Latest resume
+- Portfolio file_folder:
+  - List of most interesting projects
+- Contact :telephone_receiver:
+  - Social media
 
 ## **Author:**
 * [**Jesus Minjares**](https://github.com/jminjares4)<br>
