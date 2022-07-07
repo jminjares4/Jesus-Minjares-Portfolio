@@ -2,17 +2,17 @@
 This is my personal portfolio! I used [iPortfolio](https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/) as a template and added new pages to showcase my projects! 
 
 # Table of Content
-- Home :bust_in_silhouette:
+- [Home](https://jminjares4.github.io/Jesus-Minjares-Portfolio/) :bust_in_silhouette:
   - Quick introduction
-- About :memo: 
+- [About](https://jminjares4.github.io/Jesus-Minjares-Portfolio/#about) :memo: 
   - Brief description about me
-- Skills :hammer_and_pick:
+- [Skills](https://jminjares4.github.io/Jesus-Minjares-Portfolio/#skills) :hammer_and_pick:
   - List hardware and software skills
-- Resume :page_facing_up:
+- [Resume](https://jminjares4.github.io/Jesus-Minjares-Portfolio/#resume) :page_facing_up:
   - Latest resume
-- Portfolio :file_folder:
+- [Portfolio](https://jminjares4.github.io/Jesus-Minjares-Portfolio/#portfolio) :file_folder:
   - List of most interesting projects
-- Contact :telephone_receiver:
+- [Contact](https://jminjares4.github.io/Jesus-Minjares-Portfolio/#contact) :telephone_receiver:
   - Social media
 
 ## **Author:**
