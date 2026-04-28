@@ -143,9 +143,9 @@
   --serif: "Fraunces", ui-serif, Georgia, serif;
   --display: "Instrument Serif", "Fraunces", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
-  /* generous left/right pad so italic display type can't bleed off-screen.
-     env() values respect iPhone notch in landscape orientation. */
-  --pad-x: max(clamp(2rem, 5.5vw, 5.5rem), env(safe-area-inset-left), env(safe-area-inset-right));
+  /* Padding scales generously - 48px (3rem) minimum on mobile for proper breathing
+     room. Vertical screens need MORE proportional padding because content is dense. */
+  --pad-x: max(clamp(3rem, 7vw, 5.5rem), env(safe-area-inset-left), env(safe-area-inset-right));
   --max: 1280px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -979,13 +979,30 @@ footer .build-status .nominal-dot {
    No scroll-snap, no Firefox-only properties, no deprecated APIs.
    ============================================================ */
 @media (max-width: 720px) {
-  /* Block diagrams DON'T work on mobile - text in fixed-pixel SVGs becomes
-     illegible when scaled down, and horizontal scroll is awkward UX.
-     The bullet-pointed text content carries all the information. */
-  .spotlight-flow { display: none; }
+  /* === BLOCK DIAGRAMS: FIT THE VERTICAL SCREEN ===
+     Mobile is vertical. Horizontal-scroll diagrams fight the natural orientation.
+     Instead: fit the diagram to the screen width so the WHOLE architecture is
+     visible at a glance. Users can pinch-zoom on iOS/Android to read details. */
+  .spotlight-flow {
+    overflow: visible;
+    /* No mask, no overflow scroll - diagrams fit naturally */
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+  .flow-wrap { 
+    justify-content: center !important; 
+    align-items: center !important;
+    padding: 1.6rem 1rem 2.2rem;
+    min-height: auto;
+  }
+  /* Diagrams fit the container width naturally - no min-width forcing scroll */
   .flow-svg {
-    min-width: 520px;
-    max-width: none;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    margin-top: 1.6rem;
+    /* Allow native pinch-zoom on mobile */
+    touch-action: pinch-zoom;
   }
   .flow-wrap {
     padding: 1.5rem 1.25rem;
@@ -1564,18 +1581,21 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   /* Tighten serif body text on mobile - was rendering too large/heavy */
   .about-body p { font-size: 1.05rem; }
 
-  /* === HERO MOBILE CLEANUP === */
-  /* CRITICAL PERFORMANCE FIX: The inline scope-grid SVG is ~39KB of path data
-     with continuous CSS animation (scope-scroll-x running infinitely at 60fps).
-     On mobile CPUs this causes janky scrolling, delayed paint, and overall
-     "broken" feel. Removing it from rendering AND animation entirely is the
-     single biggest mobile improvement. The hero still works visually without it. */
-  .scope-grid-svg { display: none !important; }
-  .scope-scroll, .scope-scroll * { animation: none !important; }
-  /* Hide redundant name fragment ("embedded·sw·engineer · Sandia · 2022—present")
-     since the same info appears in the hero-tag body text below */
+  /* === HERO MOBILE — KEEP THE WOW, OPTIMIZE THE COST === */
+  /* Scope SVG STAYS visible on mobile — it's the signature of the design.
+     Just slow the scroll animation way down (24s vs 12s) and dim slightly so
+     text reads cleanly above it. This keeps visual impact, halves the per-second
+     animation cost, and leaves the hero feeling alive instead of stripped. */
+  .scope-grid-svg { opacity: 0.55; }
+  [data-theme="light"] .scope-grid-svg { opacity: 0.65; }
+  .scope-scroll { animation-duration: 24s !important; }
+  /* Hide ONLY the channel labels (CH1·PWM·DUTY SWEEP, etc.) — they crowd the
+     small viewport with text. The waveforms themselves stay visible. */
+  .scope-grid-svg .scope-text,
+  .scope-grid-svg text { display: none; }
+  /* Hide redundant name fragment - same info appears in the body description below */
   .name-frag { display: none !important; }
-  /* Slightly tighter hero name spacing to give body text more breathing room */
+  /* Tighter hero name spacing - large enough to feel impactful, not so large it overlaps */
   .hero-name .name-row.first { font-size: clamp(2.4rem, 11vw, 4.5rem); }
   .hero-name .name-row.last { font-size: clamp(2rem, 9.5vw, 4rem); margin-left: 0.6rem; }
 
@@ -1595,9 +1615,9 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .section-num::before { width: 18px; }
   .section-num { font-size: 0.72rem; gap: 0.7rem; }
 
-  /* PERFORMANCE: Stop the constantly-running marquee animation on mobile.
-     Decorative scrolling text isn't worth the CPU/battery cost on phones. */
-  .marquee-track { animation: none !important; transform: none !important; }
+  /* Marquee KEEPS animating on mobile - it's part of the dynamic visual feel.
+     Just slow it way down (90s vs 55s) to reduce per-frame cost. */
+  .marquee-track { animation-duration: 90s !important; }
   /* marquee narrower */
   .marquee-track { font-size: 1.1rem; gap: 2rem; }
   .marquee-track span { gap: 2rem; }
@@ -1642,36 +1662,38 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .contact-sub { margin-bottom: 3rem; font-size: 1.1rem; }
 
   /* === MAGAZINE SLIDER MOBILE === */
-  /* Add horizontal padding so each slide has breathing room from the viewport
-     edges and adjacent slides don't visibly peek through */
-  .mag-slider { padding-inline: clamp(1rem, 4vw, 1.5rem); }
+  /* More generous padding so slides don't squish the screen edges */
+  .mag-slider { padding-inline: clamp(1.5rem, 5vw, 2rem); }
 
-  /* For slides with flow-display (IPIA, MSP432), the SVG diagrams don't work
-     in mobile viewports. Replace the diagram with a clean branded card showing
-     just the section title - the meta/title/description below carries all info. */
+  /* Magazine flow diagrams (IPIA, MSP432) - fit container width on mobile.
+     No horizontal scroll - diagrams scale down to fit, architecture stays visible. */
   .mag-display.flow-display {
-    background: linear-gradient(135deg, var(--bg-elev), var(--bg-deep));
-    display: flex; align-items: center; justify-content: center;
-    padding: 2.4rem 1.5rem;
-    aspect-ratio: 5 / 3;
+    overflow: visible;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 2.4rem 1rem 1.4rem;
+    aspect-ratio: auto;
+    min-height: 260px;
+    touch-action: pinch-zoom;
   }
-  .mag-display.flow-display .project-flow { display: none; }
-  /* Repurpose the data-flow-title as the visible card content */
+  .project-flow {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    flex-shrink: 1;
+    touch-action: pinch-zoom;
+  }
+  /* Tighten flow title so it fits properly on small viewports */
   .mag-display.flow-display::before {
-    position: static;
-    border: none;
-    background: none;
-    padding: 0;
-    font-size: 0.78rem;
-    color: var(--accent);
-    letter-spacing: 0.16em;
-    text-align: center;
+    font-size: 0.6rem;
+    padding: 0.5rem 0.7rem;
     max-width: 80%;
-    white-space: normal;
-    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  /* For flow-display slides, the slide-number badge defaults to right:1rem.
-     Move to left for consistency with image-based slides. */
+  /* Slide-number badge for flow-display: stays at left for consistency */
   .mag-display.flow-display .mag-num {
     left: 1rem;
     right: auto;
