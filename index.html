@@ -1637,6 +1637,47 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .contact-link:hover { padding-left: 0; }
   .contact-sub { margin-bottom: 3rem; font-size: 1.1rem; }
 
+  /* === MAGAZINE SLIDER MOBILE === */
+  /* Add horizontal padding so each slide has breathing room from the viewport
+     edges and adjacent slides don't visibly peek through */
+  .mag-slider { padding-inline: clamp(1rem, 4vw, 1.5rem); }
+
+  /* Project flow diagrams (MSP432 lab templates, IPIA capstone) - same horizontal-scroll
+     fix as spotlight flow diagrams. SVG text is fixed pixel size so scaling down the SVG
+     makes everything illegible. Better to scroll horizontally at native size. */
+  .mag-display.flow-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+            mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+    padding: 2.4rem 0.5rem 1.4rem;
+  }
+  .mag-display.flow-display::-webkit-scrollbar {
+    height: 3px;
+    -webkit-appearance: none;
+  }
+  .mag-display.flow-display::-webkit-scrollbar-track {
+    background: var(--line);
+    border-radius: 2px;
+  }
+  .mag-display.flow-display::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .project-flow {
+    min-width: 540px;
+    max-width: none;
+  }
+  /* Tighten the flow title so it doesn't get cut off on small viewports */
+  .mag-display.flow-display::before {
+    font-size: 0.6rem;
+    padding: 0.5rem 0.7rem;
+    max-width: 75%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   /* footer */
   footer { padding: 2rem var(--pad-x) calc(2rem + env(safe-area-inset-bottom)); }
 
