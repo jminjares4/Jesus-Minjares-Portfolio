@@ -979,35 +979,10 @@ footer .build-status .nominal-dot {
    No scroll-snap, no Firefox-only properties, no deprecated APIs.
    ============================================================ */
 @media (max-width: 720px) {
-  .spotlight-flow {
-    overflow-x: auto;
-    overflow-y: hidden;
-    /* Right-edge fade — strongest visual cue iOS users actually see */
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
-            mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
-    /* Room for the always-visible scrollbar below */
-    padding-bottom: 8px;
-  }
-  /* CRITICAL: Flow wrappers center their SVG by default, which causes equal
-     left+right overflow when SVG has min-width > container width — making
-     diagrams appear mid-scroll with content cut off on BOTH sides. On mobile,
-     anchor content to the left so reading happens naturally L→R and the
-     right-edge fade becomes a proper "scroll for more" cue. */
-  .flow-wrap { justify-content: flex-start; align-items: flex-start; }
-  /* Custom always-visible scrollbar — iOS hides default scrollbars,
-     this keeps a thin accent bar visible so users know to swipe */
-  .spotlight-flow::-webkit-scrollbar {
-    height: 3px;
-    -webkit-appearance: none;
-  }
-  .spotlight-flow::-webkit-scrollbar-track {
-    background: var(--line);
-    border-radius: 2px;
-  }
-  .spotlight-flow::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: 2px;
-  }
+  /* Block diagrams DON'T work on mobile - text in fixed-pixel SVGs becomes
+     illegible when scaled down, and horizontal scroll is awkward UX.
+     The bullet-pointed text content carries all the information. */
+  .spotlight-flow { display: none; }
   .flow-svg {
     min-width: 520px;
     max-width: none;
@@ -1568,7 +1543,26 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
    we hard-cap a few things at narrow widths so nothing surprises.
    ============================================================ */
 @media (max-width: 720px) {
-  body { font-size: 17px; line-height: 1.6; }
+  body { 
+    font-size: 17px; 
+    line-height: 1.6; 
+    /* Prevent ugly mid-word hyphenation that makes text feel "clobbered" */
+    -webkit-hyphens: none;
+    hyphens: none;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+  /* Looser leading and spacing for body prose so it doesn't feel cramped */
+  .about-body p,
+  .spotlight-desc,
+  .mag-desc,
+  .tl-note {
+    line-height: 1.65;
+    -webkit-hyphens: none;
+    hyphens: none;
+  }
+  /* Tighten serif body text on mobile - was rendering too large/heavy */
+  .about-body p { font-size: 1.05rem; }
 
   /* === HERO MOBILE CLEANUP === */
   /* Reduce the scope's visual presence so it stays a backdrop, not a competitor */
@@ -1648,48 +1642,32 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
      edges and adjacent slides don't visibly peek through */
   .mag-slider { padding-inline: clamp(1rem, 4vw, 1.5rem); }
 
-  /* Project flow diagrams (MSP432 lab templates, IPIA capstone) - same horizontal-scroll
-     fix as spotlight flow diagrams. SVG text is fixed pixel size so scaling down the SVG
-     makes everything illegible. Better to scroll horizontally at native size. */
+  /* For slides with flow-display (IPIA, MSP432), the SVG diagrams don't work
+     in mobile viewports. Replace the diagram with a clean branded card showing
+     just the section title - the meta/title/description below carries all info. */
   .mag-display.flow-display {
-    overflow-x: auto;
-    overflow-y: hidden;
-    /* CRITICAL: override base CSS that centers content - on mobile, start at left
-       so content reads naturally L→R instead of appearing mid-scroll */
-    justify-content: flex-start;
-    align-items: flex-start;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
-            mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
-    padding: 2.4rem 0.5rem 1.4rem;
+    background: linear-gradient(135deg, var(--bg-elev), var(--bg-deep));
+    display: flex; align-items: center; justify-content: center;
+    padding: 2.4rem 1.5rem;
+    aspect-ratio: 5 / 3;
   }
-  .mag-display.flow-display::-webkit-scrollbar {
-    height: 3px;
-    -webkit-appearance: none;
-  }
-  .mag-display.flow-display::-webkit-scrollbar-track {
-    background: var(--line);
-    border-radius: 2px;
-  }
-  .mag-display.flow-display::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: 2px;
-  }
-  .project-flow {
-    min-width: 540px;
-    max-width: none;
-  }
-  /* Tighten the flow title so it doesn't get cut off on small viewports */
+  .mag-display.flow-display .project-flow { display: none; }
+  /* Repurpose the data-flow-title as the visible card content */
   .mag-display.flow-display::before {
-    font-size: 0.6rem;
-    padding: 0.5rem 0.7rem;
-    max-width: 75%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    position: static;
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.16em;
+    text-align: center;
+    max-width: 80%;
+    white-space: normal;
+    line-height: 1.5;
   }
-  /* For flow-display slides (IPIA, MSP432), the slide-number badge defaults to
-     right:1rem. With horizontal scroll, that puts it at the far-right of the
-     scrollable area (off-screen). Move it to the left edge to stay visible. */
+  /* For flow-display slides, the slide-number badge defaults to right:1rem.
+     Move to left for consistency with image-based slides. */
   .mag-display.flow-display .mag-num {
     left: 1rem;
     right: auto;
