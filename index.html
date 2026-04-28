@@ -1564,29 +1564,47 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
 @media (max-width: 720px) {
   body { font-size: 17px; line-height: 1.6; }
 
-  /* hero: slightly tighter padding, name fragment stacks */
+  /* === HERO MOBILE CLEANUP === */
+  /* Reduce the scope's visual presence so it stays a backdrop, not a competitor */
+  .scope-grid-svg { opacity: 0.42; }
+  [data-theme="light"] .scope-grid-svg { opacity: 0.55; }
+  /* Hide channel labels on mobile - they crowd the small viewport with text */
+  .scope-grid-svg .scope-text,
+  .scope-grid-svg text { display: none; }
+  /* Hide redundant name fragment ("embedded·sw·engineer · Sandia · 2022—present")
+     since the same info appears in the hero-tag body text below */
+  .name-frag { display: none !important; }
+  /* Slightly tighter hero name spacing to give body text more breathing room */
+  .hero-name .name-row.first { font-size: clamp(2.4rem, 11vw, 4.5rem); }
+  .hero-name .name-row.last { font-size: clamp(2rem, 9.5vw, 4rem); margin-left: 0.6rem; }
+
+  /* hero: slightly tighter padding */
   .hero { padding-top: clamp(5.5rem, 10vh, 7rem); }
-  .name-frag {
-    display: block; margin-left: 0; margin-top: 0.5rem;
-    font-size: 0.92rem;
-  }
   .hero-meta { gap: 1rem; }
   .status-pill { font-size: 0.7rem; padding: 0.5rem 0.95rem 0.5rem 0.8rem; }
+
+  /* === BIG HEADLINES MOBILE === */
+  /* Remove forced <br> word splitting - let headlines wrap naturally */
+  .big-head br { display: none; }
+  /* Slightly smaller for better fit */
+  .big-head { font-size: clamp(2rem, 9vw, 3rem); line-height: 1.05; }
+
+  /* === SECTION EYEBROW MOBILE === */
+  /* Shorten the decorative dash so it doesn't overpower the small viewport */
+  .section-num::before { width: 18px; }
+  .section-num { font-size: 0.72rem; gap: 0.7rem; }
 
   /* marquee narrower */
   .marquee-track { font-size: 1.1rem; gap: 2rem; }
   .marquee-track span { gap: 2rem; }
 
-  /* section eyebrows */
-  .section-num { font-size: 0.72rem; }
-
   /* about — mobile stack */
   .about-figure { position: static; }
   .photo-wrap { max-width: 250px; }
 
-  /* spotlights collapse padding */
+  /* spotlights collapse padding (flow diagrams use horizontal scroll on mobile,
+     defined in MOBILE BLOCK DIAGRAM FIX section above) */
   .spotlight { gap: 1.75rem; padding: 1.5rem 0; }
-  .spotlight-flow { display: none; }
 
   /* slider tightens */
   .mag-slider-head { gap: 1rem; margin-bottom: 1.5rem; }
@@ -1620,7 +1638,7 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .contact-sub { margin-bottom: 3rem; font-size: 1.1rem; }
 
   /* footer */
-  footer { padding: 2rem var(--pad-x); }
+  footer { padding: 2rem var(--pad-x) calc(2rem + env(safe-area-inset-bottom)); }
 
   /* stat-strip: don't let unit/tick get squished */
   .stat-tick { font-size: 0.66rem; margin-bottom: 0.6rem; }
