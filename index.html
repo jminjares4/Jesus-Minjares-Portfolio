@@ -988,6 +988,12 @@ footer .build-status .nominal-dot {
     /* Room for the always-visible scrollbar below */
     padding-bottom: 8px;
   }
+  /* CRITICAL: Flow wrappers center their SVG by default, which causes equal
+     left+right overflow when SVG has min-width > container width — making
+     diagrams appear mid-scroll with content cut off on BOTH sides. On mobile,
+     anchor content to the left so reading happens naturally L→R and the
+     right-edge fade becomes a proper "scroll for more" cue. */
+  .flow-wrap { justify-content: flex-start; align-items: flex-start; }
   /* Custom always-visible scrollbar — iOS hides default scrollbars,
      this keeps a thin accent bar visible so users know to swipe */
   .spotlight-flow::-webkit-scrollbar {
@@ -1648,6 +1654,10 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .mag-display.flow-display {
     overflow-x: auto;
     overflow-y: hidden;
+    /* CRITICAL: override base CSS that centers content - on mobile, start at left
+       so content reads naturally L→R instead of appearing mid-scroll */
+    justify-content: flex-start;
+    align-items: flex-start;
     -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
             mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
     padding: 2.4rem 0.5rem 1.4rem;
@@ -1676,6 +1686,14 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  /* For flow-display slides (IPIA, MSP432), the slide-number badge defaults to
+     right:1rem. With horizontal scroll, that puts it at the far-right of the
+     scrollable area (off-screen). Move it to the left edge to stay visible. */
+  .mag-display.flow-display .mag-num {
+    left: 1rem;
+    right: auto;
+    top: 1rem;
   }
 
   /* footer */
