@@ -1,504 +1,2928 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jesus Minjares</title>
+<meta name="description" content="Embedded software engineer at Sandia National Laboratories. Hardware-in-the-loop simulation, real-time C/C++ drivers, FPGA-based sensor emulation. M.S. AI candidate at UT Austin." />
 
-  <title>Jesus Minjares</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+<!-- Open Graph (Facebook, LinkedIn) -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Jesus Minjares — Embedded Software Engineer" />
+<meta property="og:description" content="Embedded software engineer at Sandia National Laboratories. HWIL infrastructure, real-time C/C++ drivers, FPGA-based sensor emulation. M.S. AI candidate at UT Austin." />
+<meta property="og:site_name" content="Jesus Minjares" />
+<meta property="og:locale" content="en_US" />
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Jesus Minjares — Embedded Software Engineer" />
+<meta name="twitter:description" content="Embedded software engineer at Sandia National Laboratories. HWIL infrastructure, real-time C/C++ drivers, FPGA-based sensor emulation." />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+<meta name="theme-color" content="#0e0d0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef2f8" media="(prefers-color-scheme: light)">
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+<!-- Favicon: dual-channel scope readout — orange PWM + atomic blue sine.
+     Mirrors the hero's multi-channel oscilloscope aesthetic. -->
+<link rel="icon" type="image/png" sizes="128x128" href="/assets/img/favicon-128.png">
 
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+<!-- Apple touch icon: dual-channel scope at full home-screen detail (HUD frame, grid, status dot) -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon-apple.png">
 
-  <!-- =======================================================
-  * Template Name: iPortfolio - v3.7.0
-  * Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+<!-- Indexing: allow search engines -->
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<!-- TODO BEFORE DEPLOY: replace with your actual deployed URL -->
+<!-- <link rel="canonical" href="https://jminjares.dev/"> -->
+<!-- <meta property="og:url" content="https://jminjares.dev/"> -->
+<!-- <meta property="og:image" content="https://jminjares.dev/og-image.png"> -->
+<!-- <meta name="twitter:image" content="https://jminjares.dev/og-image.png"> -->
+<!-- og-image should be 1200x630 PNG showing your name + role -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,30..100,0..1;1,9..144,300..900,30..100,0..1&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,30..100,0..1;1,9..144,300..900,30..100,0..1&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<script>
+/* Set theme before paint to avoid flash */
+(function(){
+  try {
+    const stored = localStorage.getItem('theme');
+    const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const theme = stored || sys;
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {}
+})();
+</script>
+
+<style>
+/* ============================================================
+   THEME TOKENS — dark (default) and light
+   ============================================================ */
+:root,
+[data-theme="dark"] {
+  --bg: #0e0d0a;
+  --bg-elev: #16140f;
+  --bg-deep: #0a0907;
+  --line: #2a2620;
+  --line-bright: #3d362c;
+  --ink: #f4ede0;
+  --ink-mid: #b8aa92;
+  --ink-dim: #857968;
+  --accent: #ff5722;
+  --accent-2: #ffb085;
+  --signal: #88BFE0;
+  --reject: #e74c3c;
+
+  --grain-opacity: 0.05;
+  --grain-blend: overlay;
+  --photo-filter: grayscale(0.2) contrast(1.08) saturate(1.05) sepia(0.06);
+  --mag-img-filter: grayscale(0.2) contrast(1.05) brightness(0.92);
+  --bg-radial-1: rgba(255, 87, 34, 0.10);
+  --bg-radial-2: rgba(136, 191, 224, 0.05);
+  --scope-grid: rgba(136, 191, 224, 0.08);
+  --scope-grid-fine: rgba(136, 191, 224, 0.03);
+  --scope-axis: rgba(136, 191, 224, 0.18);
+  --tint-accent-soft: rgba(255, 87, 34, 0.04);
+  --tint-accent-mid: rgba(255, 87, 34, 0.14);
+  --tint-signal-soft: rgba(136, 191, 224, 0.10);
+  --tint-reject-soft: rgba(231, 76, 60, 0.08);
+  --shadow-photo: 0 10px 30px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+  --nav-bg: rgba(14, 13, 10, 0.55);
+  --nav-bg-scrolled: rgba(14, 13, 10, 0.85);
+  --readout-bg: rgba(14, 13, 10, 0.65);
+  --gradient-overlay: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5));
+  --highlight-tint: rgba(255, 87, 34, 0.15);
+}
+
+[data-theme="light"] {
+  /* UTEP Miner palette — navy ink, El-Paso-sky bg, official orange accent */
+  --bg: #eef2f8;            /* very light blue-tinted off-white (El Paso sky) */
+  --bg-elev: #f6f8fc;
+  --bg-deep: #dde3ee;
+  --line: #b9c2d4;          /* silver-blue line */
+  --line-bright: #8492aa;
+  --ink: #041E42;           /* UTEP NAVY — primary text */
+  --ink-mid: #3a4862;
+  --ink-dim: #5e6b95;
+  --accent: #FF8200;        /* UTEP ORANGE */
+  --accent-2: #ffaa55;
+  --signal: #5187B5;        /* UTEP Atomic Blue — complements orange, navy DNA */
+  --reject: #c92a1a;
+
+  --grain-opacity: 0.025;
+  --grain-blend: multiply;
+  --photo-filter: grayscale(0.04) contrast(1.04) saturate(1.05);
+  --mag-img-filter: contrast(1.03) brightness(0.99);
+  --bg-radial-1: rgba(255, 130, 0, 0.09);
+  --bg-radial-2: rgba(4, 30, 66, 0.05);
+  --scope-grid: rgba(4, 30, 66, 0.14);
+  --scope-grid-fine: rgba(4, 30, 66, 0.06);
+  --scope-axis: rgba(4, 30, 66, 0.28);
+  --tint-accent-soft: rgba(255, 130, 0, 0.06);
+  --tint-accent-mid: rgba(255, 130, 0, 0.16);
+  --tint-signal-soft: rgba(81, 135, 181, 0.12);
+  --tint-reject-soft: rgba(201, 42, 26, 0.08);
+  --shadow-photo: 0 10px 32px rgba(4, 30, 66, 0.16), 0 1px 2px rgba(4, 30, 66, 0.10), inset 0 1px 0 rgba(255,255,255,0.6);
+  --nav-bg: rgba(238, 242, 248, 0.70);
+  --nav-bg-scrolled: rgba(238, 242, 248, 0.94);
+  --readout-bg: rgba(246, 248, 252, 0.88);
+  --gradient-overlay: linear-gradient(180deg, transparent 55%, rgba(4, 30, 66, 0.20));
+  --highlight-tint: rgba(255, 130, 0, 0.20);
+}
+
+/* ============================================================
+   FOUNDATIONS
+   ============================================================ */
+:root {
+  --serif: "Fraunces", ui-serif, Georgia, serif;
+  --display: "Instrument Serif", "Fraunces", Georgia, serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+  /* generous left/right pad so italic display type can't bleed off-screen */
+  --pad-x: clamp(2rem, 5.5vw, 5.5rem);
+  --max: 1280px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color-scheme: dark;
+}
+[data-theme="light"] { color-scheme: light; }
+
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--serif); font-weight: 350;
+  font-size: 18px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden; position: relative;
+  cursor: none;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+@media (max-width: 1024px), (pointer: coarse) { body { cursor: auto; } }
+
+body::before {
+  content: ""; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 80% 0%, var(--bg-radial-1), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 0% 100%, var(--bg-radial-2), transparent 70%);
+  pointer-events: none; z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+.grain {
+  position: fixed; inset: -10%;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0'/></filter><rect width='240' height='240' filter='url(%23n)' opacity='0.55'/></svg>");
+  opacity: var(--grain-opacity);
+  pointer-events: none; z-index: 1;
+  mix-blend-mode: var(--grain-blend);
+  transition: opacity 0.5s ease;
+}
+
+a { color: inherit; text-decoration: none; }
+button { background: none; border: none; color: inherit; cursor: inherit; font: inherit; }
+img { max-width: 100%; display: block; }
+::selection { background: var(--accent); color: var(--bg); }
+
+.mono { font-family: var(--mono); font-weight: 400; letter-spacing: 0.02em; }
+.display { font-family: var(--display); font-weight: 400; }
+
+/* prevent italic display type from bleeding off-screen */
+.display-safe {
+  padding-inline: 0.08em;
+  overflow-wrap: break-word;
+}
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+.cursor-dot, .cursor-ring {
+  position: fixed; pointer-events: none; z-index: 9999;
+  top: 0; left: 0; transform: translate3d(-100px, -100px, 0);
+  will-change: transform;
+}
+.cursor-dot {
+  width: 6px; height: 6px; background: var(--accent);
+  border-radius: 50%; margin-left: -3px; margin-top: -3px;
+  transition: width 0.3s var(--ease), height 0.3s var(--ease), margin 0.3s var(--ease), opacity 0.2s ease;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 50%; margin-left: -18px; margin-top: -18px;
+  transition: width 0.25s var(--ease), height 0.25s var(--ease), margin 0.25s var(--ease), border-color 0.2s ease, opacity 0.2s ease;
+  mix-blend-mode: difference;
+}
+body.c-hover .cursor-dot { opacity: 0; }
+body.c-hover .cursor-ring {
+  width: 56px; height: 56px;
+  margin-left: -28px; margin-top: -28px;
+  border-color: var(--accent);
+}
+body.c-view .cursor-ring {
+  width: 84px; height: 84px;
+  margin-left: -42px; margin-top: -42px;
+  background: color-mix(in srgb, var(--accent) 85%, transparent);
+  border-color: var(--accent); mix-blend-mode: normal;
+}
+body.c-view .cursor-dot { opacity: 0; }
+.cursor-label {
+  position: fixed; pointer-events: none; z-index: 10000;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--bg); font-weight: 500; opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+body.c-view .cursor-label { opacity: 1; }
+@media (max-width: 1024px), (pointer: coarse) {
+  .cursor-dot, .cursor-ring, .cursor-label { display: none; }
+}
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  z-index: 100; width: 0%; transition: width 0.05s linear;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: grid; grid-template-columns: auto 1fr auto auto;
+  gap: 1.5rem; align-items: center;
+  padding: 1.2rem var(--pad-x);
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  transition: padding 0.3s var(--ease), background 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  padding-top: 0.85rem; padding-bottom: 0.85rem;
+  background: var(--nav-bg-scrolled);
+  border-bottom-color: color-mix(in srgb, var(--line) 60%, transparent);
+}
+.nav-mark {
+  font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.1em;
+  display: flex; align-items: center; gap: 0.7rem; color: var(--ink);
+  font-weight: 500;
+}
+.nav-mark .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 12px var(--signal);
+  animation: pulse 2s infinite;
+}
+.nav-mark .sep { color: var(--ink-dim); font-weight: 400; margin-inline: 0.1rem; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+.nav-links {
+  display: flex; justify-content: center; gap: 2.2rem;
+  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em;
+}
+.nav-links a {
+  color: var(--ink-mid); transition: color 0.2s ease;
+  position: relative; display: inline-flex; align-items: baseline; gap: 0.45rem;
+  padding: 0.4rem 0;
+}
+.nav-links a::before {
+  content: attr(data-num); color: var(--ink-dim); font-size: 0.66rem;
+  transition: color 0.2s ease;
+}
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 1px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.nav-links a.active::before { color: var(--accent); }
+.nav-links a.active::after { transform: scaleX(1); }
+.nav-links a:hover::after { transform: scaleX(0.5); }
+
+/* theme toggle button */
+.theme-toggle {
+  width: 38px; height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-mid);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.25s var(--ease);
+  background: transparent;
+  position: relative;
+}
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--tint-accent-soft);
+}
+.theme-toggle svg { width: 16px; height: 16px; }
+.theme-toggle .icon-sun, .theme-toggle .icon-moon {
+  position: absolute;
+  transition: opacity 0.25s ease, transform 0.3s var(--ease);
+}
+/* Dim the orange noise wave in dark mode - prevents the name halo's
+   "knockout" from being visible as a dark cut against a bright orange wave.
+   Light mode keeps full opacity since light bg + light halo blend invisibly. */
+[data-theme="dark"] .ch2-noise-wave { opacity: 0.5; }
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+  opacity: 1; transform: rotate(0) scale(1);
+}
+[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 0; transform: rotate(-90deg) scale(0.5);
+}
+[data-theme="light"] .theme-toggle .icon-sun {
+  opacity: 0; transform: rotate(90deg) scale(0.5);
+}
+[data-theme="light"] .theme-toggle .icon-moon {
+  opacity: 1; transform: rotate(0) scale(1);
+}
+
+.nav-clock {
+  font-family: var(--mono); font-size: 0.82rem; color: var(--ink-mid);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-clock .live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); animation: pulse 1.4s infinite;
+}
+@media (max-width: 980px) {
+  .nav { grid-template-columns: auto auto auto; }
+  .nav-links { display: none; }
+  .nav-clock { font-size: 0.74rem; }
+}
+@media (max-width: 540px) {
+  .nav-clock { display: none; }
+}
+
+/* ============================================================
+   LAYOUT WRAPPERS
+   ============================================================ */
+section { position: relative; z-index: 2; }
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto; position: relative;
+  padding: 0 var(--pad-x);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh; position: relative;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: clamp(7rem, 14vh, 10rem) var(--pad-x) clamp(2rem, 5vh, 4rem);
+  overflow: hidden;
+}
+
+.scope-grid-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 1; opacity: 0.78; pointer-events: none;
+}
+[data-theme="light"] .scope-grid-svg { opacity: 0.95; }
+
+/* Channel scroll animation — flows LEFT → RIGHT, like a real oscilloscope.
+   Path starts displaced by --scroll-dist (default -1600px = one viewBox width to the left)
+   and translates back to 0, so signal features enter from the left edge and travel rightward.
+   Path content beyond the visible region has identical periodicity to the visible region,
+   so the loop is seamless at the boundary. */
+.scope-scroll {
+  animation: scope-scroll-x var(--scroll-dur, 12s) linear infinite;
+  will-change: transform;
+}
+@keyframes scope-scroll-x {
+  from { transform: translateX(var(--scroll-dist, -1600px)); }
+  to   { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scope-scroll { animation: none; }
+}
+
+.hero > *:not(.scope-grid-svg) {
+  position: relative; z-index: 3;
+}
+
+.hero-meta {
+  display: grid; grid-template-columns: 1fr;
+  gap: 1.5rem; margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+@media (min-width: 800px) {
+  .hero-meta { grid-template-columns: 1fr auto; align-items: center; gap: 2rem; }
+}
+.status-pill {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  padding: 0.55rem 1.05rem 0.55rem 0.9rem;
+  border: 1px solid var(--line); border-radius: 100px;
+  font-family: var(--mono); font-size: 0.76rem;
+  letter-spacing: 0.1em; color: var(--ink-mid);
+  background: var(--readout-bg);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  width: fit-content;
+}
+.status-pill .blip {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--signal); box-shadow: 0 0 12px var(--signal);
+  animation: pulse 2s infinite;
+}
+.status-pill strong { color: var(--ink); font-weight: 500; }
+
+.hero-name {
+  display: grid; grid-template-columns: 1fr; gap: 0; position: relative;
+  padding-inline: 0.05em; /* italic overhang safety */
+  z-index: 3; /* sit above scope SVG (z:1) and grid (z:0) */
+}
+.name-row {
+  font-family: var(--display); font-weight: 400;
+  line-height: 0.88; letter-spacing: -0.035em;
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.15em;
+}
+.name-row.first {
+  font-size: clamp(2.6rem, 6.8vw, 6.8rem);
+  font-style: normal;
+  overflow-wrap: break-word;
+}
+.name-row.last {
+  font-size: clamp(2.1rem, 5.8vw, 5.6rem);
+  font-style: italic;
+  color: var(--accent);
+  margin-left: clamp(0.5rem, 4vw, 3.5rem);
+  margin-top: clamp(-0.2rem, -0.4vw, -0.6rem);
+  position: relative;
+  overflow-wrap: break-word;
+}
+.name-frag {
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+  color: var(--ink-mid); letter-spacing: 0.05em;
+  vertical-align: super; margin-left: 0.5em;
+  font-weight: 400; line-height: 1;
+  align-self: flex-start; margin-top: 0.7em;
+}
+.name-frag em { color: var(--accent); font-style: italic; }
+.mask-reveal { display: inline-block; overflow: hidden; vertical-align: bottom; padding-inline: 0.15em; padding-bottom: 0.18em; margin-bottom: -0.18em; }
+.mask-reveal > span {
+  display: inline-block; transform: translateY(110%);
+  transition: transform 1.1s var(--ease);
+  /* Knockout halo: bg-colored stroke painted UNDER the fill creates clean
+     separation from oscilloscope traces behind the typography */
+  paint-order: stroke fill;
+  -webkit-text-stroke: 2.5px var(--bg);
+}
+.mask-reveal.in > span { transform: translateY(0); }
+.name-frag {
+  /* Smaller halo for the smaller fragment text */
+  paint-order: stroke fill;
+  -webkit-text-stroke: 1.5px var(--bg);
+}
+
+.hero-foot {
+  display: grid; grid-template-columns: 1fr; gap: 2rem;
+  align-items: end; padding-top: clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 900px) { .hero-foot { grid-template-columns: 1fr auto auto; gap: 3.5rem; } }
+
+.hero-tag {
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+  font-weight: 400; line-height: 1.45;
+  color: var(--ink); max-width: 44ch; font-style: italic;
+}
+.hero-tag em {
+  font-style: normal; color: var(--accent);
+  font-family: var(--serif); font-weight: 400;
+  font-variation-settings: "opsz" 24;
+  background: linear-gradient(180deg, transparent 60%, var(--highlight-tint) 60%);
+  padding: 0 0.1em;
+}
+
+.hero-datasheet {
+  font-family: var(--mono); font-size: 0.78rem;
+  display: grid; gap: 0.45rem;
+  background: var(--readout-bg);
+  padding: 0.95rem 1.1rem; border: 1px solid var(--line);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.hero-datasheet .row {
+  display: grid; grid-template-columns: 5.5rem 1fr;
+  gap: 1rem; border-bottom: 1px dashed var(--line);
+  padding-bottom: 0.4rem;
+}
+.hero-datasheet .row:last-child { border-bottom: none; padding-bottom: 0; }
+.hero-datasheet .k { color: var(--ink-dim); letter-spacing: 0.08em; }
+.hero-datasheet .v { color: var(--ink); }
+
+.scroll-cue {
+  display: none; flex-direction: column; align-items: center; gap: 0.8rem;
+  font-family: var(--mono); font-size: 0.68rem;
+  letter-spacing: 0.2em; color: var(--ink-dim);
+  text-transform: uppercase;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  align-self: end;
+}
+@media (min-width: 900px) { .scroll-cue { display: flex; } }
+.scroll-cue::after {
+  content: ""; width: 1px; height: 50px;
+  background: linear-gradient(180deg, var(--accent), transparent);
+  animation: scrollLine 2.4s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0% { transform: translateY(-30px); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: translateY(30px); opacity: 0; }
+}
+
+/* ============================================================
+   AVIONIC ELEMENTS — HUD frame + telemetry band
+   ============================================================ */
+.hud-frame {
+  position: absolute;
+  top: clamp(5.5rem, 10vh, 8rem);
+  left: clamp(1rem, 2.5vw, 2rem);
+  right: clamp(1rem, 2.5vw, 2rem);
+  bottom: clamp(1rem, 3vh, 2rem);
+  pointer-events: none; z-index: 4;
+}
+.hud-corner {
+  position: absolute; width: 26px; height: 26px;
+  fill: none; stroke: var(--accent); stroke-width: 1.2;
+  opacity: 0.55;
+}
+.hud-corner.tl { top: 0; left: 0; }
+.hud-corner.tr { top: 0; right: 0; transform: scaleX(-1); }
+.hud-corner.bl { bottom: 0; left: 0; transform: scaleY(-1); }
+.hud-corner.br { bottom: 0; right: 0; transform: scale(-1); }
+
+/* Telemetry status band - HUD-style readout strip */
+.hero-telemetry {
+  background: var(--bg-elev);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem clamp(1rem, 4vw, 3rem);
+  font-family: var(--mono); font-size: 0.68rem;
+  color: var(--ink-dim); letter-spacing: 0.1em;
+  display: flex; gap: clamp(1rem, 2.5vw, 2rem); flex-wrap: wrap;
+  justify-content: space-between;
+  text-transform: uppercase;
+  position: relative; z-index: 3;
+}
+.hero-telemetry .telemetry-group { display: flex; gap: clamp(1rem, 2.5vw, 2rem); flex-wrap: wrap; }
+.hero-telemetry .field { display: inline-flex; gap: 0.45rem; align-items: baseline; white-space: nowrap; }
+.hero-telemetry .field-label { color: var(--ink-dim); opacity: 0.7; }
+.hero-telemetry .field-marker { color: var(--accent); font-size: 0.85em; }
+.hero-telemetry .field-value { color: var(--ink); }
+.hero-telemetry .nominal-dot {
+  display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; background: #5fc97a;
+  margin-right: 0.4rem; vertical-align: middle;
+  box-shadow: 0 0 6px #5fc97a;
+  animation: nominalPulse 2s ease-in-out infinite;
+}
+@keyframes nominalPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nominal-dot { animation: none; }
+}
+@media (max-width: 720px) {
+  .hud-corner { width: 18px; height: 18px; opacity: 0.45; }
+  .hero-telemetry { font-size: 0.58rem; gap: 0.6rem; padding: 0.5rem 1rem; letter-spacing: 0.06em; }
+  .hero-telemetry .telemetry-group { gap: 0.6rem; }
+}
+
+/* Footer status indicator */
+footer .build-status {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+footer .build-status .nominal-dot {
+  width: 5px; height: 5px;
+}
+
+.marquee {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden; padding: 1.4rem 0;
+  background: linear-gradient(90deg, var(--bg-deep), var(--bg-elev), var(--bg-deep));
+  position: relative; z-index: 3;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-track {
+  display: flex; gap: 3rem;
+  animation: marquee 55s linear infinite;
+  white-space: nowrap;
+  font-family: var(--display); font-size: 1.3rem;
+  font-style: italic; color: var(--ink-mid);
+  width: max-content;
+}
+.marquee-track span { display: inline-flex; align-items: center; gap: 3rem; }
+.marquee-track .sep { color: var(--accent); font-style: normal; font-family: var(--mono); font-size: 0.9em; }
+.marquee-track strong { color: var(--ink); font-weight: 400; font-style: italic; }
+@keyframes marquee { to { transform: translateX(calc(-50% - 1.5rem)); } }
+
+/* ============================================================
+   SECTION CHROME
+   ============================================================ */
+.section-edge { padding: clamp(5rem, 9vw, 8rem) 0 clamp(3rem, 6vw, 5rem); position: relative; }
+.section-num {
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.18em; color: var(--ink-dim);
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.section-num::before { content: ""; width: 32px; height: 1px; background: var(--accent); }
+.section-num em { color: var(--accent); font-style: normal; letter-spacing: 0.18em; }
+.path-section .section-num,
+.stack-section .section-num { max-width: 1000px; margin-inline: auto; }
+
+/* shared big section heading */
+.big-head {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.95rem, 4.6vw, 3.7rem);
+  line-height: 0.96; letter-spacing: -0.04em;
+  color: var(--ink);
+  padding-inline: 0.05em;
+  overflow-wrap: break-word;
+}
+.big-head em { font-style: italic; color: var(--accent); }
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about-spread {
+  display: grid; grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3rem); align-items: start;
+  padding-bottom: 5rem; position: relative;
+}
+@media (min-width: 1000px) {
+  .about-spread { grid-template-columns: 320px 1fr; gap: clamp(3rem, 6vw, 6rem); }
+}
+.about-figure {
+  display: flex; flex-direction: column; gap: 1.5rem;
+  position: sticky; top: 7rem;
+}
+.photo-wrap {
+  position: relative; width: 100%;
+  max-width: 360px; perspective: 1000px;
+  padding: 1.5rem 1.5rem 0 0;
+}
+.photo-frame {
+  background: linear-gradient(135deg, var(--bg-elev), var(--bg-deep));
+  padding: 14px 14px 56px; position: relative;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  box-shadow: var(--shadow-photo);
+  border-radius: 2px;
+}
+.photo-wrap:hover .photo-frame {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(4, 30, 66, 0.20), 0 1px 2px rgba(4, 30, 66, 0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.photo-frame::before {
+  content: ""; position: absolute;
+  top: 10px; left: 10px; right: 10px; bottom: 52px;
+  border: 1px solid transparent;
+  pointer-events: none; transition: border-color 0.3s ease; z-index: 2;
+}
+.photo-wrap:hover .photo-frame::before { border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.photo-frame img {
+  width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  filter: var(--photo-filter);
+  transition: filter 0.35s ease;
+  background: var(--bg-elev);
+  display: block;
+}
+.photo-wrap:hover .photo-frame img { filter: contrast(1.12) saturate(1.1); }
+.photo-caption {
+  position: absolute; bottom: 18px; left: 14px; right: 14px;
+  font-family: var(--mono); font-size: 0.66rem;
+  color: var(--ink-mid); letter-spacing: 0.16em;
+  text-transform: uppercase;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.photo-caption strong { color: var(--accent); font-weight: 500; }
+.photo-stamp {
+  position: absolute; top: 0; right: 0;
+  width: 78px; height: 78px;
+  border: 1.5px solid var(--accent); border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 0.58rem;
+  color: var(--accent); letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--readout-bg);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  transform: rotate(-10deg);
+  z-index: 3; text-align: center; line-height: 1.15;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.photo-stamp .lg { font-family: var(--display); font-size: 1.25rem; font-style: italic; letter-spacing: 0; line-height: 1; margin-bottom: 1px; }
+.about-meta {
+  font-family: var(--mono); font-size: 0.78rem;
+  color: var(--ink-mid); border-left: 1px solid var(--accent);
+  padding: 0.5rem 0 0.5rem 1.1rem;
+  line-height: 1.85; letter-spacing: 0.04em;
+}
+.about-meta strong { color: var(--accent); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+
+.about-prose { display: flex; flex-direction: column; gap: 0; }
+.about-lede {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.55rem, 2.7vw, 2.25rem);
+  line-height: 1.18; letter-spacing: -0.015em;
+  color: var(--ink); margin-bottom: 1.6em; font-style: normal;
+  overflow-wrap: break-word;
+}
+.about-lede em { font-style: italic; color: var(--accent); }
+.about-lede .first-letter {
+  font-family: var(--display); font-size: 1.5em;
+  font-style: italic; color: var(--accent);
+  float: left; line-height: 0.85;
+  margin: 0.05em 0.08em -0.05em 0; font-weight: 400;
+}
+.about-body {
+  font-family: var(--serif); font-size: clamp(1.1rem, 1.4vw, 1.25rem);
+  font-weight: 350; line-height: 1.65;
+  color: var(--ink-mid); max-width: 62ch;
+  font-variation-settings: "opsz" 14;
+}
+.about-body p { margin-bottom: 1.4em; }
+.about-body p:last-child { margin-bottom: 0; }
+.about-body strong {
+  color: var(--ink); font-weight: 500;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.about-body em { font-style: italic; color: var(--accent); font-variation-settings: "opsz" 14, "WONK" 1; }
+
+.pull-quote {
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(1.7rem, 3.3vw, 2.7rem);
+  line-height: 1.08; letter-spacing: -0.025em;
+  color: var(--ink); margin: 1.6em 0; padding: 0.5em 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  overflow-wrap: break-word;
+}
+.pull-quote em { color: var(--accent); font-style: italic; }
+.pull-quote::after {
+  content: "—— deterministic & learned";
+  position: absolute; bottom: -1.6em; right: 0;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.18em; color: var(--ink-dim); text-transform: uppercase;
+}
+
+/* ============================================================
+   STAT STRIP
+   ============================================================ */
+.stat-strip {
+  display: grid; grid-template-columns: 1fr; gap: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+@media (min-width: 700px) { .stat-strip { grid-template-columns: repeat(4, 1fr); } }
+.stat-cell {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.3rem, 2.5vw, 2rem);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative; transition: background 0.5s ease;
+}
+@media (min-width: 700px) {
+  .stat-cell { border-bottom: none; }
+  .stat-cell:last-child { border-right: none; }
+}
+@media (max-width: 699px) {
+  .stat-cell { border-right: none; }
+  .stat-cell:last-child { border-bottom: none; }
+}
+.stat-cell:hover { background: var(--tint-accent-soft); }
+.stat-tick {
+  font-family: var(--mono); font-size: 0.7rem;
+  color: var(--accent); letter-spacing: 0.18em; margin-bottom: 0.85rem;
+}
+.stat-val {
+  font-family: var(--display); font-size: clamp(2.3rem, 4.4vw, 3.5rem);
+  font-weight: 400; line-height: 0.98;
+  letter-spacing: -0.03em; color: var(--ink); margin-bottom: 0.55rem;
+  display: flex; align-items: baseline; gap: 0.05em; font-style: italic;
+}
+.stat-val .scramble { font-style: italic; }
+.stat-val .unit {
+  font-size: 0.4em; color: var(--accent); font-style: italic;
+  font-family: var(--display); letter-spacing: 0;
+}
+.stat-label {
+  font-family: var(--mono); font-size: 0.72rem;
+  color: var(--ink-mid); letter-spacing: 0.1em;
+  line-height: 1.65; text-transform: uppercase;
+}
+
+/* ============================================================
+   CURRENT / SPOTLIGHTS
+   ============================================================ */
+.current-section { padding: clamp(5rem, 9vw, 8rem) 0 clamp(2rem, 5vw, 4rem); }
+.current-headline {
+  display: grid; grid-template-columns: 1fr; gap: 1.5rem;
+  margin-bottom: clamp(3rem, 6vw, 5rem); align-items: end;
+}
+@media (min-width: 800px) { .current-headline { grid-template-columns: 1fr auto; gap: 3rem; } }
+.current-headline .meta {
+  font-family: var(--mono); font-size: 0.76rem;
+  letter-spacing: 0.15em; color: var(--ink-dim);
+  text-transform: uppercase; text-align: right; padding-bottom: 0.6rem;
+}
+
+.spotlight {
+  display: grid; grid-template-columns: 1fr; gap: 2.5rem;
+  padding: clamp(2rem, 4vw, 3rem) 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.spotlight:first-child { border-top: 1px solid var(--line); }
+@media (min-width: 1000px) {
+  .spotlight {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 4vw, 4.5rem);
+    align-items: start;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .spotlight.flip > .spotlight-text { order: 2; }
+  .spotlight.flip > .spotlight-flow { order: 1; }
+}
+.spotlight-num { display: none; }
+.spotlight-text { display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; }
+.spotlight-mobile-num {
+  font-family: var(--mono); font-size: 0.74rem;
+  color: var(--accent); letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.spotlight-mobile-num::before {
+  content: ""; width: 28px; height: 1px; background: var(--accent);
+}
+.spotlight-mobile-num em { color: var(--ink-mid); font-style: normal; }
+.spotlight-title {
+  font-family: var(--display); font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  font-weight: 400; line-height: 1.12;
+  letter-spacing: -0.02em; color: var(--ink);
+  padding-inline: 0.05em;
+  overflow-wrap: break-word;
+}
+.spotlight-title em { font-style: italic; color: var(--accent); }
+.spotlight-desc {
+  font-family: var(--serif); font-size: clamp(1.08rem, 1.3vw, 1.25rem);
+  font-weight: 350; line-height: 1.6;
+  color: var(--ink-mid); font-variation-settings: "opsz" 14;
+  max-width: 52ch;
+}
+.spotlight-bullets {
+  font-family: var(--mono); font-size: 0.84rem;
+  color: var(--ink-mid);
+  display: flex; flex-direction: column; gap: 0.7rem;
+  list-style: none;
+  border-top: 1px dashed var(--line);
+  padding-top: 1.1rem; margin-top: 0.4rem; letter-spacing: 0.02em;
+}
+.spotlight-bullets li { position: relative; padding-left: 1.7rem; line-height: 1.55; }
+.spotlight-bullets li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
+.spotlight-bullets li strong { color: var(--ink); font-weight: 500; letter-spacing: 0.04em; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.8rem; }
+.tag {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em;
+  padding: 0.4rem 0.8rem; border: 1px solid var(--line);
+  border-radius: 100px; color: var(--ink-mid);
+  background: color-mix(in srgb, var(--ink) 1%, transparent);
+  transition: all 0.3s ease;
+}
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+  background: var(--tint-accent-soft);
+  transform: translateY(-2px);
+}
+
+.spotlight-flow { position: relative; min-width: 0; }
+.flow-wrap {
+  background: linear-gradient(180deg, var(--bg-elev), var(--bg-deep));
+  border: 1px solid var(--line); padding: 1.85rem;
+  position: relative;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 290px; overflow: hidden; border-radius: 4px;
+}
+.flow-wrap::before {
+  content: attr(data-title); position: absolute; top: 0; left: 0;
+  font-family: var(--mono); font-size: 0.7rem;
+  color: var(--ink-dim); letter-spacing: 0.12em;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: var(--readout-bg); z-index: 2; text-transform: uppercase;
+}
+.flow-wrap::after {
+  content: ""; position: absolute; bottom: 0.55rem; right: 0.55rem;
+  width: 14px; height: 14px;
+  border-right: 1px solid var(--line-bright);
+  border-bottom: 1px solid var(--line-bright);
+  pointer-events: none;
+}
+.flow-svg { width: 100%; height: auto; margin-top: 1.3rem; max-width: 640px; }
+.flow-svg .node-rect { fill: var(--tint-accent-soft); stroke: var(--line-bright); stroke-width: 1; }
+.flow-svg .node-rect.accent { fill: var(--tint-accent-mid); stroke: var(--accent); }
+.flow-svg .node-rect.success { fill: var(--tint-signal-soft); stroke: var(--signal); }
+.flow-svg .node-rect.reject { fill: var(--tint-reject-soft); stroke: var(--reject); }
+.flow-svg .node-text { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; fill: var(--ink); font-weight: 500; }
+.flow-svg .node-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--ink-mid); letter-spacing: 0.04em; }
+.flow-svg .node-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+.flow-svg .node-num { font-family: 'JetBrains Mono', monospace; font-size: 9px; fill: var(--ink-dim); letter-spacing: 0.1em; }
+.flow-svg .signal-text { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--accent-2); letter-spacing: 0.06em; }
+.flow-svg .flow-line { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+.flow-svg .flow-line.dashed { stroke-dasharray: 4 3; }
+.flow-svg .flow-line.reject { stroke: var(--reject); }
+.flow-svg .flow-line.success { stroke: var(--signal); }
+.flow-svg .signal-pulse { stroke-dasharray: 5 28; animation: flow 1.4s linear infinite; }
+.flow-svg .signal-pulse-rev { stroke-dasharray: 5 28; animation: flow-rev 1.6s linear infinite; }
+.flow-svg .signal-pulse-success { stroke-dasharray: 5 24; animation: flow 1.2s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -33; } }
+@keyframes flow-rev { to { stroke-dashoffset: 33; } }
+@media (prefers-reduced-motion: reduce) {
+  .flow-svg .signal-pulse, .flow-svg .signal-pulse-rev, .flow-svg .signal-pulse-success { animation: none; }
+}
+
+/* ============================================================
+   SELECTED WORK — refined editorial grid
+   smaller, balanced cards instead of dominating images
+   ============================================================ */
+.work-section { padding: clamp(5rem, 9vw, 8rem) 0; position: relative; }
+.work-headline {
+  display: grid; grid-template-columns: 1fr; gap: 1.5rem;
+  margin-bottom: clamp(2.5rem, 4vw, 3.5rem); align-items: end;
+  max-width: 1080px; margin-inline: auto;
+}
+@media (min-width: 800px) { .work-headline { grid-template-columns: 1fr auto; gap: 3rem; } }
+.work-headline .sub {
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  color: var(--ink-mid); text-align: right;
+  max-width: 28ch; line-height: 1.45;
+}
+.work-section .section-num { max-width: 1080px; margin-inline: auto; }
+
+/* ============================================================
+   SELECTED WORK — slider (one project per slide)
+   ============================================================ */
+.mag-slider {
+  position: relative;
+  margin-top: 1.5rem;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+.mag-slider-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  padding-inline: 0.05em;
+}
+.mag-counter {
+  font-family: var(--mono); font-size: 0.84rem;
+  letter-spacing: 0.16em; color: var(--ink-dim);
+  text-transform: uppercase;
+  display: flex; align-items: baseline; gap: 0.4rem;
+}
+.mag-counter .now {
+  font-size: 1.45rem; color: var(--accent); font-weight: 500;
+  letter-spacing: 0; min-width: 2ch; display: inline-block;
+}
+.mag-counter .total { color: var(--ink-mid); }
+.mag-counter .sep { color: var(--line-bright); margin-inline: 0.2em; }
+.mag-controls { display: flex; gap: 0.7rem; }
+.mag-btn {
+  width: 52px; height: 52px;
+  border: 1px solid var(--line);
+  background: var(--readout-bg);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  color: var(--ink);
+  display: grid; place-items: center;
+  border-radius: 50%;
+  transition: all 0.4s var(--ease);
+  cursor: none; font-family: var(--display); font-style: italic;
+  font-size: 1.4rem; line-height: 1;
+}
+.mag-btn:hover {
+  border-color: var(--accent); color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.mag-btn:disabled {
+  opacity: 0.32; cursor: not-allowed;
+  transform: none; box-shadow: none;
+  border-color: var(--line); color: var(--ink-dim);
+}
+.mag-btn svg { width: 18px; height: 18px; }
+
+.mag-track-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.mag-track {
+  display: flex;
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.5rem;
+}
+.mag-track::-webkit-scrollbar { display: none; }
+.mag-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding-inline: 0;
+  display: grid; grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: stretch;
+}
+@media (min-width: 900px) {
+  .mag-slide {
+    grid-template-columns: 1fr 1.05fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+}
+
+.mag-display {
+  position: relative; overflow: hidden;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  aspect-ratio: 4 / 3;
+  transition: border-color 0.3s ease;
+  border-radius: 4px;
+  order: 1;
+  font-size: 0;
+  isolation: isolate;
+}
+@media (min-width: 900px) {
+  .mag-display { aspect-ratio: 5 / 4; }
+}
+.mag-slide:hover .mag-display { border-color: var(--line-bright); }
+.mag-display img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: block; object-fit: cover;
+  transition: transform 0.7s var(--ease), filter 0.4s ease;
+  filter: var(--mag-img-filter);
+  color: transparent;
+}
+.mag-slide:hover .mag-display img {
+  transform: scale(1.03);
+  filter: contrast(1.06) brightness(1.02);
+}
+.mag-display::after {
+  content: ""; position: absolute; inset: 0;
+  background: var(--gradient-overlay);
+  opacity: 0.32; transition: opacity 0.4s ease; pointer-events: none;
+  z-index: 1;
+}
+.mag-slide:hover .mag-display::after { opacity: 0.1; }
+.mag-display.contain-display {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 50%, var(--tint-accent-mid), transparent 70%),
+    var(--bg-deep);
+}
+.mag-display.contain-display img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 8%;
+  filter: none;
+}
+.mag-slide:hover .mag-display.contain-display img {
+  transform: scale(1.04);
+  filter: drop-shadow(0 8px 24px color-mix(in srgb, var(--accent) 35%, transparent));
+}
+.mag-display.contain-display::after { display: none; }
+
+.mag-display.contain-display.paper {
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--line-bright) 60%, transparent);
+}
+[data-theme="dark"] .mag-display.contain-display.paper {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.mag-display.contain-display.paper img {
+  padding: 4%;
+}
+
+/* slide that displays an SVG flowchart instead of an image */
+.mag-display.flow-display {
+  background: linear-gradient(180deg, var(--bg-elev), var(--bg-deep));
+  display: flex; align-items: center; justify-content: center;
+  padding: 2.4rem 1.5rem 1.4rem;
+}
+.mag-display.flow-display::before {
+  content: attr(data-flow-title);
+  position: absolute; top: 0; left: 0;
+  font-family: var(--mono); font-size: 0.68rem;
+  color: var(--ink-dim); letter-spacing: 0.12em;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: var(--readout-bg);
+  text-transform: uppercase;
+  z-index: 2;
+  font-weight: 500;
+}
+.mag-display.flow-display::after {
+  content: ""; position: absolute; bottom: 0.55rem; right: 0.55rem;
+  width: 12px; height: 12px;
+  border-right: 1px solid var(--line-bright);
+  border-bottom: 1px solid var(--line-bright);
+  pointer-events: none;
+  background: none;
+  opacity: 1;
+}
+.mag-slide:hover .mag-display.flow-display::after { opacity: 1; }
+.project-flow {
+  width: 100%; height: auto;
+  max-width: 560px; max-height: 100%;
+  font-size: 0;
+}
+.project-flow .pf-rect { fill: var(--tint-accent-soft); stroke: var(--line-bright); stroke-width: 1; }
+.project-flow .pf-rect.accent { fill: var(--tint-accent-mid); stroke: var(--accent); }
+.project-flow .pf-rect.signal { fill: var(--tint-signal-soft); stroke: var(--signal); }
+.project-flow .pf-rect.mcu { fill: color-mix(in srgb, var(--accent) 14%, var(--bg-elev)); stroke: var(--accent); stroke-width: 1.5; }
+.project-flow .pf-rect.deep { fill: var(--bg-deep); stroke: var(--line-bright); }
+.project-flow .pf-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--ink); font-weight: 500; }
+.project-flow .pf-text.large { font-size: 13px; font-weight: 600; }
+.project-flow .pf-sub { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; fill: var(--ink-mid); letter-spacing: 0.04em; }
+.project-flow .pf-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; fill: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; }
+.project-flow .pf-line { stroke: var(--accent); stroke-width: 1.4; fill: none; }
+.project-flow .pf-line.bidir { stroke-dasharray: none; }
+.project-flow .pf-line.signal { stroke: var(--signal); }
+.project-flow .pf-line.dim { stroke: var(--line-bright); stroke-width: 1; }
+.project-flow .pf-pulse { stroke-dasharray: 4 16; animation: flow 1.6s linear infinite; }
+
+.mag-num {
+  position: absolute; top: 1rem; left: 1rem; z-index: 3;
+  font-family: var(--mono); font-size: 0.8rem;
+  color: var(--ink); letter-spacing: 0.14em;
+  background: var(--readout-bg);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  padding: 0.45rem 0.85rem; border: 1px solid var(--line); font-weight: 500;
+}
+.mag-display.flow-display .mag-num {
+  left: auto;
+  right: 1rem;
+}
+
+.mag-meta {
+  display: flex; flex-direction: column;
+  gap: 0.9rem;
+  order: 2;
+  padding-inline: 0.05em;
+  max-width: 56ch;
+}
+.mag-tag-line {
+  display: flex; flex-wrap: wrap; gap: 0.7rem 1.2rem;
+  align-items: baseline;
+  font-family: var(--mono); font-size: 0.78rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.mag-tag-line .role { color: var(--accent); font-weight: 500; }
+.mag-tag-line .year::before {
+  content: "·"; margin-right: 0.7rem; color: var(--line-bright);
+}
+.mag-title {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.55rem, 2.7vw, 2.25rem);
+  line-height: 1.12; letter-spacing: -0.018em;
+  color: var(--ink);
+  transition: color 0.3s;
+  padding-inline: 0.04em;
+  overflow-wrap: break-word;
+}
+.mag-title em { font-style: italic; color: var(--accent); }
+.mag-slide:hover .mag-title { color: var(--accent); }
+.mag-desc {
+  font-family: var(--serif); font-size: clamp(1.08rem, 1.3vw, 1.25rem);
+  font-weight: 350; line-height: 1.62;
+  color: var(--ink-mid);
+  font-variation-settings: "opsz" 16; max-width: 52ch;
+}
+.mag-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.4rem; }
+.mag-tags .tag { font-size: 0.72rem; padding: 0.32rem 0.7rem; }
+
+.mag-cta {
+  display: inline-flex; align-items: baseline; gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-family: var(--mono); font-size: 0.82rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); font-weight: 500;
+  transition: gap 0.4s var(--ease);
+  align-self: flex-start;
+}
+.mag-cta::after {
+  content: "→"; font-family: var(--display); font-style: italic;
+  font-size: 1.1rem; transition: transform 0.4s var(--ease);
+}
+.mag-slide:hover .mag-cta { gap: 0.85rem; }
+.mag-slide:hover .mag-cta::after { transform: translateX(5px); }
+
+/* dot indicators below slider */
+.mag-dots {
+  display: flex; justify-content: center; gap: 0.55rem;
+  margin-top: 2.5rem;
+}
+.mag-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--line); border: none; padding: 0; cursor: none;
+  transition: all 0.4s var(--ease);
+}
+.mag-dot:hover { background: var(--ink-dim); transform: scale(1.2); }
+.mag-dot.active {
+  background: var(--accent); width: 24px; border-radius: 4px;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* ============================================================
+   STACK
+   ============================================================ */
+.stack-section { padding: clamp(5rem, 9vw, 8rem) 0; }
+.stack-head {
+  display: grid; grid-template-columns: 1fr; gap: 1.5rem;
+  margin-bottom: clamp(3rem, 5vw, 5rem); align-items: end;
+  max-width: 1080px; margin-inline: auto;
+}
+@media (min-width: 800px) { .stack-head { grid-template-columns: 1fr 1fr; gap: 3rem; } }
+.stack-head p {
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  color: var(--ink-mid); line-height: 1.5;
+  max-width: 42ch; padding-bottom: 1rem;
+}
+.stack-head p strong { color: var(--accent); font-weight: 400; }
+.stack-grid {
+  display: grid; grid-template-columns: 1fr; gap: 0;
+  border: 1px solid var(--line); background: var(--bg-elev);
+  border-radius: 4px; overflow: hidden;
+  max-width: 1080px; margin: 0 auto;
+}
+@media (min-width: 700px) { .stack-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .stack-grid { grid-template-columns: repeat(4, 1fr); } }
+.stack-cat {
+  padding: 1.95rem 1.6rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 1.05rem;
+  position: relative; transition: background 0.5s ease;
+  min-width: 0;
+}
+.stack-cat:hover { background: var(--tint-accent-soft); }
+@media (max-width: 699px) { .stack-cat { border-right: none; } }
+@media (min-width: 700px) and (max-width: 1099px) {
+  .stack-cat:nth-child(2n) { border-right: none; }
+  .stack-cat:nth-last-child(-n+2) { border-bottom: none; }
+}
+@media (min-width: 1100px) {
+  .stack-cat:nth-child(4n) { border-right: none; }
+  .stack-cat:nth-last-child(-n+4) { border-bottom: none; }
+}
+.cat-num { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.18em; }
+.cat-name {
+  font-family: var(--display); font-size: 1.4rem;
+  font-weight: 400; font-style: italic;
+  color: var(--ink); letter-spacing: -0.01em; line-height: 1.2;
+  border-bottom: 1px dashed var(--line); padding-bottom: 0.75rem;
+}
+.stack-cat ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.stack-cat li {
+  font-family: var(--mono); font-size: 0.84rem;
+  color: var(--ink); line-height: 1.45;
+  padding-left: 0.95rem; position: relative;
+  transition: padding 0.3s ease, color 0.3s ease; cursor: default;
+}
+.stack-cat li::before { content: "·"; color: var(--accent); position: absolute; left: 0; font-weight: 700; }
+.stack-cat li:hover { padding-left: 1.35rem; color: var(--accent); }
+
+/* ============================================================
+   PATH / TIMELINE
+   ============================================================ */
+.path-section { padding: clamp(5rem, 9vw, 8rem) 0; }
+.path-head {
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+  display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: end;
+  max-width: 1000px; margin-inline: auto;
+}
+@media (min-width: 800px) { .path-head { grid-template-columns: 1fr auto; gap: 3rem; } }
+.path-head .meta {
+  font-family: var(--mono); font-size: 0.76rem;
+  letter-spacing: 0.15em; color: var(--ink-dim); text-transform: uppercase;
+}
+.timeline {
+  display: grid; grid-template-columns: 1fr; gap: 0; position: relative;
+  max-width: 1000px; margin: 0 auto;
+}
+.timeline-line-bg {
+  display: none; position: absolute;
+  left: 158px; top: 0; bottom: 0;
+  width: 1px; background: var(--line);
+}
+.timeline-line {
+  display: none; position: absolute;
+  left: 158px; top: 0; width: 1px;
+  background: var(--accent); height: var(--draw, 0%);
+  transition: height 0.1s linear;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+@media (min-width: 800px) { .timeline-line-bg, .timeline-line { display: block; } }
+.tl-item {
+  display: grid; grid-template-columns: 1fr; gap: 0.85rem;
+  padding: 2.4rem 0; border-top: 1px solid var(--line);
+  position: relative;
+}
+.tl-item:last-child { border-bottom: 1px solid var(--line); }
+@media (min-width: 800px) {
+  .tl-item {
+    grid-template-columns: 180px 1fr;
+    gap: 3rem; align-items: baseline;
+    padding: 2.7rem 0;
+  }
+  .tl-item::before {
+    content: ""; position: absolute;
+    left: 153px; top: 3.05rem;
+    width: 12px; height: 12px;
+    background: var(--bg);
+    border: 1px solid var(--ink-dim);
+    border-radius: 50%; transition: all 0.4s ease; z-index: 2;
+  }
+  .tl-item.lit::before {
+    border-color: var(--accent); background: var(--accent);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+}
+.tl-side {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  font-family: var(--mono);
+}
+.tl-when {
+  font-size: 0.82rem; color: var(--accent); letter-spacing: 0.06em;
+  font-weight: 500;
+}
+.tl-loc {
+  font-size: 0.78rem; color: var(--ink-dim);
+  letter-spacing: 0.05em; line-height: 1.55;
+}
+.tl-loc .gpa {
+  color: var(--signal); display: block; margin-top: 0.35rem;
+  font-size: 0.76rem; letter-spacing: 0.08em;
+}
+.tl-main { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+.tl-role {
+  font-family: var(--display); font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 400; line-height: 1.22;
+  letter-spacing: -0.015em; color: var(--ink);
+  padding-inline: 0.04em;
+  overflow-wrap: break-word;
+}
+.tl-role em { font-style: italic; color: var(--accent); }
+.tl-org { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-mid); letter-spacing: 0.1em; font-weight: 500; }
+.tl-note {
+  font-family: var(--serif); font-size: clamp(1.02rem, 1.25vw, 1.18rem);
+  font-weight: 350; color: var(--ink-mid); line-height: 1.62;
+  margin-top: 0.65rem; max-width: 60ch;
+  font-variation-settings: "opsz" 14;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-section {
+  padding: clamp(6rem, 13vw, 13rem) 0 clamp(5rem, 10vw, 9rem);
+  position: relative;
+}
+.contact-headline {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(2.7rem, 7vw, 6.8rem);
+  line-height: 0.92; letter-spacing: -0.045em;
+  color: var(--ink); margin-bottom: 0.45em;
+  padding-inline: 0.05em;
+  overflow-wrap: break-word;
+}
+.contact-headline em { font-style: italic; color: var(--accent); }
+.contact-sub {
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+  font-weight: 400; color: var(--ink-mid);
+  margin-bottom: 4.5rem; max-width: 44ch; line-height: 1.45;
+}
+.contact-grid { display: grid; grid-template-columns: 1fr; gap: 0; max-width: 1000px; }
+.contact-link {
+  display: grid; grid-template-columns: 110px 1fr auto;
+  gap: 1.5rem; align-items: center;
+  padding: 1.85rem 0; border-top: 1px solid var(--line);
+  font-family: var(--display); font-style: italic;
+  font-size: clamp(1.4rem, 2.8vw, 2.05rem);
+  font-weight: 400; color: var(--ink);
+  transition: padding 0.3s var(--ease), color 0.25s ease;
+  position: relative; will-change: transform;
+}
+.contact-link::before {
+  content: ""; position: absolute; left: 0; top: 0;
+  width: 0; height: 100%;
+  background: linear-gradient(90deg, var(--tint-accent-mid), transparent 70%);
+  transition: width 0.4s var(--ease); pointer-events: none;
+}
+.contact-link:hover::before { width: 100%; }
+.contact-link:last-child { border-bottom: 1px solid var(--line); }
+.contact-link:hover { padding-left: 2rem; color: var(--accent); }
+.contact-link .label {
+  color: var(--ink-dim); font-size: 0.74rem;
+  font-family: var(--mono); font-style: normal;
+  font-weight: 400; letter-spacing: 0.18em;
+  text-transform: uppercase; position: relative; z-index: 1;
+}
+.contact-link span:nth-child(2) { position: relative; z-index: 1; }
+.contact-link .arrow {
+  font-family: var(--display); font-style: italic;
+  font-size: 1em; transition: transform 0.5s var(--ease);
+  position: relative; z-index: 1;
+}
+.contact-link:hover .arrow { transform: translateX(16px); }
+
+footer {
+  padding: 2.6rem var(--pad-x);
+  border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: 0.76rem;
+  color: var(--ink-dim);
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1rem;
+  position: relative; z-index: 2; letter-spacing: 0.1em;
+}
+footer .lang { color: var(--ink-mid); }
+footer .lang strong { color: var(--accent); font-weight: 500; }
+
+/* ============================================================
+   REVEALS
+   ============================================================ */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.08s; }
+.reveal-d2 { transition-delay: 0.16s; }
+.reveal-d3 { transition-delay: 0.24s; }
+.reveal-d4 { transition-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .mask-reveal > span { transform: translateY(0); }
+}
+
+/* ============================================================
+   MOBILE — explicit small-screen sizing & layout tweaks
+   This is a safety belt: clamp() handles smooth scaling, but here
+   we hard-cap a few things at narrow widths so nothing surprises.
+   ============================================================ */
+@media (max-width: 720px) {
+  body { font-size: 17px; line-height: 1.6; }
+
+  /* hero: slightly tighter padding, name fragment stacks */
+  .hero { padding-top: clamp(5.5rem, 10vh, 7rem); }
+  .name-frag {
+    display: block; margin-left: 0; margin-top: 0.5rem;
+    font-size: 0.92rem;
+  }
+  .hero-meta { gap: 1rem; }
+  .status-pill { font-size: 0.7rem; padding: 0.5rem 0.95rem 0.5rem 0.8rem; }
+
+  /* marquee narrower */
+  .marquee-track { font-size: 1.1rem; gap: 2rem; }
+  .marquee-track span { gap: 2rem; }
+
+  /* section eyebrows */
+  .section-num { font-size: 0.72rem; }
+
+  /* about — mobile stack */
+  .about-figure { position: static; }
+  .photo-wrap { max-width: 250px; }
+
+  /* spotlights collapse padding */
+  .spotlight { gap: 1.75rem; padding: 1.5rem 0; }
+  .spotlight-flow { display: none; }
+
+  /* slider tightens */
+  .mag-slider-head { gap: 1rem; margin-bottom: 1.5rem; }
+  .mag-btn { width: 44px; height: 44px; }
+  .mag-btn svg { width: 16px; height: 16px; }
+  .mag-counter .now { font-size: 1.25rem; }
+  .mag-display { aspect-ratio: 16 / 11; }
+  .mag-meta { gap: 0.7rem; }
+  .mag-tag-line { font-size: 0.7rem; gap: 0.5rem 0.9rem; }
+  .mag-desc { font-size: 1rem; }
+  .mag-tags .tag { font-size: 0.66rem; padding: 0.28rem 0.6rem; }
+  .mag-cta { font-size: 0.74rem; }
+
+  /* timeline vertical, tighter */
+  .tl-item { padding: 2rem 0; gap: 0.55rem; }
+  .tl-when { font-size: 0.78rem; }
+  .tl-org { font-size: 0.74rem; }
+  .tl-note { font-size: 0.98rem; line-height: 1.6; margin-top: 0.45rem; }
+
+  /* contact links stack the label */
+  .contact-link {
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1rem;
+    padding: 1.4rem 0;
+  }
+  .contact-link .label {
+    grid-column: 1 / -1; font-size: 0.66rem;
+    color: var(--ink-dim); margin-bottom: -0.3rem;
+  }
+  .contact-link:hover { padding-left: 0; }
+  .contact-sub { margin-bottom: 3rem; font-size: 1.1rem; }
+
+  /* footer */
+  footer { padding: 2rem var(--pad-x); }
+
+  /* stat-strip: don't let unit/tick get squished */
+  .stat-tick { font-size: 0.66rem; margin-bottom: 0.6rem; }
+  .stat-cell { padding: 1.7rem 1.2rem; }
+}
+
+@media (max-width: 480px) {
+  /* very small phones */
+  .hero-name .name-row.first { letter-spacing: -0.025em; }
+  .name-frag { font-size: 0.85rem; }
+  .hero-tag { font-size: 1.18rem; }
+  .marquee-track { font-size: 1rem; }
+  .spotlight-title { line-height: 1.18; }
+  .pull-quote { font-size: 1.55rem; line-height: 1.15; }
+  .about-lede { font-size: 1.45rem; line-height: 1.22; }
+  .stat-val { font-size: 2.1rem; }
+}
+
+/* ============================================================
+   GLOBAL SAFETY: prevent any element bleeding off horizontally
+   ============================================================ */
+html, body { overflow-x: clip; }
+section, .wrap, .hero { max-width: 100%; }
+img, svg, video, canvas { max-width: 100%; }
+
+/* ============================================================
+   PERFORMANCE: content-visibility on below-fold heavy sections
+   Browser can defer rendering of these until they scroll near.
+   contain-intrinsic-size acts as a placeholder height to prevent
+   scrollbar jumpiness while still being deferred.
+   ============================================================ */
+#current, #work, #stack, #path, #contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
+}
+
+</style>
 </head>
-
 <body>
+<noscript>
+  <style>
+    .noscript-msg { position: fixed; top: 0; left: 0; right: 0; z-index: 99999;
+      background: #FF8200; color: #041E42; padding: 0.75rem 1rem;
+      font-family: system-ui, -apple-system, sans-serif; font-size: 0.875rem;
+      text-align: center; }
+    .noscript-msg a { color: #041E42; text-decoration: underline; }
+  </style>
+  <div class="noscript-msg">
+    This portfolio uses JavaScript for the project carousel and a few interactive details.
+    Most content is still readable below — but for the full experience please enable JavaScript.
+    Direct contact: <a href="mailto:jesusminjaresjr@gmail.com">jesusminjaresjr@gmail.com</a>
+  </div>
+</noscript>
 
-  <!-- ======= Mobile nav toggle button ======= -->
-  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-label" id="cursorLabel" aria-hidden="true">View</div>
+<div class="scroll-progress" id="scrollProgress"></div>
 
-  <!-- ======= Header ======= -->
-  <header id="header">
-    <div class="d-flex flex-column">
+<nav class="nav" id="nav" aria-label="Primary">
+  <a href="#top" class="nav-mark" data-cursor="hover">
+    <span class="dot"></span>
+    JM <span style="color: var(--ink-dim)">·</span> EMBEDDED.SYSTEMS
+  </a>
+  <div class="nav-links">
+    <a href="#about" data-num="01" data-cursor="hover">about</a>
+    <a href="#current" data-num="02" data-cursor="hover">current</a>
+    <a href="#work" data-num="03" data-cursor="hover">work</a>
+    <a href="#stack" data-num="04" data-cursor="hover">stack</a>
+    <a href="#path" data-num="05" data-cursor="hover">path</a>
+    <a href="#contact" data-num="06" data-cursor="hover">contact</a>
+  </div>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme" data-cursor="hover">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+  <span class="nav-clock"><span class="live-dot"></span><span id="clock">— : — MT</span></span>
+</nav>
 
-      <div class="profile">
-        <img src="assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
-        <h1 class="text-center"><a href="index.html">Jesus Minjares</a></h1>
-        <div class="social-links mt-3 text-center">
-          <a href="https://www.linkedin.com/in/jesusminjares/" target="_blank" rel="noopener noreferrer" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-          <a href="https://github.com/jminjares4" target="_blank" rel="noopener noreferrer" class="github"><i class="bx bxl-github"></i></a>
-          <a href="https://linktr.ee/JesusMinjares" target="_blank" rel="noopener noreferrer" class="linktree"><i class="bx bxs-tree"></i></a>
-          <a href="mailto:jminjares4@miners.utep.edu" target="_blank" rel="noopener noreferrer" class="email"><i class="bx bxs-envelope"></i></a>
+<section class="hero" id="top">
+  <svg class="scope-grid-svg" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <pattern id="scope-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+        <path d="M 80 0 L 0 0 0 80" fill="none" stroke="var(--scope-grid)" stroke-width="0.5"/>
+        <path d="M 16 0 L 16 80 M 32 0 L 32 80 M 48 0 L 48 80 M 64 0 L 64 80 M 0 16 L 80 16 M 0 32 L 80 32 M 0 48 L 80 48 M 0 64 L 80 64" fill="none" stroke="var(--scope-grid-fine)" stroke-width="0.4"/>
+      </pattern>
+      <!-- Filter zone fade gradients: noise fades out across the filter box,
+           clean fades in. Both gradients are anchored in viewBox space (userSpaceOnUse),
+           so the fade region stays at x=640..960 even as the wave paths scroll through. -->
+      <linearGradient id="scope-noise-fade" x1="640" y1="0" x2="960" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="white"/>
+        <stop offset="1" stop-color="black"/>
+      </linearGradient>
+      <linearGradient id="scope-clean-fade" x1="640" y1="0" x2="960" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="black"/>
+        <stop offset="1" stop-color="white"/>
+      </linearGradient>
+      <mask id="scope-noise-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
+        <rect x="0" y="0" width="640" height="900" fill="white"/>
+        <rect x="640" y="0" width="320" height="900" fill="url(#scope-noise-fade)"/>
+      </mask>
+      <mask id="scope-clean-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
+        <rect x="640" y="0" width="320" height="900" fill="url(#scope-clean-fade)"/>
+        <rect x="960" y="0" width="640" height="900" fill="white"/>
+      </mask>
+    </defs>
+    <rect width="1600" height="900" fill="url(#scope-grid)"/>
+
+    <!-- CH1 — PWM with sweeping duty cycle (modulated digital control signal) -->
+    <g class="scope-ch ch1">
+      <text x="16" y="232" font-family="JetBrains Mono, monospace" font-size="13" fill="var(--accent)" fill-opacity="0.55">CH1 · PWM · DUTY SWEEP</text>
+      <g class="scope-scroll" style="--scroll-dur: 14s;">
+        <path d="M 0 310 L 0 250 L 40 250 L 40 310 L 200 310 L 200 250 L 260 250 L 260 310 L 400 310 L 400 250 L 490 250 L 490 310 L 600 310 L 600 250 L 720 250 L 720 310 L 800 310 L 800 250 L 950 250 L 950 310 L 1000 310 L 1000 250 L 1130 250 L 1130 310 L 1200 310 L 1200 250 L 1300 250 L 1300 310 L 1400 310 L 1400 250 L 1470 250 L 1470 310 L 1600 310 L 1600 250 L 1640 250 L 1640 310 L 1800 310 L 1800 250 L 1860 250 L 1860 310 L 2000 310 L 2000 250 L 2090 250 L 2090 310 L 2200 310 L 2200 250 L 2320 250 L 2320 310 L 2400 310 L 2400 250 L 2550 250 L 2550 310 L 2600 310 L 2600 250 L 2730 250 L 2730 310 L 2800 310 L 2800 250 L 2900 250 L 2900 310 L 3000 310 L 3000 250 L 3070 250 L 3070 310 L 3200 310" fill="none" stroke="var(--accent)" stroke-width="1.0" stroke-opacity="0.6" stroke-linejoin="miter"/>
+      </g>
+    </g>
+
+    <!-- CH2 — DSP filter chain: noisy in → FIR LPF → clean out, with mask-based fade -->
+    <g class="scope-ch ch2">
+      <text x="16" y="427" font-family="JetBrains Mono, monospace" font-size="13" fill="var(--accent)" fill-opacity="0.7">CH2 · DSP</text>
+      <text x="16" y="444" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--accent)" fill-opacity="0.5">NOISY · IN</text>
+      <text x="800" y="427" font-family="JetBrains Mono, monospace" font-size="13" fill="var(--accent)" fill-opacity="0.85" text-anchor="middle">FIR · LPF</text>
+      <text x="1584" y="444" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--signal)" fill-opacity="0.65" text-anchor="end">CLEAN · OUT</text>
+
+      <!-- Noisy wave: visible left of filter, fades to invisible across the filter box.
+           Carries the carrier sine plus three integer-cycle noise components for seamless looping. -->
+      <g mask="url(#scope-noise-mask)" class="ch2-noise-wave">
+        <g class="scope-scroll" style="--scroll-dur: 12s;">
+          <path d="M 0 516 L 2 512 L 4 501 L 6 493 L 8 495 L 10 503 L 12 508 L 14 504 L 16 497 L 18 493 L 20 494 L 22 494 L 24 493 L 26 497 L 28 510 L 30 528 L 32 540 L 34 539 L 36 530 L 38 522 L 40 519 L 42 518 L 44 514 L 46 510 L 48 512 L 50 518 L 52 521 L 54 515 L 56 505 L 58 501 L 60 509 L 62 522 L 64 533 L 66 538 L 68 541 L 70 544 L 72 543 L 74 533 L 76 518 L 78 507 L 80 507 L 82 514 L 84 518 L 86 515 L 88 510 L 90 508 L 92 510 L 94 511 L 96 509 L 98 511 L 100 522 L 102 535 L 104 541 L 106 534 L 108 520 L 110 508 L 112 502 L 114 497 L 116 492 L 118 488 L 120 491 L 122 499 L 124 503 L 126 498 L 128 489 L 130 486 L 132 493 L 134 504 L 136 510 L 138 510 L 140 508 L 142 507 L 144 502 L 146 488 L 148 471 L 150 460 L 152 463 L 154 472 L 156 478 L 158 477 L 160 475 L 162 476 L 164 479 L 166 479 L 168 476 L 170 476 L 172 484 L 174 494 L 176 496 L 178 486 L 180 470 L 182 458 L 184 454 L 186 452 L 188 450 L 190 450 L 192 459 L 194 471 L 196 478 L 198 475 L 200 467 L 202 465 L 204 472 L 206 480 L 208 484 L 210 482 L 212 479 L 214 478 L 216 473 L 218 461 L 220 447 L 222 442 L 224 451 L 226 465 L 228 476 L 230 479 L 232 480 L 234 484 L 236 488 L 238 487 L 240 482 L 242 481 L 244 489 L 246 498 L 248 499 L 250 489 L 252 475 L 254 468 L 256 468 L 258 471 L 260 474 L 262 480 L 264 493 L 266 508 L 268 516 L 270 512 L 272 504 L 274 501 L 276 505 L 278 511 L 280 512 L 282 509 L 284 507 L 286 507 L 288 504 L 290 495 L 292 485 L 294 485 L 296 498 L 298 515 L 300 526 L 302 530 L 304 530 L 306 532 L 308 532 L 310 526 L 312 518 L 314 515 L 316 520 L 318 527 L 320 527 L 322 517 L 324 506 L 326 502 L 328 505 L 330 509 L 332 513 L 334 520 L 336 533 L 338 545 L 340 549 L 342 540 L 344 526 L 346 519 L 348 519 L 350 520 L 352 518 L 354 514 L 356 512 L 358 514 L 360 511 L 362 503 L 364 495 L 366 497 L 368 510 L 370 525 L 372 532 L 374 531 L 376 527 L 378 524 L 380 518 L 382 507 L 384 495 L 386 489 L 388 494 L 390 501 L 392 500 L 394 492 L 396 483 L 398 482 L 400 486 L 402 490 L 404 492 L 406 498 L 408 507 L 410 516 L 412 513 L 414 499 L 416 482 L 418 473 L 420 471 L 422 472 L 424 470 L 426 468 L 428 470 L 430 475 L 432 475 L 434 469 L 436 463 L 438 466 L 440 478 L 442 491 L 444 495 L 446 491 L 448 484 L 450 478 L 452 471 L 454 459 L 456 448 L 458 446 L 460 454 L 462 466 L 464 469 L 466 465 L 468 461 L 470 463 L 472 469 L 474 473 L 476 474 L 478 479 L 480 487 L 482 493 L 484 489 L 486 474 L 488 458 L 490 451 L 492 454 L 494 459 L 496 462 L 498 465 L 500 473 L 502 483 L 504 486 L 506 481 L 508 476 L 510 480 L 512 492 L 514 502 L 516 504 L 518 498 L 520 492 L 522 487 L 524 481 L 526 472 L 528 465 L 530 469 L 532 483 L 534 499 L 536 506 L 538 504 L 540 502 L 542 505 L 544 510 L 546 511 L 548 511 L 550 513 L 552 519 L 554 523 L 556 518 L 558 503 L 560 490 L 562 487 L 564 493 L 566 501 L 568 508 L 570 514 L 572 525 L 574 534 L 576 535 L 578 527 L 580 520 L 582 520 L 584 528 L 586 534 L 588 532 L 590 524 L 592 518 L 594 514 L 596 509 L 598 501 L 600 497 L 602 504 L 604 520 L 606 535 L 608 540 L 610 536 L 612 531 L 614 530 L 616 529 L 618 525 L 620 519 L 622 518 L 624 522 L 626 524 L 628 517 L 630 502 L 632 491 L 634 491 L 636 499 L 638 507 L 640 513 L 642 519 L 644 526 L 646 531 L 648 527 L 650 514 L 652 501 L 654 498 L 656 502 L 658 504 L 660 500 L 662 492 L 664 487 L 666 485 L 668 482 L 670 476 L 672 474 L 674 482 L 676 498 L 678 510 L 680 511 L 682 503 L 684 494 L 686 489 L 688 484 L 690 476 L 692 469 L 694 468 L 696 474 L 698 477 L 700 473 L 702 461 L 704 454 L 706 458 L 708 468 L 710 476 L 712 481 L 714 486 L 716 492 L 718 494 L 720 485 L 722 469 L 724 456 L 726 453 L 728 459 L 730 463 L 732 462 L 734 459 L 736 459 L 738 462 L 740 462 L 742 460 L 744 460 L 746 470 L 748 486 L 750 497 L 752 495 L 754 485 L 756 475 L 758 470 L 760 465 L 762 459 L 764 455 L 766 460 L 768 471 L 770 479 L 772 479 L 774 473 L 776 470 L 778 476 L 780 487 L 782 496 L 784 499 L 786 503 L 788 507 L 790 507 L 792 497 L 794 481 L 796 470 L 798 471 L 800 481 L 802 489 L 804 493 L 806 495 L 808 499 L 810 505 L 812 507 L 814 504 L 816 504 L 818 513 L 820 526 L 822 533 L 824 528 L 826 516 L 828 506 L 830 501 L 832 498 L 834 494 L 836 494 L 838 502 L 840 517 L 842 528 L 844 528 L 846 522 L 848 519 L 850 523 L 852 531 L 854 534 L 856 533 L 858 533 L 860 534 L 862 531 L 864 520 L 866 504 L 868 494 L 870 498 L 872 510 L 874 520 L 876 524 L 878 526 L 880 531 L 882 534 L 884 531 L 886 523 L 888 519 L 890 523 L 892 531 L 894 533 L 896 524 L 898 510 L 900 500 L 902 496 L 904 494 L 906 491 L 908 493 L 910 503 L 912 518 L 914 527 L 916 524 L 918 514 L 920 507 L 922 507 L 924 508 L 926 506 L 928 501 L 930 499 L 932 499 L 934 495 L 936 483 L 938 469 L 940 463 L 942 470 L 944 483 L 946 493 L 948 497 L 950 499 L 952 501 L 954 500 L 956 493 L 958 481 L 960 473 L 962 475 L 964 481 L 966 482 L 968 474 L 970 463 L 972 456 L 974 456 L 976 457 L 978 457 L 980 462 L 982 474 L 984 489 L 986 496 L 988 490 L 990 478 L 992 469 L 994 467 L 996 467 L 998 464 L 1000 460 L 1002 461 L 1004 465 L 1006 465 L 1008 458 L 1010 449 L 1012 448 L 1014 459 L 1016 475 L 1018 486 L 1020 489 L 1022 490 L 1024 491 L 1026 488 L 1028 479 L 1030 466 L 1032 459 L 1034 464 L 1036 473 L 1038 478 L 1040 474 L 1042 468 L 1044 468 L 1046 473 L 1048 477 L 1050 480 L 1052 487 L 1054 500 L 1056 513 L 1058 518 L 1060 509 L 1062 495 L 1064 486 L 1066 485 L 1068 486 L 1070 485 L 1072 485 L 1074 490 L 1076 499 L 1078 503 L 1080 500 L 1082 494 L 1084 496 L 1086 508 L 1088 522 L 1090 530 L 1092 530 L 1094 528 L 1096 526 L 1098 521 L 1100 510 L 1102 497 L 1104 492 L 1106 500 L 1108 512 L 1110 518 L 1112 517 L 1114 515 L 1116 517 L 1118 522 L 1120 524 L 1122 524 L 1124 528 L 1126 537 L 1128 546 L 1130 545 L 1132 532 L 1134 516 L 1136 506 L 1138 504 L 1140 506 L 1142 506 L 1144 508 L 1146 516 L 1148 526 L 1150 530 L 1152 525 L 1154 517 L 1156 516 L 1158 524 L 1160 533 L 1162 535 L 1164 530 L 1166 523 L 1168 518 L 1170 511 L 1172 497 L 1174 485 L 1176 483 L 1178 492 L 1180 506 L 1182 513 L 1184 512 L 1186 509 L 1188 509 L 1190 510 L 1192 508 L 1194 503 L 1196 502 L 1198 507 L 1200 511 L 1202 506 L 1204 491 L 1206 475 L 1208 467 L 1210 468 L 1212 471 L 1214 473 L 1216 478 L 1218 488 L 1220 498 L 1222 500 L 1224 492 L 1226 482 L 1228 478 L 1230 483 L 1232 487 L 1234 485 L 1236 478 L 1238 473 L 1240 469 L 1242 463 L 1244 453 L 1246 444 L 1248 447 L 1250 461 L 1252 477 L 1254 485 L 1256 484 L 1258 481 L 1260 480 L 1262 479 L 1264 473 L 1266 466 L 1268 464 L 1270 469 L 1272 475 L 1274 471 L 1276 460 L 1278 448 L 1280 446 L 1282 452 L 1284 460 L 1286 466 L 1288 474 L 1290 486 L 1292 496 L 1294 497 L 1296 487 L 1298 475 L 1300 471 L 1302 475 L 1304 479 L 1306 478 L 1308 474 L 1310 473 L 1312 475 L 1314 473 L 1316 468 L 1318 465 L 1320 473 L 1322 490 L 1324 507 L 1326 514 L 1328 512 L 1330 507 L 1332 505 L 1334 501 L 1336 494 L 1338 487 L 1340 486 L 1342 494 L 1344 503 L 1346 502 L 1348 495 L 1350 488 L 1352 491 L 1354 500 L 1356 509 L 1358 515 L 1360 523 L 1362 533 L 1364 540 L 1366 536 L 1368 522 L 1370 508 L 1372 503 L 1374 507 L 1376 511 L 1378 511 L 1380 510 L 1382 513 L 1384 517 L 1386 518 L 1388 513 L 1390 511 L 1392 518 L 1394 533 L 1396 546 L 1398 548 L 1400 541 L 1402 532 L 1404 526 L 1406 519 L 1408 509 L 1410 501 L 1412 502 L 1414 512 L 1416 521 L 1418 522 L 1420 515 L 1422 510 L 1424 513 L 1426 520 L 1428 525 L 1430 526 L 1432 529 L 1434 534 L 1436 535 L 1438 526 L 1440 508 L 1442 492 L 1444 487 L 1446 491 L 1448 496 L 1450 497 L 1452 498 L 1454 502 L 1456 507 L 1458 507 L 1460 500 L 1462 495 L 1464 499 L 1466 510 L 1468 517 L 1470 513 L 1472 501 L 1474 490 L 1476 483 L 1478 475 L 1480 466 L 1482 460 L 1484 465 L 1486 478 L 1488 489 L 1490 491 L 1492 484 L 1494 479 L 1496 481 L 1498 485 L 1500 486 L 1502 483 L 1504 483 L 1506 486 L 1508 485 L 1510 475 L 1512 458 L 1514 445 L 1516 444 L 1518 452 L 1520 461 L 1522 466 L 1524 471 L 1526 477 L 1528 483 L 1530 481 L 1532 473 L 1534 467 L 1536 469 L 1538 478 L 1540 483 L 1542 478 L 1544 468 L 1546 460 L 1548 456 L 1550 453 L 1552 448 L 1554 449 L 1556 459 L 1558 476 L 1560 490 L 1562 493 L 1564 487 L 1566 482 L 1568 482 L 1570 484 L 1572 483 L 1574 480 L 1576 481 L 1578 485 L 1580 487 L 1582 479 L 1584 466 L 1586 460 L 1588 465 L 1590 478 L 1592 491 L 1594 498 L 1596 505 L 1598 512 L 1600 516 L 1602 512 L 1604 501 L 1606 493 L 1608 495 L 1610 503 L 1612 508 L 1614 504 L 1616 497 L 1618 493 L 1620 494 L 1622 494 L 1624 493 L 1626 497 L 1628 510 L 1630 528 L 1632 540 L 1634 539 L 1636 530 L 1638 522 L 1640 519 L 1642 518 L 1644 514 L 1646 510 L 1648 512 L 1650 518 L 1652 521 L 1654 515 L 1656 505 L 1658 501 L 1660 509 L 1662 522 L 1664 533 L 1666 538 L 1668 541 L 1670 544 L 1672 543 L 1674 533 L 1676 518 L 1678 507 L 1680 507 L 1682 514 L 1684 518 L 1686 515 L 1688 510 L 1690 508 L 1692 510 L 1694 511 L 1696 509 L 1698 511 L 1700 522 L 1702 535 L 1704 541 L 1706 534 L 1708 520 L 1710 508 L 1712 502 L 1714 497 L 1716 492 L 1718 488 L 1720 491 L 1722 499 L 1724 503 L 1726 498 L 1728 489 L 1730 486 L 1732 493 L 1734 504 L 1736 510 L 1738 510 L 1740 508 L 1742 507 L 1744 502 L 1746 488 L 1748 471 L 1750 460 L 1752 463 L 1754 472 L 1756 478 L 1758 477 L 1760 475 L 1762 476 L 1764 479 L 1766 479 L 1768 476 L 1770 476 L 1772 484 L 1774 494 L 1776 496 L 1778 486 L 1780 470 L 1782 458 L 1784 454 L 1786 452 L 1788 450 L 1790 450 L 1792 459 L 1794 471 L 1796 478 L 1798 475 L 1800 467 L 1802 465 L 1804 472 L 1806 480 L 1808 484 L 1810 482 L 1812 479 L 1814 478 L 1816 473 L 1818 461 L 1820 447 L 1822 442 L 1824 451 L 1826 465 L 1828 476 L 1830 479 L 1832 480 L 1834 484 L 1836 488 L 1838 487 L 1840 482 L 1842 481 L 1844 489 L 1846 498 L 1848 499 L 1850 489 L 1852 475 L 1854 468 L 1856 468 L 1858 471 L 1860 474 L 1862 480 L 1864 493 L 1866 508 L 1868 516 L 1870 512 L 1872 504 L 1874 501 L 1876 505 L 1878 511 L 1880 512 L 1882 509 L 1884 507 L 1886 507 L 1888 504 L 1890 495 L 1892 485 L 1894 485 L 1896 498 L 1898 515 L 1900 526 L 1902 530 L 1904 530 L 1906 532 L 1908 532 L 1910 526 L 1912 518 L 1914 515 L 1916 520 L 1918 527 L 1920 527 L 1922 517 L 1924 506 L 1926 502 L 1928 505 L 1930 509 L 1932 513 L 1934 520 L 1936 533 L 1938 545 L 1940 549 L 1942 540 L 1944 526 L 1946 519 L 1948 519 L 1950 520 L 1952 518 L 1954 514 L 1956 512 L 1958 514 L 1960 511 L 1962 503 L 1964 495 L 1966 497 L 1968 510 L 1970 525 L 1972 532 L 1974 531 L 1976 527 L 1978 524 L 1980 518 L 1982 507 L 1984 495 L 1986 489 L 1988 494 L 1990 501 L 1992 500 L 1994 492 L 1996 483 L 1998 482 L 2000 486 L 2002 490 L 2004 492 L 2006 498 L 2008 507 L 2010 516 L 2012 513 L 2014 499 L 2016 482 L 2018 473 L 2020 471 L 2022 472 L 2024 470 L 2026 468 L 2028 470 L 2030 475 L 2032 475 L 2034 469 L 2036 463 L 2038 466 L 2040 478 L 2042 491 L 2044 495 L 2046 491 L 2048 484 L 2050 478 L 2052 471 L 2054 459 L 2056 448 L 2058 446 L 2060 454 L 2062 466 L 2064 469 L 2066 465 L 2068 461 L 2070 463 L 2072 469 L 2074 473 L 2076 474 L 2078 479 L 2080 487 L 2082 493 L 2084 489 L 2086 474 L 2088 458 L 2090 451 L 2092 454 L 2094 459 L 2096 462 L 2098 465 L 2100 473 L 2102 483 L 2104 486 L 2106 481 L 2108 476 L 2110 480 L 2112 492 L 2114 502 L 2116 504 L 2118 498 L 2120 492 L 2122 487 L 2124 481 L 2126 472 L 2128 465 L 2130 469 L 2132 483 L 2134 499 L 2136 506 L 2138 504 L 2140 502 L 2142 505 L 2144 510 L 2146 511 L 2148 511 L 2150 513 L 2152 519 L 2154 523 L 2156 518 L 2158 503 L 2160 490 L 2162 487 L 2164 493 L 2166 501 L 2168 508 L 2170 514 L 2172 525 L 2174 534 L 2176 535 L 2178 527 L 2180 520 L 2182 520 L 2184 528 L 2186 534 L 2188 532 L 2190 524 L 2192 518 L 2194 514 L 2196 509 L 2198 501 L 2200 497 L 2202 504 L 2204 520 L 2206 535 L 2208 540 L 2210 536 L 2212 531 L 2214 530 L 2216 529 L 2218 525 L 2220 519 L 2222 518 L 2224 522 L 2226 524 L 2228 517 L 2230 502 L 2232 491 L 2234 491 L 2236 499 L 2238 507 L 2240 513 L 2242 519 L 2244 526 L 2246 531 L 2248 527 L 2250 514 L 2252 501 L 2254 498 L 2256 502 L 2258 504 L 2260 500 L 2262 492 L 2264 487 L 2266 485 L 2268 482 L 2270 476 L 2272 474 L 2274 482 L 2276 498 L 2278 510 L 2280 511 L 2282 503 L 2284 494 L 2286 489 L 2288 484 L 2290 476 L 2292 469 L 2294 468 L 2296 474 L 2298 477 L 2300 473 L 2302 461 L 2304 454 L 2306 458 L 2308 468 L 2310 476 L 2312 481 L 2314 486 L 2316 492 L 2318 494 L 2320 485 L 2322 469 L 2324 456 L 2326 453 L 2328 459 L 2330 463 L 2332 462 L 2334 459 L 2336 459 L 2338 462 L 2340 462 L 2342 460 L 2344 460 L 2346 470 L 2348 486 L 2350 497 L 2352 495 L 2354 485 L 2356 475 L 2358 470 L 2360 465 L 2362 459 L 2364 455 L 2366 460 L 2368 471 L 2370 479 L 2372 479 L 2374 473 L 2376 470 L 2378 476 L 2380 487 L 2382 496 L 2384 499 L 2386 503 L 2388 507 L 2390 507 L 2392 497 L 2394 481 L 2396 470 L 2398 471 L 2400 481 L 2402 489 L 2404 493 L 2406 495 L 2408 499 L 2410 505 L 2412 507 L 2414 504 L 2416 504 L 2418 513 L 2420 526 L 2422 533 L 2424 528 L 2426 516 L 2428 506 L 2430 501 L 2432 498 L 2434 494 L 2436 494 L 2438 502 L 2440 517 L 2442 528 L 2444 528 L 2446 522 L 2448 519 L 2450 523 L 2452 531 L 2454 534 L 2456 533 L 2458 533 L 2460 534 L 2462 531 L 2464 520 L 2466 504 L 2468 494 L 2470 498 L 2472 510 L 2474 520 L 2476 524 L 2478 526 L 2480 531 L 2482 534 L 2484 531 L 2486 523 L 2488 519 L 2490 523 L 2492 531 L 2494 533 L 2496 524 L 2498 510 L 2500 500 L 2502 496 L 2504 494 L 2506 491 L 2508 493 L 2510 503 L 2512 518 L 2514 527 L 2516 524 L 2518 514 L 2520 507 L 2522 507 L 2524 508 L 2526 506 L 2528 501 L 2530 499 L 2532 499 L 2534 495 L 2536 483 L 2538 469 L 2540 463 L 2542 470 L 2544 483 L 2546 493 L 2548 497 L 2550 499 L 2552 501 L 2554 500 L 2556 493 L 2558 481 L 2560 473 L 2562 475 L 2564 481 L 2566 482 L 2568 474 L 2570 463 L 2572 456 L 2574 456 L 2576 457 L 2578 457 L 2580 462 L 2582 474 L 2584 489 L 2586 496 L 2588 490 L 2590 478 L 2592 469 L 2594 467 L 2596 467 L 2598 464 L 2600 460 L 2602 461 L 2604 465 L 2606 465 L 2608 458 L 2610 449 L 2612 448 L 2614 459 L 2616 475 L 2618 486 L 2620 489 L 2622 490 L 2624 491 L 2626 488 L 2628 479 L 2630 466 L 2632 459 L 2634 464 L 2636 473 L 2638 478 L 2640 474 L 2642 468 L 2644 468 L 2646 473 L 2648 477 L 2650 480 L 2652 487 L 2654 500 L 2656 513 L 2658 518 L 2660 509 L 2662 495 L 2664 486 L 2666 485 L 2668 486 L 2670 485 L 2672 485 L 2674 490 L 2676 499 L 2678 503 L 2680 500 L 2682 494 L 2684 496 L 2686 508 L 2688 522 L 2690 530 L 2692 530 L 2694 528 L 2696 526 L 2698 521 L 2700 510 L 2702 497 L 2704 492 L 2706 500 L 2708 512 L 2710 518 L 2712 517 L 2714 515 L 2716 517 L 2718 522 L 2720 524 L 2722 524 L 2724 528 L 2726 537 L 2728 546 L 2730 545 L 2732 532 L 2734 516 L 2736 506 L 2738 504 L 2740 506 L 2742 506 L 2744 508 L 2746 516 L 2748 526 L 2750 530 L 2752 525 L 2754 517 L 2756 516 L 2758 524 L 2760 533 L 2762 535 L 2764 530 L 2766 523 L 2768 518 L 2770 511 L 2772 497 L 2774 485 L 2776 483 L 2778 492 L 2780 506 L 2782 513 L 2784 512 L 2786 509 L 2788 509 L 2790 510 L 2792 508 L 2794 503 L 2796 502 L 2798 507 L 2800 511 L 2802 506 L 2804 491 L 2806 475 L 2808 467 L 2810 468 L 2812 471 L 2814 473 L 2816 478 L 2818 488 L 2820 498 L 2822 500 L 2824 492 L 2826 482 L 2828 478 L 2830 483 L 2832 487 L 2834 485 L 2836 478 L 2838 473 L 2840 469 L 2842 463 L 2844 453 L 2846 444 L 2848 447 L 2850 461 L 2852 477 L 2854 485 L 2856 484 L 2858 481 L 2860 480 L 2862 479 L 2864 473 L 2866 466 L 2868 464 L 2870 469 L 2872 475 L 2874 471 L 2876 460 L 2878 448 L 2880 446 L 2882 452 L 2884 460 L 2886 466 L 2888 474 L 2890 486 L 2892 496 L 2894 497 L 2896 487 L 2898 475 L 2900 471 L 2902 475 L 2904 479 L 2906 478 L 2908 474 L 2910 473 L 2912 475 L 2914 473 L 2916 468 L 2918 465 L 2920 473 L 2922 490 L 2924 507 L 2926 514 L 2928 512 L 2930 507 L 2932 505 L 2934 501 L 2936 494 L 2938 487 L 2940 486 L 2942 494 L 2944 503 L 2946 502 L 2948 495 L 2950 488 L 2952 491 L 2954 500 L 2956 509 L 2958 515 L 2960 523 L 2962 533 L 2964 540 L 2966 536 L 2968 522 L 2970 508 L 2972 503 L 2974 507 L 2976 511 L 2978 511 L 2980 510 L 2982 513 L 2984 517 L 2986 518 L 2988 513 L 2990 511 L 2992 518 L 2994 533 L 2996 546 L 2998 548 L 3000 541 L 3002 532 L 3004 526 L 3006 519 L 3008 509 L 3010 501 L 3012 502 L 3014 512 L 3016 521 L 3018 522 L 3020 515 L 3022 510 L 3024 513 L 3026 520 L 3028 525 L 3030 526 L 3032 529 L 3034 534 L 3036 535 L 3038 526 L 3040 508 L 3042 492 L 3044 487 L 3046 491 L 3048 496 L 3050 497 L 3052 498 L 3054 502 L 3056 507 L 3058 507 L 3060 500 L 3062 495 L 3064 499 L 3066 510 L 3068 517 L 3070 513 L 3072 501 L 3074 490 L 3076 483 L 3078 475 L 3080 466 L 3082 460 L 3084 465 L 3086 478 L 3088 489 L 3090 491 L 3092 484 L 3094 479 L 3096 481 L 3098 485 L 3100 486 L 3102 483 L 3104 483 L 3106 486 L 3108 485 L 3110 475 L 3112 458 L 3114 445 L 3116 444 L 3118 452 L 3120 461 L 3122 466 L 3124 471 L 3126 477 L 3128 483 L 3130 481 L 3132 473 L 3134 467 L 3136 469 L 3138 478 L 3140 483 L 3142 478 L 3144 468 L 3146 460 L 3148 456 L 3150 453 L 3152 448 L 3154 449 L 3156 459 L 3158 476 L 3160 490 L 3162 493 L 3164 487 L 3166 482 L 3168 482 L 3170 484 L 3172 483 L 3174 480 L 3176 481 L 3178 485 L 3180 487 L 3182 479 L 3184 466 L 3186 460 L 3188 465 L 3190 478 L 3192 491 L 3194 498 L 3196 505 L 3198 512 L 3200 516" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-opacity="0.78" stroke-linejoin="round"/>
+        </g>
+      </g>
+
+      <!-- Filter box outline — represents the LPF as a system component. The internals are
+           expressed by the wave behavior: noise fades out, clean carrier emerges. -->
+      <rect x="640" y="432.5" width="320" height="125" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.55"/>
+
+      <!-- Clean wave: invisible left of filter, fades in across the filter box. Same carrier
+           function and same scroll duration as the noisy wave, so the carrier stays phase-locked
+           through the handoff — exactly what an LPF preserves. -->
+      <g mask="url(#scope-clean-mask)">
+        <g class="scope-scroll" style="--scroll-dur: 12s;">
+          <path d="M 0 495 L 8 500 L 16 505 L 24 510 L 32 514 L 40 517 L 48 520 L 56 522 L 64 522 L 72 522 L 80 521 L 88 519 L 96 516 L 104 513 L 112 508 L 120 503 L 128 498 L 136 493 L 144 488 L 152 483 L 160 479 L 168 475 L 176 472 L 184 469 L 192 468 L 200 468 L 208 468 L 216 469 L 224 472 L 232 475 L 240 479 L 248 483 L 256 488 L 264 493 L 272 498 L 280 503 L 288 508 L 296 513 L 304 516 L 312 519 L 320 521 L 328 522 L 336 522 L 344 522 L 352 520 L 360 517 L 368 514 L 376 510 L 384 505 L 392 500 L 400 495 L 408 490 L 416 485 L 424 480 L 432 476 L 440 473 L 448 470 L 456 468 L 464 468 L 472 468 L 480 469 L 488 471 L 496 474 L 504 477 L 512 482 L 520 487 L 528 492 L 536 497 L 544 502 L 552 507 L 560 511 L 568 515 L 576 518 L 584 521 L 592 522 L 600 522 L 608 522 L 616 521 L 624 518 L 632 515 L 640 511 L 648 507 L 656 502 L 664 497 L 672 492 L 680 487 L 688 482 L 696 477 L 704 474 L 712 471 L 720 469 L 728 468 L 736 468 L 744 468 L 752 470 L 760 473 L 768 476 L 776 480 L 784 485 L 792 490 L 800 495 L 808 500 L 816 505 L 824 510 L 832 514 L 840 517 L 848 520 L 856 522 L 864 522 L 872 522 L 880 521 L 888 519 L 896 516 L 904 513 L 912 508 L 920 503 L 928 498 L 936 493 L 944 488 L 952 483 L 960 479 L 968 475 L 976 472 L 984 469 L 992 468 L 1000 468 L 1008 468 L 1016 469 L 1024 472 L 1032 475 L 1040 479 L 1048 483 L 1056 488 L 1064 493 L 1072 498 L 1080 503 L 1088 508 L 1096 513 L 1104 516 L 1112 519 L 1120 521 L 1128 522 L 1136 522 L 1144 522 L 1152 520 L 1160 517 L 1168 514 L 1176 510 L 1184 505 L 1192 500 L 1200 495 L 1208 490 L 1216 485 L 1224 480 L 1232 476 L 1240 473 L 1248 470 L 1256 468 L 1264 468 L 1272 468 L 1280 469 L 1288 471 L 1296 474 L 1304 477 L 1312 482 L 1320 487 L 1328 492 L 1336 497 L 1344 502 L 1352 507 L 1360 511 L 1368 515 L 1376 518 L 1384 521 L 1392 522 L 1400 522 L 1408 522 L 1416 521 L 1424 518 L 1432 515 L 1440 511 L 1448 507 L 1456 502 L 1464 497 L 1472 492 L 1480 487 L 1488 482 L 1496 477 L 1504 474 L 1512 471 L 1520 469 L 1528 468 L 1536 468 L 1544 468 L 1552 470 L 1560 473 L 1568 476 L 1576 480 L 1584 485 L 1592 490 L 1600 495 L 1608 500 L 1616 505 L 1624 510 L 1632 514 L 1640 517 L 1648 520 L 1656 522 L 1664 522 L 1672 522 L 1680 521 L 1688 519 L 1696 516 L 1704 513 L 1712 508 L 1720 503 L 1728 498 L 1736 493 L 1744 488 L 1752 483 L 1760 479 L 1768 475 L 1776 472 L 1784 469 L 1792 468 L 1800 468 L 1808 468 L 1816 469 L 1824 472 L 1832 475 L 1840 479 L 1848 483 L 1856 488 L 1864 493 L 1872 498 L 1880 503 L 1888 508 L 1896 513 L 1904 516 L 1912 519 L 1920 521 L 1928 522 L 1936 522 L 1944 522 L 1952 520 L 1960 517 L 1968 514 L 1976 510 L 1984 505 L 1992 500 L 2000 495 L 2008 490 L 2016 485 L 2024 480 L 2032 476 L 2040 473 L 2048 470 L 2056 468 L 2064 468 L 2072 468 L 2080 469 L 2088 471 L 2096 474 L 2104 477 L 2112 482 L 2120 487 L 2128 492 L 2136 497 L 2144 502 L 2152 507 L 2160 511 L 2168 515 L 2176 518 L 2184 521 L 2192 522 L 2200 522 L 2208 522 L 2216 521 L 2224 518 L 2232 515 L 2240 511 L 2248 507 L 2256 502 L 2264 497 L 2272 492 L 2280 487 L 2288 482 L 2296 477 L 2304 474 L 2312 471 L 2320 469 L 2328 468 L 2336 468 L 2344 468 L 2352 470 L 2360 473 L 2368 476 L 2376 480 L 2384 485 L 2392 490 L 2400 495 L 2408 500 L 2416 505 L 2424 510 L 2432 514 L 2440 517 L 2448 520 L 2456 522 L 2464 522 L 2472 522 L 2480 521 L 2488 519 L 2496 516 L 2504 513 L 2512 508 L 2520 503 L 2528 498 L 2536 493 L 2544 488 L 2552 483 L 2560 479 L 2568 475 L 2576 472 L 2584 469 L 2592 468 L 2600 468 L 2608 468 L 2616 469 L 2624 472 L 2632 475 L 2640 479 L 2648 483 L 2656 488 L 2664 493 L 2672 498 L 2680 503 L 2688 508 L 2696 513 L 2704 516 L 2712 519 L 2720 521 L 2728 522 L 2736 522 L 2744 522 L 2752 520 L 2760 517 L 2768 514 L 2776 510 L 2784 505 L 2792 500 L 2800 495 L 2808 490 L 2816 485 L 2824 480 L 2832 476 L 2840 473 L 2848 470 L 2856 468 L 2864 468 L 2872 468 L 2880 469 L 2888 471 L 2896 474 L 2904 477 L 2912 482 L 2920 487 L 2928 492 L 2936 497 L 2944 502 L 2952 507 L 2960 511 L 2968 515 L 2976 518 L 2984 521 L 2992 522 L 3000 522 L 3008 522 L 3016 521 L 3024 518 L 3032 515 L 3040 511 L 3048 507 L 3056 502 L 3064 497 L 3072 492 L 3080 487 L 3088 482 L 3096 477 L 3104 474 L 3112 471 L 3120 469 L 3128 468 L 3136 468 L 3144 468 L 3152 470 L 3160 473 L 3168 476 L 3176 480 L 3184 485 L 3192 490 L 3200 495" fill="none" stroke="var(--signal)" stroke-width="1.7" stroke-opacity="0.92" stroke-linejoin="round"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- CH3 — UART 8N1 carrying ASCII payload "Jesus Minjares", LSB-first, idle HIGH -->
+    <g class="scope-ch ch3">
+      <text x="16" y="560" font-family="JetBrains Mono, monospace" font-size="13" fill="var(--accent-2)" fill-opacity="0.7">CH3 · UART · 8N1 · <tspan fill-opacity="0.95">'JESUS MINJARES'</tspan></text>
+      <g class="scope-scroll" style="--scroll-dur: 12s; --scroll-dist: -3200px;">
+        <path d="M 0 577 L 0 657 L 19 657 L 38 657 L 38 657 L 38 577 L 57 577 L 57 577 L 57 657 L 76 657 L 76 657 L 76 577 L 95 577 L 95 577 L 95 657 L 114 657 L 133 657 L 133 657 L 133 577 L 152 577 L 152 577 L 152 657 L 171 657 L 171 657 L 171 577 L 190 577 L 229 577 L 229 577 L 229 657 L 248 657 L 248 657 L 248 577 L 267 577 L 267 577 L 267 657 L 286 657 L 286 657 L 286 577 L 305 577 L 305 577 L 305 657 L 324 657 L 343 657 L 343 657 L 343 577 L 362 577 L 381 577 L 381 577 L 381 657 L 400 657 L 400 657 L 400 577 L 419 577 L 457 577 L 457 577 L 457 657 L 476 657 L 476 657 L 476 577 L 495 577 L 514 577 L 514 577 L 514 657 L 533 657 L 552 657 L 552 657 L 552 577 L 571 577 L 590 577 L 610 577 L 610 577 L 610 657 L 629 657 L 629 657 L 629 577 L 648 577 L 686 577 L 686 577 L 686 657 L 705 657 L 705 657 L 705 577 L 724 577 L 724 577 L 724 657 L 743 657 L 743 657 L 743 577 L 762 577 L 762 577 L 762 657 L 781 657 L 781 657 L 781 577 L 800 577 L 819 577 L 838 577 L 838 577 L 838 657 L 857 657 L 857 657 L 857 577 L 876 577 L 914 577 L 914 577 L 914 657 L 933 657 L 933 657 L 933 577 L 952 577 L 971 577 L 971 577 L 971 657 L 990 657 L 1010 657 L 1010 657 L 1010 577 L 1029 577 L 1048 577 L 1067 577 L 1067 577 L 1067 657 L 1086 657 L 1086 657 L 1086 577 L 1105 577 L 1143 577 L 1143 577 L 1143 657 L 1162 657 L 1181 657 L 1200 657 L 1219 657 L 1238 657 L 1257 657 L 1257 657 L 1257 577 L 1276 577 L 1276 577 L 1276 657 L 1295 657 L 1314 657 L 1314 657 L 1314 577 L 1333 577 L 1371 577 L 1371 577 L 1371 657 L 1390 657 L 1390 657 L 1390 577 L 1410 577 L 1410 577 L 1410 657 L 1429 657 L 1429 657 L 1429 577 L 1448 577 L 1467 577 L 1467 577 L 1467 657 L 1486 657 L 1505 657 L 1505 657 L 1505 577 L 1524 577 L 1524 577 L 1524 657 L 1543 657 L 1543 657 L 1543 577 L 1562 577 L 1600 577 L 1600 577 L 1600 657 L 1619 657 L 1619 657 L 1619 577 L 1638 577 L 1638 577 L 1638 657 L 1657 657 L 1676 657 L 1676 657 L 1676 577 L 1695 577 L 1695 577 L 1695 657 L 1714 657 L 1714 657 L 1714 577 L 1733 577 L 1752 577 L 1752 577 L 1752 657 L 1771 657 L 1771 657 L 1771 577 L 1790 577 L 1829 577 L 1829 577 L 1829 657 L 1848 657 L 1867 657 L 1867 657 L 1867 577 L 1886 577 L 1905 577 L 1924 577 L 1924 577 L 1924 657 L 1943 657 L 1943 657 L 1943 577 L 1962 577 L 1981 577 L 1981 577 L 1981 657 L 2000 657 L 2000 657 L 2000 577 L 2019 577 L 2057 577 L 2057 577 L 2057 657 L 2076 657 L 2095 657 L 2095 657 L 2095 577 L 2114 577 L 2114 577 L 2114 657 L 2133 657 L 2133 657 L 2133 577 L 2152 577 L 2152 577 L 2152 657 L 2171 657 L 2171 657 L 2171 577 L 2190 577 L 2210 577 L 2210 577 L 2210 657 L 2229 657 L 2229 657 L 2229 577 L 2248 577 L 2286 577 L 2286 577 L 2286 657 L 2305 657 L 2305 657 L 2305 577 L 2324 577 L 2324 577 L 2324 657 L 2343 657 L 2362 657 L 2381 657 L 2400 657 L 2400 657 L 2400 577 L 2419 577 L 2438 577 L 2438 577 L 2438 657 L 2457 657 L 2457 657 L 2457 577 L 2476 577 L 2514 577 L 2514 577 L 2514 657 L 2533 657 L 2552 657 L 2552 657 L 2552 577 L 2571 577 L 2571 577 L 2571 657 L 2590 657 L 2610 657 L 2610 657 L 2610 577 L 2629 577 L 2648 577 L 2667 577 L 2667 577 L 2667 657 L 2686 657 L 2686 657 L 2686 577 L 2705 577 L 2743 577 L 2743 577 L 2743 657 L 2762 657 L 2762 657 L 2762 577 L 2781 577 L 2781 577 L 2781 657 L 2800 657 L 2800 657 L 2800 577 L 2819 577 L 2819 577 L 2819 657 L 2838 657 L 2857 657 L 2857 657 L 2857 577 L 2876 577 L 2895 577 L 2895 577 L 2895 657 L 2914 657 L 2914 657 L 2914 577 L 2933 577 L 2971 577 L 2971 577 L 2971 657 L 2990 657 L 2990 657 L 2990 577 L 3010 577 L 3029 577 L 3029 577 L 3029 657 L 3048 657 L 3067 657 L 3067 657 L 3067 577 L 3086 577 L 3105 577 L 3124 577 L 3124 577 L 3124 657 L 3143 657 L 3143 657 L 3143 577 L 3162 577 L 3200 577 L 3200 577 L 3200 657 L 3219 657 L 3238 657 L 3238 657 L 3238 577 L 3257 577 L 3257 577 L 3257 657 L 3276 657 L 3276 657 L 3276 577 L 3295 577 L 3295 577 L 3295 657 L 3314 657 L 3333 657 L 3333 657 L 3333 577 L 3352 577 L 3352 577 L 3352 657 L 3371 657 L 3371 657 L 3371 577 L 3390 577 L 3429 577 L 3429 577 L 3429 657 L 3448 657 L 3448 657 L 3448 577 L 3467 577 L 3467 577 L 3467 657 L 3486 657 L 3486 657 L 3486 577 L 3505 577 L 3505 577 L 3505 657 L 3524 657 L 3543 657 L 3543 657 L 3543 577 L 3562 577 L 3581 577 L 3581 577 L 3581 657 L 3600 657 L 3600 657 L 3600 577 L 3619 577 L 3657 577 L 3657 577 L 3657 657 L 3676 657 L 3676 657 L 3676 577 L 3695 577 L 3714 577 L 3714 577 L 3714 657 L 3733 657 L 3752 657 L 3752 657 L 3752 577 L 3771 577 L 3790 577 L 3810 577 L 3810 577 L 3810 657 L 3829 657 L 3829 657 L 3829 577 L 3848 577 L 3886 577 L 3886 577 L 3886 657 L 3905 657 L 3905 657 L 3905 577 L 3924 577 L 3924 577 L 3924 657 L 3943 657 L 3943 657 L 3943 577 L 3962 577 L 3962 577 L 3962 657 L 3981 657 L 3981 657 L 3981 577 L 4000 577 L 4019 577 L 4038 577 L 4038 577 L 4038 657 L 4057 657 L 4057 657 L 4057 577 L 4076 577 L 4114 577 L 4114 577 L 4114 657 L 4133 657 L 4133 657 L 4133 577 L 4152 577 L 4171 577 L 4171 577 L 4171 657 L 4190 657 L 4210 657 L 4210 657 L 4210 577 L 4229 577 L 4248 577 L 4267 577 L 4267 577 L 4267 657 L 4286 657 L 4286 657 L 4286 577 L 4305 577 L 4343 577 L 4343 577 L 4343 657 L 4362 657 L 4381 657 L 4400 657 L 4419 657 L 4438 657 L 4457 657 L 4457 657 L 4457 577 L 4476 577 L 4476 577 L 4476 657 L 4495 657 L 4514 657 L 4514 657 L 4514 577 L 4533 577 L 4571 577 L 4571 577 L 4571 657 L 4590 657 L 4590 657 L 4590 577 L 4610 577 L 4610 577 L 4610 657 L 4629 657 L 4629 657 L 4629 577 L 4648 577 L 4667 577 L 4667 577 L 4667 657 L 4686 657 L 4705 657 L 4705 657 L 4705 577 L 4724 577 L 4724 577 L 4724 657 L 4743 657 L 4743 657 L 4743 577 L 4762 577 L 4800 577 L 4800 577 L 4800 657 L 4819 657 L 4819 657 L 4819 577 L 4838 577 L 4838 577 L 4838 657 L 4857 657 L 4876 657 L 4876 657 L 4876 577 L 4895 577 L 4895 577 L 4895 657 L 4914 657 L 4914 657 L 4914 577 L 4933 577 L 4952 577 L 4952 577 L 4952 657 L 4971 657 L 4971 657 L 4971 577 L 4990 577 L 5029 577 L 5029 577 L 5029 657 L 5048 657 L 5067 657 L 5067 657 L 5067 577 L 5086 577 L 5105 577 L 5124 577 L 5124 577 L 5124 657 L 5143 657 L 5143 657 L 5143 577 L 5162 577 L 5181 577 L 5181 577 L 5181 657 L 5200 657 L 5200 657 L 5200 577 L 5219 577 L 5257 577 L 5257 577 L 5257 657 L 5276 657 L 5295 657 L 5295 657 L 5295 577 L 5314 577 L 5314 577 L 5314 657 L 5333 657 L 5333 657 L 5333 577 L 5352 577 L 5352 577 L 5352 657 L 5371 657 L 5371 657 L 5371 577 L 5390 577 L 5410 577 L 5410 577 L 5410 657 L 5429 657 L 5429 657 L 5429 577 L 5448 577 L 5486 577 L 5486 577 L 5486 657 L 5505 657 L 5505 657 L 5505 577 L 5524 577 L 5524 577 L 5524 657 L 5543 657 L 5562 657 L 5581 657 L 5600 657 L 5600 657 L 5600 577 L 5619 577 L 5638 577 L 5638 577 L 5638 657 L 5657 657 L 5657 657 L 5657 577 L 5676 577 L 5714 577 L 5714 577 L 5714 657 L 5733 657 L 5752 657 L 5752 657 L 5752 577 L 5771 577 L 5771 577 L 5771 657 L 5790 657 L 5810 657 L 5810 657 L 5810 577 L 5829 577 L 5848 577 L 5867 577 L 5867 577 L 5867 657 L 5886 657 L 5886 657 L 5886 577 L 5905 577 L 5943 577 L 5943 577 L 5943 657 L 5962 657 L 5962 657 L 5962 577 L 5981 577 L 5981 577 L 5981 657 L 6000 657 L 6000 657 L 6000 577 L 6019 577 L 6019 577 L 6019 657 L 6038 657 L 6057 657 L 6057 657 L 6057 577 L 6076 577 L 6095 577 L 6095 577 L 6095 657 L 6114 657 L 6114 657 L 6114 577 L 6133 577 L 6171 577 L 6171 577 L 6171 657 L 6190 657 L 6190 657 L 6190 577 L 6210 577 L 6229 577 L 6229 577 L 6229 657 L 6248 657 L 6267 657 L 6267 657 L 6267 577 L 6286 577 L 6305 577 L 6324 577 L 6324 577 L 6324 657 L 6343 657 L 6343 657 L 6343 577 L 6362 577 L 6400 577" fill="none" stroke="var(--accent-2)" stroke-width="1.5" stroke-opacity="0.85" stroke-linejoin="miter"/>
+        <text x="114" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">J</text><text x="343" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">e</text><text x="571" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">s</text><text x="800" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">u</text><text x="1029" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">s</text><text x="1257" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">·</text><text x="1486" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">M</text><text x="1714" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">i</text><text x="1943" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">n</text><text x="2171" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">j</text><text x="2400" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">a</text><text x="2629" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">r</text><text x="2857" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">e</text><text x="3086" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">s</text><text x="3314" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">J</text><text x="3543" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">e</text><text x="3771" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">s</text><text x="4000" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">u</text><text x="4229" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">s</text><text x="4457" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">·</text><text x="4686" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">M</text><text x="4914" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">i</text><text x="5143" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">n</text><text x="5371" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">j</text><text x="5600" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">a</text><text x="5829" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">r</text><text x="6057" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">e</text><text x="6286" y="685" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--accent-2)" fill-opacity="0.55" text-anchor="middle">s</text></g>
+    </g>
+
+    <!-- baseline reference axis -->
+    <line x1="0" y1="450" x2="1600" y2="450" stroke="var(--scope-axis)" stroke-width="0.8" stroke-dasharray="1 4"/>
+    <line x1="800" y1="0" x2="800" y2="900" stroke="var(--scope-axis)" stroke-width="0.8" stroke-dasharray="1 4" stroke-opacity="0.7"/>
+  </svg>
+  <div class="hero-meta">
+    <div class="status-pill reveal">
+      <span class="blip"></span>
+      <span>DEBUGGING <span style="color:var(--accent)">⚡</span> · <strong>SANDIA NATIONAL LABS</strong> · ALBUQUERQUE, NM</span>
+    </div>
+  </div>
+  <h1 class="hero-name reveal reveal-d1">
+    <span class="name-row first">
+      <span class="mask-reveal in"><span>Jesus</span></span>
+      <span class="name-frag">embedded·sw·engineer · <em>Sandia · 2022—present</em></span>
+    </span>
+    <span class="name-row last">
+      <span class="mask-reveal in"><span>Minjares</span></span>
+    </span>
+  </h1>
+  <div class="hero-foot">
+    <p class="hero-tag reveal reveal-d2">
+      Embedded software engineer at <em>Sandia National Laboratories</em>. Three-plus years developing real-time embedded systems, HWIL infrastructure, and avionics interfaces for mission-critical applications.
+    </p>
+    <div class="hero-datasheet reveal reveal-d3">
+      <div class="row"><span class="k">ROLE</span><span class="v">Embedded SW Engineer</span></div>
+      <div class="row"><span class="k">TENURE</span><span class="v">3+ years · SNL</span></div>
+      <div class="row"><span class="k">FOCUS</span><span class="v">HWIL · C/C++ · FPGA</span></div>
+      <div class="row"><span class="k">STUDYING</span><span class="v">M.S. AI · UT Austin</span></div>
+      <div class="row"><span class="k">SPEAKS</span><span class="v">English · Español</span></div>
+    </div>
+    <div class="scroll-cue reveal reveal-d4"><span>SCROLL · 06 SECTIONS</span></div>
+  </div>
+</section>
+
+<main id="content">
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>
+      <strong>C / C++</strong> <span class="sep">·</span> ARM Cortex-M <span class="sep">·</span> ESP32 <span class="sep">·</span> <strong>FreeRTOS</strong> <span class="sep">·</span> bare-metal firmware <span class="sep">·</span> OTA updates <span class="sep">·</span> I²C bit-bang <span class="sep">·</span> SPI <span class="sep">·</span> UART <span class="sep">·</span> RS-232/422 <span class="sep">·</span> isochronous serial <span class="sep">·</span> <strong>Microgate SyncLink</strong> <span class="sep">·</span> NI 6509 <span class="sep">·</span> <strong>Speedgoat</strong> <span class="sep">·</span> iHawk SimWB <span class="sep">·</span> HDL Coder <span class="sep">·</span> MATLAB &amp; Simulink <span class="sep">·</span> FIR filtering <span class="sep">·</span> GitLab CI/CD <span class="sep">·</span> CMake <span class="sep">·</span> Doxygen <span class="sep">·</span> Python <span class="sep">·</span> KiCad <span class="sep">·</span> Eagle CAD <span class="sep">·</span>&nbsp;
+    </span>
+    <span aria-hidden="true">
+      <strong>C / C++</strong> <span class="sep">·</span> ARM Cortex-M <span class="sep">·</span> ESP32 <span class="sep">·</span> <strong>FreeRTOS</strong> <span class="sep">·</span> bare-metal firmware <span class="sep">·</span> OTA updates <span class="sep">·</span> I²C bit-bang <span class="sep">·</span> SPI <span class="sep">·</span> UART <span class="sep">·</span> RS-232/422 <span class="sep">·</span> isochronous serial <span class="sep">·</span> <strong>Microgate SyncLink</strong> <span class="sep">·</span> NI 6509 <span class="sep">·</span> <strong>Speedgoat</strong> <span class="sep">·</span> iHawk SimWB <span class="sep">·</span> HDL Coder <span class="sep">·</span> MATLAB &amp; Simulink <span class="sep">·</span> FIR filtering <span class="sep">·</span> GitLab CI/CD <span class="sep">·</span> CMake <span class="sep">·</span> Doxygen <span class="sep">·</span> Python <span class="sep">·</span> KiCad <span class="sep">·</span> Eagle CAD <span class="sep">·</span>&nbsp;
+    </span>
+  </div>
+</div>
+
+<section id="about" aria-labelledby="about-heading">
+  <div class="wrap section-edge">
+    <div class="section-num" id="about-heading"><em>01</em> · About</div>
+    <div class="about-spread">
+      <aside class="about-figure reveal">
+        <div class="photo-wrap" data-cursor="hover">
+          <div class="photo-frame">
+            <img src="assets/img/profile-img.jpg" alt="Jesus Minjares" loading="lazy" decoding="async"/>
+            <div class="photo-stamp">
+              <span class="lg">3+</span><span>years</span><span>at sandia</span>
+            </div>
+            <div class="photo-caption">
+              <span>JM · ABQ · 2026</span><strong>NM</strong>
+            </div>
+          </div>
+        </div>
+        <div class="about-meta">
+          First-generation graduate.<br>
+          Two engineering degrees;<br>
+          <strong>One more in flight.</strong><br>
+          M.S. AI · UT Austin · 4.0
+        </div>
+      </aside>
+      <div class="about-prose reveal reveal-d1">
+        <p class="about-lede">
+          <span class="first-letter">I</span>'m an embedded software engineer at Sandia National Laboratories. For the past three-plus years I've developed <em>real-time embedded systems</em>, HWIL infrastructure, and avionics interfaces for mission-critical applications. My work combines low-level C/C++ development with FPGA-based sensor emulation across lab and test environments.
+        </p>
+        <div class="about-body">
+          <p>Recent projects include FPGA-based IMU emulation on Speedgoat, isochronous serial interfaces through Microgate SyncLink, bit-banged I²C drivers for the NI&nbsp;6509, and hardened OTA firmware updates with <strong>dual-stage hardware version validation</strong> to prevent incompatible deployments.</p>
+          <p>I'm also pursuing an <strong>M.S. in Artificial Intelligence at UT Austin</strong> (4.0 GPA) alongside full-time work, building toward avionics systems that combine deterministic embedded code with learned models in the same control loop.</p>
         </div>
       </div>
+    </div>
+    <div class="stat-strip reveal reveal-d2">
+      <div class="stat-cell">
+        <div class="stat-tick">/01 — TENURE</div>
+        <div class="stat-val"><span class="scramble" data-target="3">0</span><span class="unit">+ yrs</span></div>
+        <div class="stat-label">at Sandia National Labs<br>embedded software</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-tick">/02 — LEAD ROLE</div>
+        <div class="stat-val"><span class="scramble" data-target="7">0</span></div>
+        <div class="stat-label">chassis-specific iHawk<br>models led &amp; sustained</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-tick">/03 — VALIDATION</div>
+        <div class="stat-val"><span class="scramble" data-target="8">0</span></div>
+        <div class="stat-label">HWIL chassis covered<br>by validation software</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-tick">/04 — IN FLIGHT</div>
+        <div class="stat-val"><span class="scramble" data-target="4.0" data-decimals="1">0.0</span></div>
+        <div class="stat-label">M.S. AI GPA · UT Austin<br>alongside full-time work</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <nav id="navbar" class="nav-menu navbar">
-        <ul>
-          <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-          <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
-          <li><a href="#skills" class="nav-link scrollto"><i class="bx bx-code-block"></i> <span>Skills</span></a></li>
-          <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
-          <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
-          <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-phone"></i> <span>Contact</span></a></li>
+<section id="current" aria-labelledby="current-heading">
+  <div class="wrap current-section">
+    <div class="section-num" id="current-heading"><em>02</em> · Currently building</div>
+    <div class="current-headline">
+      <h2 class="big-head">Currently<br><em>building</em>.</h2>
+      <div class="meta">03 spotlights · SNL active</div>
+    </div>
+    <div class="spotlights">
+
+    <article class="spotlight reveal">
+      <div class="spotlight-text">
+        <span class="spotlight-mobile-num">SPOTLIGHT · <em>001</em></span>
+        <h3 class="spotlight-title">FPGA-Based <em>IMU Emulator</em><br>on Speedgoat</h3>
+        <p class="spotlight-desc">
+          Implemented an FPGA-based IMU emulator on Speedgoat using MATLAB/Simulink and HDL Coder, generating a 2400&thinsp;Hz SDLC-framed bitstream for avionics integration testing. The output matches the flight computer's expected IMU interface.
+        </p>
+        <ul class="spotlight-bullets">
+          <li><strong>MATLAB/Simulink to FPGA:</strong> Translated IMU behavior from a Simulink model into deterministic FPGA logic using HDL Coder.</li>
+          <li><strong>Flight-computer interface fidelity:</strong> Produced the 2400&thinsp;Hz SDLC-framed sensor stream expected by the avionics software.</li>
+          <li><strong>Real-time HWIL target:</strong> Deployed on Speedgoat as a deterministic real-time target for avionics integration testing.</li>
         </ul>
-      </nav><!-- .nav-menu -->
+        <div class="tag-row">
+          <span class="tag" data-cursor="hover">MATLAB / Simulink</span>
+          <span class="tag" data-cursor="hover">HDL Coder</span>
+          <span class="tag" data-cursor="hover">Speedgoat</span>
+          <span class="tag" data-cursor="hover">2400 Hz</span>
+          <span class="tag" data-cursor="hover">FPGA</span>
+        </div>
+      </div>
+      <div class="spotlight-flow">
+        <div class="flow-wrap" data-title="// pipeline · model → bitstream">
+          <svg class="flow-svg" viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+              </marker>
+            </defs>
+            <g>
+              <rect x="20" y="100" width="100" height="60" rx="3" class="node-rect"/>
+              <text x="70" y="118" text-anchor="middle" class="node-num">/01</text>
+              <text x="70" y="138" text-anchor="middle" class="node-text">Simulink</text>
+              <text x="70" y="152" text-anchor="middle" class="node-sub">model</text>
+            </g>
+            <line x1="120" y1="130" x2="155" y2="130" class="flow-line" marker-end="url(#arr1)"/>
+            <line x1="120" y1="130" x2="155" y2="130" class="flow-line signal-pulse"/>
+            <g>
+              <rect x="160" y="100" width="100" height="60" rx="3" class="node-rect"/>
+              <text x="210" y="118" text-anchor="middle" class="node-num">/02</text>
+              <text x="210" y="138" text-anchor="middle" class="node-text">HDL Coder</text>
+              <text x="210" y="152" text-anchor="middle" class="node-sub">→ verilog</text>
+            </g>
+            <line x1="260" y1="130" x2="295" y2="130" class="flow-line" marker-end="url(#arr1)"/>
+            <line x1="260" y1="130" x2="295" y2="130" class="flow-line signal-pulse"/>
+            <g>
+              <rect x="300" y="100" width="100" height="60" rx="3" class="node-rect accent"/>
+              <text x="350" y="118" text-anchor="middle" class="node-num">/03</text>
+              <text x="350" y="138" text-anchor="middle" class="node-text">Speedgoat</text>
+              <text x="350" y="152" text-anchor="middle" class="node-sub">FPGA fabric</text>
+            </g>
+            <text x="420" y="78" text-anchor="middle" class="signal-text">2400 Hz · SDLC</text>
+            <line x1="400" y1="86" x2="420" y2="86" stroke="var(--accent-2)" stroke-width="0.6" stroke-dasharray="2 2" opacity="0.5"/>
+            <line x1="420" y1="86" x2="420" y2="124" stroke="var(--accent-2)" stroke-width="0.6" stroke-dasharray="2 2" opacity="0.5"/>
+            <line x1="400" y1="130" x2="435" y2="130" class="flow-line" marker-end="url(#arr1)"/>
+            <line x1="400" y1="130" x2="435" y2="130" class="flow-line signal-pulse"/>
+            <g>
+              <rect x="440" y="100" width="100" height="60" rx="3" class="node-rect"/>
+              <text x="490" y="118" text-anchor="middle" class="node-num">/04</text>
+              <text x="490" y="138" text-anchor="middle" class="node-text">Avionics</text>
+              <text x="490" y="152" text-anchor="middle" class="node-sub">integration</text>
+            </g>
+            <line x1="20" y1="200" x2="540" y2="200" class="flow-line dashed" stroke-opacity="0.4"/>
+            <text x="20" y="225" class="node-label">model-based</text>
+            <text x="200" y="225" class="node-label">hardware-targeted</text>
+            <text x="380" y="225" class="node-label">avionics-grade</text>
+          </svg>
+        </div>
+      </div>
+    </article>
+
+    <article class="spotlight flip reveal">
+      <div class="spotlight-text">
+        <span class="spotlight-mobile-num">SPOTLIGHT · <em>002</em></span>
+        <h3 class="spotlight-title">Isochronous Serial IMU<br>over <em>Microgate SyncLink</em></h3>
+        <p class="spotlight-desc">
+          Developed a 1&thinsp;MHz bidirectional IMU serial interface between the iHawk HWIL chassis and the flight computer using a Microgate SyncLink GT PCIe card. The link recreates the flight computer's expected IMU bus behavior, including timing, framing, and command/response traffic, so avionics software can be tested against realistic serial communication before the physical flight hardware is available.
+        </p>
+        <ul class="spotlight-bullets">
+          <li><strong>Raw isochronous SyncUART at 1&thinsp;MHz:</strong> Used the SyncLink GT clocking path to generate a deterministic serial interface from the card's base clock through the BRG.</li>
+          <li><strong>Closed-loop flight-computer traffic:</strong> Enabled bidirectional command and response exchange between the test chassis and flight computer.</li>
+          <li><strong>Protocol-accurate HWIL testing:</strong> Provided realistic IMU bus behavior during integration testing without requiring the final flight hardware in the loop.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag" data-cursor="hover">C++</span>
+          <span class="tag" data-cursor="hover">SyncLink GT</span>
+          <span class="tag" data-cursor="hover">RS-422</span>
+          <span class="tag" data-cursor="hover">1 MHz</span>
+        </div>
+      </div>
+      <div class="spotlight-flow">
+        <div class="flow-wrap" data-title="// link · 1 mhz bidirectional">
+          <svg class="flow-svg" viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+              </marker>
+              <marker id="arr2l" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 10 0 L 0 5 L 10 10 z" fill="currentColor" style="color: var(--accent)"/>
+              </marker>
+            </defs>
+            <g>
+              <rect x="20" y="80" width="180" height="120" rx="4" class="node-rect accent"/>
+              <text x="110" y="103" text-anchor="middle" class="node-num">/HWIL</text>
+              <text x="110" y="125" text-anchor="middle" class="node-text">Test Chassis</text>
+              <text x="110" y="142" text-anchor="middle" class="node-sub">IMU emulator</text>
+              <line x1="50" y1="160" x2="170" y2="160" stroke="var(--line-bright)" stroke-width="0.5"/>
+              <line x1="50" y1="170" x2="170" y2="170" stroke="var(--line-bright)" stroke-width="0.5"/>
+              <line x1="50" y1="180" x2="170" y2="180" stroke="var(--line-bright)" stroke-width="0.5"/>
+              <circle cx="160" cy="190" r="2" fill="var(--signal)">
+                <animate attributeName="opacity" values="1;0.2;1" dur="1.6s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            <g>
+              <rect x="220" y="115" width="120" height="50" rx="25" class="node-rect"/>
+              <text x="280" y="135" text-anchor="middle" class="node-text">SyncLink GT</text>
+              <text x="280" y="150" text-anchor="middle" class="node-sub">isochronous</text>
+            </g>
+            <g>
+              <rect x="360" y="80" width="180" height="120" rx="4" class="node-rect"/>
+              <text x="450" y="103" text-anchor="middle" class="node-num">/FC</text>
+              <text x="450" y="125" text-anchor="middle" class="node-text">Flight Computer</text>
+              <text x="450" y="142" text-anchor="middle" class="node-sub">consumer</text>
+              <line x1="390" y1="160" x2="510" y2="160" stroke="var(--line-bright)" stroke-width="0.5"/>
+              <line x1="390" y1="170" x2="510" y2="170" stroke="var(--line-bright)" stroke-width="0.5"/>
+              <line x1="390" y1="180" x2="510" y2="180" stroke="var(--line-bright)" stroke-width="0.5"/>
+            </g>
+            <line x1="200" y1="125" x2="220" y2="125" class="flow-line" marker-end="url(#arr2)"/>
+            <line x1="340" y1="125" x2="360" y2="125" class="flow-line" marker-end="url(#arr2)"/>
+            <line x1="200" y1="125" x2="360" y2="125" class="flow-line signal-pulse"/>
+            <text x="270" y="105" text-anchor="middle" class="signal-text">tx · imu frames →</text>
+            <line x1="220" y1="155" x2="200" y2="155" class="flow-line" marker-end="url(#arr2l)"/>
+            <line x1="360" y1="155" x2="340" y2="155" class="flow-line" marker-end="url(#arr2l)"/>
+            <line x1="200" y1="155" x2="360" y2="155" class="flow-line signal-pulse-rev"/>
+            <text x="270" y="180" text-anchor="middle" class="signal-text">← rx · commands</text>
+            <line x1="20" y1="220" x2="540" y2="220" class="flow-line dashed" stroke-opacity="0.4"/>
+            <text x="20" y="245" class="node-label">1 mhz · bidirectional</text>
+            <text x="200" y="245" class="node-label">deterministic</text>
+            <text x="400" y="245" class="node-label">closed-loop</text>
+          </svg>
+        </div>
+      </div>
+    </article>
+
+    <article class="spotlight reveal">
+      <div class="spotlight-text">
+        <span class="spotlight-mobile-num">SPOTLIGHT · <em>003</em></span>
+        <h3 class="spotlight-title">Hardened OTA Firmware Updates<br>with <em>Dual-Stage</em> Hardware Validation</h3>
+        <p class="spotlight-desc">
+          Implemented dual-stage hardware version validation for OTA firmware updates on deployable sensor nodes. Firmware compatibility is validated once when update packets are received and again at bootloader startup, preventing mismatched builds from being installed or executed on incompatible hardware.
+        </p>
+        <ul class="spotlight-bullets">
+          <li><strong>Dual-stage verification:</strong> Checked hardware compatibility at packet receipt and bootloader startup.</li>
+          <li><strong>Mismatch prevention:</strong> Blocked firmware intended for a different hardware revision.</li>
+          <li><strong>Remote update safety:</strong> Reduced the risk of bricking deployed sensor nodes during OTA updates.</li>
+          <li><strong>Per-target deployment support:</strong> Strengthened release safety for hardware-specific firmware builds.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag" data-cursor="hover">OTA updates</span>
+          <span class="tag" data-cursor="hover">Bootloader</span>
+          <span class="tag" data-cursor="hover">Embedded C/C++</span>
+          <span class="tag" data-cursor="hover">GitLab CI/CD</span>
+          <span class="tag" data-cursor="hover">V&amp;V</span>
+        </div>
+      </div>
+      <div class="spotlight-flow">
+        <div class="flow-wrap" data-title="// flow · dual-stage hw version validation">
+          <svg class="flow-svg" viewBox="0 0 600 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+              </marker>
+              <marker id="arr3r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--reject)"/>
+              </marker>
+              <marker id="arr3s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--signal)"/>
+              </marker>
+            </defs>
+
+            <!-- column headers with tinted backgrounds -->
+            <rect x="60" y="12" width="240" height="20" rx="2" fill="var(--tint-accent-soft)"/>
+            <rect x="430" y="12" width="140" height="20" rx="2" fill="var(--tint-reject-soft)"/>
+            <text x="180" y="26" text-anchor="middle" class="node-label">accept path</text>
+            <text x="500" y="26" text-anchor="middle" class="node-label" style="fill: var(--reject)">reject path</text>
+            <line x1="40" y1="40" x2="320" y2="40" stroke="var(--accent)" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.5"/>
+            <line x1="380" y1="40" x2="580" y2="40" stroke="var(--reject)" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.45"/>
+
+            <!-- ENTRY -->
+            <g>
+              <rect x="80" y="56" width="200" height="46" rx="4" class="node-rect"/>
+              <text x="180" y="76" text-anchor="middle" class="node-num">/IN</text>
+              <text x="180" y="92" text-anchor="middle" class="node-text">OTA image arrives</text>
+            </g>
+            <line x1="180" y1="102" x2="180" y2="126" class="flow-line" marker-end="url(#arr3)"/>
+            <line x1="180" y1="102" x2="180" y2="126" class="flow-line signal-pulse"/>
+
+            <!-- STAGE 1 -->
+            <g>
+              <rect x="60" y="128" width="240" height="68" rx="4" class="node-rect accent"/>
+              <text x="180" y="148" text-anchor="middle" class="node-num">/STAGE 1 — silicon hw version</text>
+              <text x="180" y="169" text-anchor="middle" class="node-text">hw_id == strap?</text>
+              <text x="180" y="185" text-anchor="middle" class="node-sub">read-only identity check</text>
+            </g>
+
+            <!-- pass to stage 2 -->
+            <line x1="180" y1="196" x2="180" y2="226" class="flow-line" marker-end="url(#arr3)"/>
+            <line x1="180" y1="196" x2="180" y2="226" class="flow-line signal-pulse"/>
+            <text x="200" y="215" class="signal-text">✓ pass</text>
+
+            <!-- fail right -->
+            <path d="M 300 162 L 425 162" class="flow-line reject" fill="none" marker-end="url(#arr3r)"/>
+            <text x="362" y="154" text-anchor="middle" class="signal-text" style="fill: var(--reject)">✗ fail</text>
+            <g>
+              <rect x="430" y="140" width="140" height="46" rx="4" class="node-rect reject"/>
+              <text x="500" y="160" text-anchor="middle" class="node-num">/REJ-1</text>
+              <text x="500" y="176" text-anchor="middle" class="node-text" style="fill: var(--reject)">image refused</text>
+            </g>
+
+            <!-- STAGE 2 -->
+            <g>
+              <rect x="60" y="228" width="240" height="68" rx="4" class="node-rect accent"/>
+              <text x="180" y="248" text-anchor="middle" class="node-num">/STAGE 2 — board hw version</text>
+              <text x="180" y="269" text-anchor="middle" class="node-text">board_rev == eeprom?</text>
+              <text x="180" y="285" text-anchor="middle" class="node-sub">runtime revision check</text>
+            </g>
+
+            <!-- pass to commit -->
+            <line x1="180" y1="296" x2="180" y2="326" class="flow-line success" marker-end="url(#arr3s)"/>
+            <line x1="180" y1="296" x2="180" y2="326" class="flow-line success signal-pulse-success"/>
+            <text x="200" y="315" class="signal-text" style="fill: var(--signal)">✓ pass</text>
+
+            <!-- fail right -->
+            <path d="M 300 262 L 425 262" class="flow-line reject" fill="none" marker-end="url(#arr3r)"/>
+            <text x="362" y="254" text-anchor="middle" class="signal-text" style="fill: var(--reject)">✗ fail</text>
+            <g>
+              <rect x="430" y="240" width="140" height="46" rx="4" class="node-rect reject"/>
+              <text x="500" y="260" text-anchor="middle" class="node-num">/REJ-2</text>
+              <text x="500" y="276" text-anchor="middle" class="node-text" style="fill: var(--reject)">image refused</text>
+            </g>
+
+            <!-- COMMIT -->
+            <g>
+              <rect x="80" y="328" width="200" height="56" rx="4" class="node-rect success"/>
+              <text x="180" y="348" text-anchor="middle" class="node-num">/COMMIT</text>
+              <text x="180" y="368" text-anchor="middle" class="node-text" style="fill: var(--signal); font-weight: 600">FLASH · OTA OK</text>
+            </g>
+
+            <!-- production outcome -->
+            <line x1="180" y1="384" x2="180" y2="410" class="flow-line success" marker-end="url(#arr3s)"/>
+            <text x="195" y="400" class="signal-text" style="fill: var(--signal)">deploy</text>
+            <text x="180" y="426" text-anchor="middle" class="node-sub" style="fill: var(--signal); letter-spacing: 0.14em; font-weight: 500">▸ remote bricking risk: near zero</text>
+
+            <!-- side note about reject paths: match resume "preventing incompatible deployments" -->
+            <text x="500" y="298" text-anchor="middle" class="node-sub" style="fill: var(--reject); letter-spacing: 0.08em; opacity: 0.85; font-weight: 500">incompatible deployments</text>
+            <text x="500" y="312" text-anchor="middle" class="node-sub" style="fill: var(--reject); letter-spacing: 0.08em; opacity: 0.85">prevented at deploy time,</text>
+            <text x="500" y="326" text-anchor="middle" class="node-sub" style="fill: var(--reject); letter-spacing: 0.08em; opacity: 0.85">never in the field</text>
+          </svg>
+        </div>
+      </div>
+    </article>
+
     </div>
-  </header><!-- End Header -->
+  </div>
+</section>
 
-  <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
-    <div class="hero-container" data-aos="fade-in">
-      <h1>Jesus Minjares</h1>
-      <p>I'm <span class="typed" data-typed-items="a Embedded Software Engineer, a Hardware Engineer, an Electronics hobbyist, a Recent Graduate"></span></p>
+<section id="work" aria-labelledby="work-heading">
+  <div class="wrap work-section">
+    <div class="section-num" id="work-heading"><em>03</em> · Selected work</div>
+    <div class="work-headline">
+      <h2 class="big-head">Selected<br><em>work</em>.</h2>
+      <p class="sub">Hardware, firmware, and the side projects that taught me everything school didn't.</p>
     </div>
-  </section><!-- End Hero -->
-
-  <main id="main">
-
-        <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>About</h2>
+    <div class="mag-slider" id="magSlider">
+      <div class="mag-slider-head">
+        <div class="mag-counter">
+          <span class="now" id="magNow">01</span>
+          <span class="sep">/</span>
+          <span class="total" id="magTotal">06</span>
         </div>
-
-        <div class="row">
-          <div class="col-lg-4" data-aos="fade-right">
-            <img src="assets/img/profile-img.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
-            <h1>Hello!</h1>
-            <p class="fst-italic">
-              
-              <h4>
-                My name is <strong><a style="color:#173b6c";>Jesus Minjares</a></strong>!
-              </h4>
-            </p>
-            <p>
-              <h4>
-                <p>
-                  I am First-Generation Graduate and a former JHUAPL (Johns Hopkins University Applied Physics Laboratory) Electrical Engineer Intern. 
-                </p>
-                <p>
-                  I use my engineering skills to develop and design reliable embedded devices. Throughout various projects and an internship, 
-                  I was able to gain experience in space systems, hardware and software development. 
-                </p>
-              </h4>
-   
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End About Section -->
-
-
-
-    <!-- ======= Skills Section ======= -->
-    <section id="skills" class="skills section-bg">
-      <div class="container">
-        <div class="section-title">
-          <h2>Skills</h2>
-        </div>
-        <div>
-          <!-- data-aos-delay="1000" -->
-          <div data-aos="fade-in"> 
-            <center>
-              <header><br><h2>Software</h2><br></header>
-            </center>
-  
-            <div style="overflow-x:auto;" >
-              <table align="center">
-                  <tr>
-                    <td><img src="assets/img/software_lanuages/c_logo.svg" alt="C" height="100" > </td>
-                    <td><img src="assets/img/software_lanuages/cpp_logo.svg" alt="C++" height="100" > </td>
-                    <td><img src="assets/img/software_lanuages/python_logo.svg" alt="Python" height="100" > </td>
-                    <td><img src="assets/img/software_lanuages/rust_logo.svg" alt="Rust" height="100" > </td>
-                    <td><img src="assets/img/software_lanuages/java_logo.svg" alt="Java" height="100" > </td>
-                  </tr>
-              </table>
-          </div>
-          
-          </div>
-
-          <div data-aos="fade-in" data-aos-delay="500">
-            <center>
-              <header><br><h2>Hardware</h2><br></header>
-            </center>
-  
-            <div style="overflow-x:auto">
-              <table align="center">
-                <tr>
-                  <td><img src="assets/img/hardware/texas_instruments.svg" alt="TI"  height="100"/> </td>
-                  <td><img src="assets/img/hardware/raspberry_pi_logo.svg" alt="Raspberry" height="100"/> </td>
-                  <td><img src="assets/img/hardware/espressif_logo.svg" alt="Espressif" height="100"/> </td>
-                  <td><img src="assets/img/hardware/arduino_logo.svg" alt="Arduino" height="100" /> </td>
-                  <td><img src="https://upload.wikimedia.org/wikipedia/en/f/f3/STMicroelectronics_logo.svg" alt="STM" height="100"/> </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div data-aos="fade-in" data-aos-delay="1000">
-            <center>
-              <header><br><h2>Tools</h2><br></header>
-            </center>
-    
-            <div style="overflow-x:auto">
-              <table align="center">
-                <tr>
-                  <td><img src="assets/img/tools/markdown.svg" alt="Markdown" width="100" height="100"/></td>
-                  <td><img src="assets/img/tools/github.svg" alt="GitHub" width="100" height="100"/></td>
-                  <td><img src="assets/img/tools/git.svg" alt="Git" width="100" height="100"/></td>
-                  <td><img src="assets/img/tools/doxygen.svg" alt="Doxygen" width="100" height="100"/></td>   
-                </tr>
-              </table>
-            </div>
-
-          </div>
-  
-          <div data-aos="fade-in" data-aos-delay="1500">
-            <center>
-              <header><br><h2>PCB Design Software</h2><br></header>
-            </center>
-    
-            <div style="overflow-x:auto">
-              <table align="center">
-                <tr>
-                  <td><img src="assets/img/hardware/KiCad_logo.png" alt="KiCad" height="100"/></td>
-                  <td><img src="assets/img/hardware/Autodesk_eagle_logo.png" alt="EagleCAD" height="100"/></td>
-                  <td><img src="assets/img/hardware/easyEDA_logo.png" alt="EasyEDA" height="100"/></td>
-                </tr>
-              </table>
-            </div>
-
-          </div>
-      
-      </div>
-    </section><!-- End Skills Section -->
-
-    <!-- ======= Resume Section ======= -->
-    <section id="resume" class="resume">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Resume</h2>     
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6" data-aos="fade-up">
-            <!-- <h3 class="resume-title"></h3> -->
-            <!-- <div class="resume-item pb-0">
-              <h4>Jesus Minjares</h4>
-              <ul>
-                <li><a href="https://www.linkedin.com/in/jesusminjares/" target="_blank" rel="noopener noreferrer" class="linkedin"><i class="bx bxl-linkedin"></i></a> : jesusminjares</li>
-                <li><a href="https://github.com/jminjares4" target="_blank" rel="noopener noreferrer" class="github"><i class="bx bxl-github"></i></a> : jminjares4</li>
-                <li><a href="mailto:jminjares4@miners.utep.edu" target="_blank" rel="noopener noreferrer" class="email"><i class="bx bxs-envelope"></i></a> : jminjares4@miners.utep.edu</li>
-          </div> -->
-
-            <h3 class="resume-title">Education</h3>
-            <div class="resume-item">
-              <h4>Master of Science in Computer Engineering</h4>
-              <h5>Jan. 2021 - May 2022</h5>
-              <p><em>The University of Texas at El Paso (UTEP)</em></p>
-            </div>
-            <div class="resume-item">
-              <h4>Bachelor of Science in Electrical &amp; Computer Engineering</h4>
-              <h5>Aug. 2018 - Dec. 2020</h5>
-              <p><em>The University of Texas at El Paso (UTEP)</em></p>
-            </div>
-            <div class="resume-item">
-              <h4>Associate of Science in Electrical Engineering</h4>
-              <h5>Aug. 2016 - May 2018</h5>
-              <p><em>El Paso Community College (EPCC)</em></p>
-            </div>
-            <h3 class="resume-title">Technical  Projects</h3>
-            <div class="resume-item">
-              <h4>Robotic Arm 3U CubeSat</h4>
-              <h5>Aug. 2021 - June 2022</h5>
-              <p><em>Aerospace Center (cSETR), El Paso, TX</em></p>
-              <ul>
-                <!-- <li>Designed 3U CubeSat payload firmware in C for ARM Cortex M microcontroller</li>
-                <li>Deployed custom Hardware Abstraction Layer (HAL) API to reduce software development of 6 teams by 30%</li>
-                <li>Populated custom 2-layer print circuit boards (PCB) and ensure functionality with oscilloscope and DMM</li>
-                <li>Implemented payload communication protocols (I2C, SPI, UART) to communicate between CubeSats payloads</li> -->
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4>Intelligent Portable Infrasound Array (IPIA)</h4>
-              <h5>Jan. - Dec. 2020</h5>
-              <p><em>The University of Texas at El Paso (UTEP), El Paso, TX</em></p>
-              <ul>           
-                <!-- <li>Delivered custom embedded software in real-time (FreeRTOS) to meet latency constraints of 10 ms</li>
-                <li>Established data acquisition of pressure sensor (DS-0091) at 80Hz with digital filter to avoid aliasing</li>
-                <li>Built short-distance wireless communication via Bluetooth (HC-05) by sending packets through UART</li>
-                <li>Integrated custom GPS (SIM33EAU) API by parsing serial data with NMEA protocol</li>
-                <li>Learned documentation system (Doxygen) to generate proper software documentation</li> -->
-              </ul>
-            </div>
-          
-          </div>
-        
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
-            <h3 class="resume-title">Technical  Experience</h3>
-            <div class="resume-item">
-              <h4>Graduate Research Assistant</h4>
-              <h5>Aug. 2021 - June 2022</h5>
-              <p><em>Aerospace Center (cSETR), El Paso, TX</em></p>
-              <ul>
-                <!-- <li>Developed a 3U CubeSat with a multidisciplinary team of 5 members, leveraging strong collaboration and multi- tasking to meet deadlines</li>
-                <li>Created firmware for 3 microcontrollers (MCUs) in C programming language </li>
-                <li>Wrote python script to capture serial data and generate plots to analyze DC motor behavior</li>
-                <li>Collaborated in designing custom hardware for space systems using Eagle</li>
-                <li>Optimized API documentation through Doxygen to reduce software deployment by 15%</li>
-                <li>Debugged subsystems with an oscilloscope, digital multimeter (DMM) and function generator to verify functionality</li>
-                <li>Introduced version control (Git) to provide simultaneous work and keep track of all updates</li> -->
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4> Electrical Engineer Intern</h4>
-              <h5>May - Aug. 2021</h5>
-              <p><em>Johns Hopkins University Applied Physics Laboratory (JHUAPL), Laurel, MD</em></p>
-              <ul>
-                <!-- <li> Developed and tested software at the physical layer using C, C++, and bash scripting to ensure highly reliable and efficient performance</li>
-                <li> Redesigned docker file for a custom environment to use GNURadio and optimized software development by 20%</li>
-                <li>Implemented algorithms for the IEEE802.11n protocol using C++ and OOP methodologies</li>
-                <li>Learned version control software (Git) to update and keep track of software changes</li> -->
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4> Graduate Research Assistant</h4>
-              <h5>Feb. - May 2021</h5>
-              <p><em>Aerospace Center (cSETR), El Paso, TX</em></p>
-              <ul>
-                <!-- <li> Delivered a custom electrical power system (EPS) to feed up to 3000 mA</li>
-                <li> Added 1A lithium battery charger with battery protection to maximize battery duration</li>
-                <li> Translated electric circuit into custom 2-layer printed circuit board (PCB) in KiCad</li>
-                <li> Improved Helmholtz coil controller by adding multiple drivers (MOSFET and h-bridge) to control magnetic field magnitude and direction</li>                 -->
-              </ul>
-            </div>
-
-            <h3 class="resume-title">Skills</h3>
-            <div class="resume-item">
-              <h4>Software Development</h4>
-              <h5>Software Tools</h5>
-              <p><em>C, C++, Python, Firmware Development, Git</em></p>
-              <ul>
-              </ul>
-            </div>            
-
-            <div class="resume-item">
-              <h4>Hardware Development</h4>
-              <h5>Hardware Tools</h5>
-              <p><em>Embedded System Design, Board Bring Up, PCB Design</em></p>
-              <ul>
-              </ul>
-            </div>     
-
-          </div>
-        
-          
-        </div>
-
-      </div>
-
-      <div class="text-center">
-        <button type="button">
-            <a href="https://jminjares4.github.io/resume/" target="_blank" rel="noopener noreferrer">View Resume</a>
-        </button>
-      </div>
-
-    </section><!-- End Resume Section -->
-
-    <!-- ======= Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio section-bg">
-      <div class="container">
-
-        <div class="section-title" data-aos="fade-up">
-          <h2>Portfolio</h2>
-          <p>
-            <h4 align="center">
-              I've worked on a variety of projects from hardware development to firmware. These are the most interesting projects that I have worked on!
-            </h4>
-            <h5>
-              <center>
-                <p><i class="bx bx-plus"></i>: Expand image</p>
-                <p><i class="bx bx-link"></i>: Project details</p>
-              </center>
-            </h5>
-          </p>
-        </div>
-
-        <div class="row" data-aos="fade-up" data-aos-delay="500">
-          <div class="col-lg-12 d-flex justify-content-center">
-            <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">All</li>
-              <li data-filter=".filter-software">Software</li>
-              <li data-filter=".filter-hardware">Hardware</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="1000">
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-hardware">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/custom_nfc_card/custom_nfc_card_frontview.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/custom_nfc_card/custom_nfc_card.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Custom Business Card"><i class="bx bx-plus"></i></a>
-                <a href="custom_nfc_card.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-hardware filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/graduation_cap/graduation_cap_front_view.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/graduation_cap/graduation_cap.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Graduation Cap"><i class="bx bx-plus"></i></a>
-                <a href="graduation_cap.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/ipia/ipia_logo.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/ipia/ipia_reading.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Capstone Project Fall 2020"><i class="bx bx-plus"></i></a>
-                <a href="ipia.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/microprocessor_2_template/microprocessor_2_labs.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/microprocessor_2_template/microprocessor_2_demo.mov" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Microprocessor 2 Labs"><i class="bx bx-plus"></i></a>
-                <a href="micro_2_template.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software filter-hardware">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/sensor_data_logger/sensor_data_logger.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/sensor_data_logger/sensor_data_logger.mov" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Sensor Data Logger"><i class="bx bx-plus"></i></a>
-                <a href="sensor_data_logger.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-   
-          <!-- <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/msp432_example_codes/msp432_example_codes.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/msp432_example_codes/msp432_example_content.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="MSP432 Example Codes"><i class="bx bx-plus"></i></a>
-                <a href="msp432_example.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div> -->
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-hardware">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/ewod/EWOD_pcb.png" class="img-fluid" alt="">
-              <div class="portfolio-links">
-                <a href="assets/img/portfolio/ewod/EWOD_clip.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="EWOD Senior Project"><i class="bx bx-plus"></i></a>
-                <a href="ewod.html" title="More Details"><i class="bx bx-link"></i></a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Portfolio Section -->
-
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
-        <div class="section-title">
-          <h2>Contact</h2>
-        </div>
-        
-        <div class="" data-aos="fade-in">
-         
-          <header>
-            <h2 align="center">
-              Feel free to contact me through: 
-            </h2>
-          </header>
-          
-          <div style="overflow-x:auto">
-              <table align="center">
-                <tr>
-                  <br>
-                  <br>
-                  <br>
-                  <td><a href="https://www.linkedin.com/in/jesusminjares/" target="_blank" rel="noopener noreferrer" ><img src="assets/img/social_media/linkedin.png" height="150"></a></td>                 
-                  <td><a href="https://linktr.ee/JesusMinjares" target="_blank" rel="noopener noreferrer" ><img src="assets/img/social_media/linktree.png" height="150"></a></td>
-                  <td><a href="https://github.com/jminjares4" target="_blank" rel="noopener noreferrer" ><img src="assets/img/social_media/github.png" height="150"></a></td>
-                </tr>
-              </table>
-          </div>
-        
+        <div class="mag-controls">
+          <button class="mag-btn" id="magPrev" aria-label="Previous project" data-cursor="link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="mag-btn" id="magNext" aria-label="Next project" data-cursor="link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </div>
-    </section><!-- End Contact Section -->
 
-  </main><!-- End #main -->
+      <div class="mag-track-wrap">
+        <div class="mag-track" id="magTrack">
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="social-links mt-3 text-center"">
-      <h5>Source code <a href="https://github.com/jminjares4/Jesus-Minjares-Portfolio" target="_blank" rel="noopener noreferrer" class="github"><i class="bx bxl-github"></i></a></h5>
+          <a href="https://github.com/jminjares4/IPIA_FREERTOS" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
+            <div class="mag-display flow-display" data-flow-title="// system · ipia architecture">
+              <span class="mag-num">/01</span>
+              <svg class="project-flow" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-label="IPIA system architecture diagram">
+                <defs>
+                  <marker id="ipia-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+                  </marker>
+                  <marker id="ipia-arr-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--signal)"/>
+                  </marker>
+                </defs>
+
+                <!-- subtle section bg tints behind the lanes -->
+                <rect x="30" y="74" width="330" height="118" rx="6" fill="var(--tint-accent-soft)" opacity="0.45"/>
+                <rect x="370" y="74" width="200" height="58" rx="6" fill="var(--tint-signal-soft)" opacity="0.5"/>
+
+                <!-- lane labels -->
+                <text x="195" y="60" text-anchor="middle" class="pf-label" style="fill: var(--accent)">power chain</text>
+                <text x="470" y="60" text-anchor="middle" class="pf-label" style="fill: var(--signal)">sensing</text>
+
+                <!-- POWER CHAIN row -->
+                <g>
+                  <rect x="40" y="84" width="80" height="38" rx="3" class="pf-rect"/>
+                  <text x="80" y="100" text-anchor="middle" class="pf-text">solar</text>
+                  <text x="80" y="113" text-anchor="middle" class="pf-sub">panel</text>
+                </g>
+                <line x1="120" y1="103" x2="140" y2="103" class="pf-line" marker-end="url(#ipia-arr)"/>
+
+                <g>
+                  <rect x="140" y="84" width="100" height="38" rx="3" class="pf-rect"/>
+                  <text x="190" y="100" text-anchor="middle" class="pf-text">battery</text>
+                  <text x="190" y="113" text-anchor="middle" class="pf-sub">charger</text>
+                </g>
+                <line x1="240" y1="103" x2="260" y2="103" class="pf-line" marker-end="url(#ipia-arr)"/>
+
+                <g>
+                  <rect x="260" y="84" width="80" height="38" rx="3" class="pf-rect"/>
+                  <text x="300" y="100" text-anchor="middle" class="pf-text">boost</text>
+                  <text x="300" y="113" text-anchor="middle" class="pf-sub">converter</text>
+                </g>
+
+                <!-- battery cell, bidirectional with charger -->
+                <line x1="190" y1="122" x2="190" y2="148" class="pf-line bidir" stroke-dasharray="3 3" stroke="var(--line-bright)"/>
+                <g>
+                  <rect x="150" y="148" width="80" height="32" rx="3" class="pf-rect deep"/>
+                  <text x="190" y="169" text-anchor="middle" class="pf-text">battery</text>
+                </g>
+
+                <!-- SENSING row -->
+                <g>
+                  <rect x="380" y="84" width="80" height="38" rx="3" class="pf-rect signal"/>
+                  <text x="420" y="100" text-anchor="middle" class="pf-text">pressure</text>
+                  <text x="420" y="113" text-anchor="middle" class="pf-sub">sensor</text>
+                </g>
+                <line x1="460" y1="103" x2="480" y2="103" class="pf-line signal" marker-end="url(#ipia-arr-s)"/>
+
+                <g>
+                  <rect x="480" y="84" width="80" height="38" rx="3" class="pf-rect"/>
+                  <text x="520" y="100" text-anchor="middle" class="pf-text">amplifier</text>
+                  <text x="520" y="113" text-anchor="middle" class="pf-sub">+ rc lp</text>
+                </g>
+
+                <!-- POWER trunk down to MCU left third (orange, 3.3V) -->
+                <line x1="300" y1="122" x2="300" y2="240" class="pf-line" marker-end="url(#ipia-arr)"/>
+                <line x1="300" y1="122" x2="300" y2="240" class="pf-line pf-pulse"/>
+                <rect x="278" y="178" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="300" y="188" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">3.3 V</text>
+
+                <!-- SENSOR trunk down to MCU right third (teal, analog) -->
+                <line x1="500" y1="122" x2="500" y2="240" class="pf-line signal" marker-end="url(#ipia-arr-s)"/>
+                <rect x="478" y="178" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="500" y="188" text-anchor="middle" class="pf-sub" style="fill: var(--signal); font-weight: 600">analog</text>
+
+                <!-- COMMS inputs (left side, grouped) -->
+                <text x="105" y="232" text-anchor="middle" class="pf-label" style="fill: var(--ink); opacity: 0.7">comms in</text>
+                <g>
+                  <rect x="40" y="246" width="135" height="36" rx="3" class="pf-rect"/>
+                  <text x="107" y="268" text-anchor="middle" class="pf-text">SIM33EAU · GPS</text>
+                </g>
+                <line x1="175" y1="264" x2="220" y2="282" class="pf-line" marker-end="url(#ipia-arr)"/>
+
+                <g>
+                  <rect x="40" y="294" width="135" height="36" rx="3" class="pf-rect"/>
+                  <text x="107" y="316" text-anchor="middle" class="pf-text">HC-05 · BT</text>
+                </g>
+                <line x1="175" y1="312" x2="220" y2="308" class="pf-line" marker-end="url(#ipia-arr)"/>
+
+                <!-- MSP432 main MCU box -->
+                <g>
+                  <rect x="218" y="238" width="364" height="134" rx="6" class="pf-rect mcu" stroke-width="1.5"/>
+                  <text x="400" y="266" text-anchor="middle" class="pf-text large" style="fill: var(--accent)">MSP432 · FreeRTOS</text>
+                  <line x1="245" y1="282" x2="555" y2="282" class="pf-line dim" stroke-dasharray="2 3"/>
+                  <text x="400" y="304" text-anchor="middle" class="pf-sub">acquisition · 8 kHz · 12-bit ADC</text>
+                  <text x="400" y="324" text-anchor="middle" class="pf-sub">DSP · anti-alias · framing</text>
+                  <text x="400" y="344" text-anchor="middle" class="pf-sub">tracker control loop · timer ISR</text>
+                  <text x="400" y="362" text-anchor="middle" class="pf-sub" style="fill: var(--accent); letter-spacing: 0.1em">closes the power loop</text>
+                </g>
+
+                <!-- MCU → SERVO output -->
+                <line x1="400" y1="372" x2="400" y2="412" class="pf-line" marker-end="url(#ipia-arr)"/>
+                <line x1="400" y1="372" x2="400" y2="412" class="pf-line pf-pulse"/>
+                <rect x="378" y="386" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="400" y="396" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">PWM</text>
+
+                <g>
+                  <rect x="290" y="414" width="220" height="42" rx="4" class="pf-rect signal"/>
+                  <text x="400" y="433" text-anchor="middle" class="pf-text">SG90 · solar tracker</text>
+                  <text x="400" y="447" text-anchor="middle" class="pf-sub" style="fill: var(--signal)">orient panel toward sun</text>
+                </g>
+
+                <!-- footer (cleaned: just left + right, no middle overlap) -->
+                <line x1="40" y1="472" x2="560" y2="472" class="pf-line dim" stroke-dasharray="2 3"/>
+                <text x="40" y="490" class="pf-sub">field · battery-powered</text>
+                <text x="560" y="490" text-anchor="end" class="pf-sub">capstone · 2020</text>
+              </svg>
+            </div>
+            <div class="mag-meta">
+              <div class="mag-tag-line"><span class="role">SENIOR CAPSTONE · UTEP</span><span class="year">2020</span></div>
+              <h3 class="mag-title">Intelligent Portable <em>Infrasound Array</em></h3>
+              <p class="mag-desc">A field-deployable infrasound sensor array running real-time embedded software on FreeRTOS. Pressure-sensor acquisition with anti-aliasing, Bluetooth (HC-05) over UART, GPS with NMEA parsing, and a solar tracker for the battery charger. The senior capstone that committed me to real-time embedded as a career.</p>
+              <div class="mag-tags">
+                <span class="tag">FreeRTOS</span><span class="tag">Real-time</span><span class="tag">DSP</span><span class="tag">PCB Design</span><span class="tag">GPS / NMEA</span>
+              </div>
+              <span class="mag-cta">View repo</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/jminjares4/EWOD" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
+            <div class="mag-display contain-display">
+              <span class="mag-num">/02</span>
+              <img src="assets/img/portfolio/ewod/EWOD_pcb.png" alt="EWOD driver PCB" loading="lazy" decoding="async"/>
+            </div>
+            <div class="mag-meta">
+              <div class="mag-tag-line"><span class="role">SENIOR PROJECT · UTEP</span><span class="year">2022</span></div>
+              <h3 class="mag-title">EWOD digital <em>microfluidics</em> driver</h3>
+              <p class="mag-desc">A high-voltage switching board for electrowetting-on-dielectric microfluidics — my Spring 2022 senior project, designed in KiCad. ESP32 controller, surface-mount SPDT relay array, AC input through a step-down transformer, and on-board test points across the full rail (3.3 V → 164 V) used to actuate the electrodes.</p>
+              <div class="mag-tags">
+                <span class="tag">ESP32</span><span class="tag">PCB · KiCad</span><span class="tag">High-V · 164 V</span><span class="tag">Mixed signal</span>
+              </div>
+              <span class="mag-cta">View repo</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/jminjares4/ESP32-Sensor-Data-Logger" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
+            <div class="mag-display contain-display paper">
+              <span class="mag-num">/03</span>
+              <img src="assets/img/portfolio/sensor_data_logger/sensor_data_logger.png" alt="ESP32 sensor data logger PCB render" loading="lazy" decoding="async"/>
+            </div>
+            <div class="mag-meta">
+              <div class="mag-tag-line"><span class="role">PERSONAL · IoT</span><span class="year">2023</span></div>
+              <h3 class="mag-title">ESP32 Sensor <em>Data Logger</em></h3>
+              <p class="mag-desc">An ESP32 sensor data logger built with ESP-IDF and FreeRTOS. Sensor acquisition over I²C and GPIO, persisted to microSD on a custom PCB. Doxygen API documentation and GitHub Actions CI/CD make it a clean reference design. Hardware: USB-C power, micro-SD slot, coin-cell RTC backup.</p>
+              <div class="mag-tags">
+                <span class="tag">ESP32</span><span class="tag">ESP-IDF</span><span class="tag">FreeRTOS</span><span class="tag">C</span><span class="tag">PCB · KiCad</span>
+              </div>
+              <span class="mag-cta">View repo</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/jminjares4/Custom-NFC-Card" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
+            <div class="mag-display contain-display paper">
+              <span class="mag-num">/04</span>
+              <img src="assets/img/portfolio/custom_nfc_card/custom_nfc_card_frontview.png" alt="Custom NFC business card" loading="lazy" decoding="async"/>
+            </div>
+            <div class="mag-meta">
+              <div class="mag-tag-line"><span class="role">PERSONAL · PCB</span><span class="year">2022</span></div>
+              <h3 class="mag-title">Custom <em>NFC</em> Business Card</h3>
+              <p class="mag-desc">A two-layer flex-PCB NFC business card. KiCad layout, low-profile NTAG IC, no battery, no app. Tap to land on a portfolio.</p>
+              <div class="mag-tags">
+                <span class="tag">PCB · 2-layer</span><span class="tag">KiCad</span><span class="tag">NFC · NTAG</span>
+              </div>
+              <span class="mag-cta">View repo</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/jminjares4/Graduation-Cap-Spring-2022" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
+            <div class="mag-display contain-display paper">
+              <span class="mag-num">/05</span>
+              <img src="assets/img/portfolio/graduation_cap/graduation_cap_front_view.png" alt="Animated graduation cap UTEP-themed PCB" loading="lazy" decoding="async"/>
+            </div>
+            <div class="mag-meta">
+              <div class="mag-tag-line"><span class="role">PERSONAL · WEARABLE</span><span class="year">2022</span></div>
+              <h3 class="mag-title">Animated <em>Graduation Cap</em></h3>
+              <p class="mag-desc">UTEP-themed PCB graduation cap, worn at my master's commencement. Custom firmware driving RGB-LED animation patterns on an addressable matrix laid out as the school pickaxe.</p>
+              <div class="mag-tags">
+                <span class="tag">MCU firmware</span><span class="tag">RGB LEDs</span><span class="tag">Wearable PCB</span>
+              </div>
+              <span class="mag-cta">View repo</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/jminjares4/MSP432-Example-Codes" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
+            <div class="mag-display flow-display" data-flow-title="// curriculum · seven-lab progression">
+              <span class="mag-num">/06</span>
+              <svg class="project-flow" viewBox="0 0 600 540" xmlns="http://www.w3.org/2000/svg" aria-label="MSP432 curriculum lab modules">
+                <defs>
+                  <marker id="msp-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+                  </marker>
+                </defs>
+
+                <text x="300" y="56" text-anchor="middle" class="pf-label">msp432 launchpad · embedded c</text>
+                <line x1="40" y1="66" x2="560" y2="66" class="pf-line dim" stroke-dasharray="2 3"/>
+
+                <!-- BASICS -->
+                <text x="40" y="90" class="pf-label">basics</text>
+                <g>
+                  <rect x="40" y="98" width="166" height="56" rx="4" class="pf-rect accent"/>
+                  <text x="56" y="119" class="pf-text">/01 · hello world</text>
+                  <text x="56" y="135" class="pf-sub">printf · setup</text>
+                  <text x="56" y="148" class="pf-sub" style="fill: var(--accent)">module 01</text>
+                </g>
+                <g>
+                  <rect x="217" y="98" width="166" height="56" rx="4" class="pf-rect accent"/>
+                  <text x="233" y="119" class="pf-text">/02 · gpio</text>
+                  <text x="233" y="135" class="pf-sub">blink · button</text>
+                  <text x="233" y="148" class="pf-sub" style="fill: var(--accent)">module 02</text>
+                </g>
+                <g>
+                  <rect x="394" y="98" width="166" height="56" rx="4" class="pf-rect accent"/>
+                  <text x="410" y="119" class="pf-text">/03 · port irq</text>
+                  <text x="410" y="135" class="pf-sub">interrupts · debounce</text>
+                  <text x="410" y="148" class="pf-sub" style="fill: var(--accent)">module 03</text>
+                </g>
+
+                <line x1="300" y1="154" x2="300" y2="184" class="pf-line" marker-end="url(#msp-arr)"/>
+
+                <!-- TIMERS -->
+                <text x="40" y="180" class="pf-label">timing</text>
+                <g>
+                  <rect x="40" y="188" width="166" height="56" rx="4" class="pf-rect"/>
+                  <text x="56" y="209" class="pf-text">/04 · timera</text>
+                  <text x="56" y="225" class="pf-sub">capture · compare</text>
+                  <text x="56" y="238" class="pf-sub" style="fill: var(--accent)">module 04</text>
+                </g>
+                <g>
+                  <rect x="217" y="188" width="166" height="56" rx="4" class="pf-rect"/>
+                  <text x="233" y="209" class="pf-text">/05 · systick</text>
+                  <text x="233" y="225" class="pf-sub">millis · delay</text>
+                  <text x="233" y="238" class="pf-sub" style="fill: var(--accent)">module 05</text>
+                </g>
+                <g>
+                  <rect x="394" y="188" width="166" height="56" rx="4" class="pf-rect"/>
+                  <text x="410" y="209" class="pf-text">/06 · pwm</text>
+                  <text x="410" y="225" class="pf-sub">duty cycle · servo</text>
+                  <text x="410" y="238" class="pf-sub" style="fill: var(--accent)">module 06</text>
+                </g>
+
+                <line x1="300" y1="244" x2="300" y2="274" class="pf-line" marker-end="url(#msp-arr)"/>
+
+                <!-- PERIPHERALS -->
+                <text x="40" y="270" class="pf-label">peripherals</text>
+                <g>
+                  <rect x="40" y="278" width="166" height="56" rx="4" class="pf-rect"/>
+                  <text x="56" y="299" class="pf-text">/07 · uart</text>
+                  <text x="56" y="315" class="pf-sub">serial · printf</text>
+                  <text x="56" y="328" class="pf-sub" style="fill: var(--accent)">module 07</text>
+                </g>
+                <g>
+                  <rect x="217" y="278" width="166" height="56" rx="4" class="pf-rect"/>
+                  <text x="233" y="299" class="pf-text">/08 · lcd</text>
+                  <text x="233" y="315" class="pf-sub">character display</text>
+                  <text x="233" y="328" class="pf-sub" style="fill: var(--accent)">module 08</text>
+                </g>
+                <g>
+                  <rect x="394" y="278" width="166" height="56" rx="4" class="pf-rect"/>
+                  <text x="410" y="299" class="pf-text">/09 · adc</text>
+                  <text x="410" y="315" class="pf-sub">analog · 14-bit</text>
+                  <text x="410" y="328" class="pf-sub" style="fill: var(--accent)">module 09</text>
+                </g>
+
+                <line x1="300" y1="334" x2="300" y2="368" class="pf-line" marker-end="url(#msp-arr)"/>
+
+                <!-- CUSTOM HARDWARE -->
+                <text x="40" y="364" class="pf-label">custom hardware</text>
+                <g>
+                  <rect x="160" y="372" width="280" height="68" rx="4" class="pf-rect mcu"/>
+                  <text x="300" y="396" text-anchor="middle" class="pf-text large" style="fill: var(--accent)">LCD Booster-Pack</text>
+                  <text x="300" y="416" text-anchor="middle" class="pf-sub">custom 2-layer pcb</text>
+                  <text x="300" y="432" text-anchor="middle" class="pf-sub">drops onto launchpad headers</text>
+                </g>
+
+                <!-- footer -->
+                <line x1="40" y1="468" x2="560" y2="468" class="pf-line dim" stroke-dasharray="2 3"/>
+                <text x="40" y="488" class="pf-sub">open-sourced · for the next cohort</text>
+                <text x="560" y="488" text-anchor="end" class="pf-sub">utep · 2022</text>
+              </svg>
+            </div>
+            <div class="mag-meta">
+              <div class="mag-tag-line"><span class="role">EDUCATION · UTEP</span><span class="year">2022</span></div>
+              <h3 class="mag-title">MSP432 <em>Lab</em> Templates</h3>
+              <p class="mag-desc">Nine reference firmware modules for UTEP's microprocessor course — from Hello World and GPIO through PWM, UART, LCD, and ADC. Each lab is a clean, commented C template, paired with a custom LCD Booster-Pack PCB that drops onto the LaunchPad headers. Open-sourced for the next cohort to build on.</p>
+              <div class="mag-tags">
+                <span class="tag">MSP432</span><span class="tag">Embedded C</span><span class="tag">Curriculum</span>
+              </div>
+              <span class="mag-cta">View repo</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="mag-dots" id="magDots" role="tablist" aria-label="Project navigation"></div>
+    </div>
+  </div>
+</section>
+
+<section id="stack" aria-labelledby="stack-heading">
+  <div class="wrap stack-section">
+    <div class="section-num" id="stack-heading"><em>04</em> · Technical stack</div>
+    <div class="stack-head">
+      <h2 class="big-head">Technical<br><em>stack</em>.</h2>
+      <p>Eight domains, no padding. The tools that show up in my actual <strong>HWIL, avionics-interface, and firmware work</strong> — not a survey of everything I've ever touched.</p>
+    </div>
+    <div class="stack-grid reveal">
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/01</span>
+        <span class="cat-name">Embedded &amp; Real-Time</span>
+        <ul><li>ARM Cortex-M</li><li>ESP32</li><li>FreeRTOS</li><li>Bare-metal firmware</li><li>Bootloader development</li><li>OTA updates</li></ul>
+      </div>
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/02</span>
+        <span class="cat-name">Communication Protocols</span>
+        <ul><li>I²C — bit-bang &amp; HW</li><li>SPI</li><li>UART</li><li>RS-232 / 422</li><li>Isochronous serial</li><li>HDLC / SDLC</li></ul>
+      </div>
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/03</span>
+        <span class="cat-name">HWIL &amp; Test Systems</span>
+        <ul><li>Sensor emulation</li><li>Avionics integration</li><li>Hardware validation</li><li>NI 6509</li><li>Speedgoat</li><li>iHawk SimWB</li></ul>
+      </div>
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/04</span>
+        <span class="cat-name">DSP &amp; FPGA</span>
+        <ul><li>FIR filtering</li><li>Signal decimation</li><li>HDL Coder</li><li>MATLAB / Simulink</li></ul>
+      </div>
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/05</span>
+        <span class="cat-name">Programming</span>
+        <ul><li>C</li><li>C++</li><li>Python</li><li>MATLAB</li><li>Bash</li></ul>
+      </div>
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/06</span>
+        <span class="cat-name">Software Engineering</span>
+        <ul><li>GitLab CI/CD</li><li>Git</li><li>CMake</li><li>Doxygen</li><li>V&amp;V</li><li>Requirements dev</li></ul>
+      </div>
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/07</span>
+        <span class="cat-name">Test &amp; Measurement</span>
+        <ul><li>Oscilloscope</li><li>Digital multimeter</li><li>Logic analyzer</li><li>PCB bring-up &amp; debug</li></ul>
+      </div>
+      <div class="stack-cat" data-cursor="hover">
+        <span class="cat-num">/08</span>
+        <span class="cat-name">Hardware Design</span>
+        <ul><li>KiCad</li><li>Eagle CAD</li><li>Schematic capture</li><li>Lab debugging</li></ul>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<section id="path" aria-labelledby="path-heading">
+  <div class="wrap path-section">
+    <div class="section-num" id="path-heading"><em>05</em> · Trajectory</div>
+    <div class="path-head">
+      <h2 class="big-head">The<br><em>path</em> here.</h2>
+      <div class="meta">First-gen · El Paso to Albuquerque</div>
+    </div>
+    <div class="timeline" id="timeline">
+      <span class="timeline-line-bg"></span>
+      <span class="timeline-line" id="timelineLine"></span>
+      <div class="tl-item">
+        <div class="tl-side">
+          <div class="tl-when">2027 · expected</div>
+          <div class="tl-loc">Austin, TX · remote<span class="gpa">GPA · 4.0 / 4.0</span></div>
+        </div>
+        <div class="tl-main">
+          <h3 class="tl-role">M.S. <em>Artificial Intelligence</em></h3>
+          <div class="tl-org">UNIVERSITY OF TEXAS AT AUSTIN</div>
+          <p class="tl-note">Part-time graduate study alongside full-time Sandia work. Building ML and AI fluency on top of a deep embedded foundation — aimed at the systems that need both.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-side">
+          <div class="tl-when">2022 · present</div>
+          <div class="tl-loc">Albuquerque, NM</div>
+        </div>
+        <div class="tl-main">
+          <h3 class="tl-role">Embedded <em>Software Engineer</em></h3>
+          <div class="tl-org">SANDIA NATIONAL LABORATORIES</div>
+          <p class="tl-note">Lead engineer across seven chassis-specific iHawk models, with validation software covering eight HWIL chassis. Built FPGA-based and isochronous-serial IMU emulators (Speedgoat, Microgate SyncLink), authored a C++ bit-banged I²C driver for NI&nbsp;6509, hardened OTA with dual-stage hardware version validation, and migrated legacy firmware onto GitLab CI/CD. Coordinate across ground software, flight software, and HWIL electrical teams.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-side">
+          <div class="tl-when">2021 · 2022</div>
+          <div class="tl-loc">El Paso, TX</div>
+        </div>
+        <div class="tl-main">
+          <h3 class="tl-role">Graduate <em>Research Assistant</em></h3>
+          <div class="tl-org">cSETR AEROSPACE CENTER · UTEP</div>
+          <p class="tl-note">Co-led firmware on a 3U CubeSat in a five-person team spanning mechanical, electrical, and software. Wrote C firmware for three flight microcontrollers — data acquisition, control loops, and fault handling. Designed and brought up custom flight PCBs from schematic capture through bench debug with scope and DMM. Migrated the lab to Git and Doxygen so the next cohort wouldn't inherit a tangle.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-side">
+          <div class="tl-when">2021 · summer</div>
+          <div class="tl-loc">Laurel, MD</div>
+        </div>
+        <div class="tl-main">
+          <h3 class="tl-role">Software Engineer <em>Intern</em></h3>
+          <div class="tl-org">JOHNS HOPKINS APPLIED PHYSICS LAB</div>
+          <p class="tl-note">First time inside a production codebase. Wrote a C++ physical-layer signal-processing component for a deployed RF communications system — and learned what code review, Git, Jira, Docker, and GNU Radio look like in production practice.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-side">
+          <div class="tl-when">2022 · awarded</div>
+          <div class="tl-loc">El Paso, TX<span class="gpa">GPA · 3.81 / 4.0</span></div>
+        </div>
+        <div class="tl-main">
+          <h3 class="tl-role">M.S. <em>Computer Engineering</em></h3>
+          <div class="tl-org">UNIVERSITY OF TEXAS AT EL PASO</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-side">
+          <div class="tl-when">2020 · awarded</div>
+          <div class="tl-loc">El Paso, TX</div>
+        </div>
+        <div class="tl-main">
+          <h3 class="tl-role">B.S. <em>Electrical Engineering</em></h3>
+          <div class="tl-org">UNIVERSITY OF TEXAS AT EL PASO</div>
+          <p class="tl-note">First-generation engineering graduate. UTEP is where I learned C, FreeRTOS, and that real-time embedded was the career I wanted. The IPIA capstone (slide /01 in Selected Work) is the project that confirmed it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/purecounter/purecounter.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/typed.js/typed.min.js"></script>
-  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+<section class="contact-section" id="contact" aria-labelledby="contact-heading">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-num" id="contact-heading"><em>06</em> · Get in touch</div>
+      <h2 class="contact-headline">Let's<br><em>build</em>.</h2>
+      <p class="contact-sub">Open to senior roles in embedded software, HWIL, FPGA development, and AI for embedded systems. Email is best — I read everything within a day.</p>
+    </div>
+    <div class="contact-grid">
+      <a href="mailto:jesusminjaresjr@gmail.com" class="contact-link reveal magnetic" data-cursor="hover">
+        <span class="label">Email</span>
+        <span>jesusminjaresjr@gmail.com</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="tel:+19152692065" class="contact-link reveal magnetic" data-cursor="hover">
+        <span class="label">Phone</span>
+        <span>(915) 269-2065</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://www.linkedin.com/in/jesusminjares/" class="contact-link reveal magnetic" target="_blank" rel="noopener" data-cursor="hover">
+        <span class="label">LinkedIn</span>
+        <span>linkedin.com/in/jesusminjares</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://github.com/jminjares4" class="contact-link reveal magnetic" target="_blank" rel="noopener" data-cursor="hover">
+        <span class="label">GitHub</span>
+        <span>github.com/jminjares4</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://github.com/jminjares4/resume" class="contact-link reveal magnetic" target="_blank" rel="noopener" data-cursor="hover">
+        <span class="label">Résumé</span>
+        <span>github.com/jminjares4/resume</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+</main>
+
+<footer>
+  <span>© 2026 · JESUS MINJARES</span>
+  <span class="lang">SE HABLA <strong>ESPAÑOL</strong> · ENGLISH</span>
+  <span>v2.0</span>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+  const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+
+  /* ============================================================
+     THEME TOGGLE
+     ============================================================ */
+  const themeToggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    try { localStorage.setItem('theme', theme); } catch(e) {}
+    /* keep <meta theme-color> in sync for mobile chrome */
+    const mc = document.querySelector('meta[name="theme-color"]:not([media])');
+    if (mc) mc.setAttribute('content', theme === 'light' ? '#f4ecd8' : '#0e0d0a');
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme') || 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  /* sync to system theme changes only if user hasn't explicitly chosen */
+  const sysTheme = window.matchMedia('(prefers-color-scheme: light)');
+  sysTheme.addEventListener('change', (e) => {
+    let stored;
+    try { stored = localStorage.getItem('theme'); } catch(e) {}
+    if (!stored) applyTheme(e.matches ? 'light' : 'dark');
+  });
+
+  /* ============================================================
+     CURSOR
+     ============================================================ */
+  if (!isCoarse && !isMobile) {
+    const dot = document.querySelector('.cursor-dot');
+    const ring = document.querySelector('.cursor-ring');
+    const label = document.getElementById('cursorLabel');
+    let mx = -100, my = -100, dx = -100, dy = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      label.style.left = mx + 'px';
+      label.style.top = my + 'px';
+    }, { passive: true });
+    function tick() {
+      dx += (mx - dx) * 0.4; dy += (my - dy) * 0.4;
+      rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+      dot.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+      requestAnimationFrame(tick);
+    }
+    tick();
+    const stateMap = { hover: 'c-hover', view: 'c-view' };
+    document.querySelectorAll('[data-cursor]').forEach(el => {
+      const state = stateMap[el.dataset.cursor];
+      if (!state) return;
+      el.addEventListener('mouseenter', () => {
+        document.body.classList.add(state);
+        if (state === 'c-view') label.textContent = 'View';
+      });
+      el.addEventListener('mouseleave', () => document.body.classList.remove(state));
+    });
+    document.querySelectorAll('a:not([data-cursor]), button:not([data-cursor])').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('c-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('c-hover'));
+    });
+  }
+
+  /* ============================================================
+     SCROLL PROGRESS
+     ============================================================ */
+  const progress = document.getElementById('scrollProgress');
+  const onScrollProgress = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    progress.style.width = pct + '%';
+  };
+  onScrollProgress();
+  window.addEventListener('scroll', onScrollProgress, { passive: true });
+
+  /* ============================================================
+     NAV STATE
+     ============================================================ */
+  const nav = document.getElementById('nav');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 30);
+  }, { passive: true });
+
+  const sections = ['about','current','work','stack','path','contact']
+    .map(id => document.getElementById(id)).filter(Boolean);
+  const navIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => navIO.observe(s));
+
+  /* ============================================================
+     HERO SCOPE — pause animation when offscreen (mobile battery)
+     ============================================================ */
+  const heroSection = document.querySelector('.hero');
+  if (heroSection && !reduce) {
+    const scopeIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        // Pause CSS keyframe animation when hero scrolls out of view
+        const scrolls = e.target.querySelectorAll('.scope-scroll');
+        scrolls.forEach(g => {
+          g.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+        });
+      });
+    }, { threshold: 0 });
+    scopeIO.observe(heroSection);
+  }
+
+  /* ============================================================
+     CLOCK
+     ============================================================ */
+  function tickClock() {
+    const now = new Date();
+    const opts = { timeZone: 'America/Denver', hour: '2-digit', minute: '2-digit', hour12: false };
+    const t = new Intl.DateTimeFormat('en-US', opts).format(now);
+    const el = document.getElementById('clock');
+    if (el) el.textContent = t + ' MT';
+  }
+  tickClock();
+  setInterval(tickClock, 30000);
+
+  /* ============================================================
+     REVEAL ANIMATIONS
+     ============================================================ */
+  const revealIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+  document.querySelectorAll('.reveal, .mask-reveal').forEach(el => revealIO.observe(el));
+
+  /* ============================================================
+     SCRAMBLE COUNTERS
+     ============================================================ */
+  const scramblers = document.querySelectorAll('.scramble');
+  const scrambleIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = parseFloat(el.dataset.target);
+        const decimals = parseInt(el.dataset.decimals) || 0;
+        const duration = 1800;
+        const start = performance.now();
+        function step(ts) {
+          const t = Math.min(1, (ts - start) / duration);
+          if (t < 0.8) {
+            const closeness = t / 0.8;
+            const noise = (Math.random() * target * 2) * (1 - closeness);
+            const v = Math.max(0, target * closeness + noise);
+            el.textContent = decimals > 0 ? v.toFixed(decimals) : Math.floor(v);
+          } else {
+            const localT = (t - 0.8) / 0.2;
+            const eased = 1 - Math.pow(1 - localT, 2);
+            const v = target * (0.8 + 0.2 * eased);
+            el.textContent = decimals > 0 ? v.toFixed(decimals) : Math.floor(v);
+          }
+          if (t < 1) requestAnimationFrame(step);
+          else el.textContent = decimals > 0 ? target.toFixed(decimals) : target;
+        }
+        if (!reduce) requestAnimationFrame(step);
+        else el.textContent = decimals > 0 ? target.toFixed(decimals) : target;
+        scrambleIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  scramblers.forEach(c => scrambleIO.observe(c));
+
+
+  /* ============================================================
+     TIMELINE LINE
+     ============================================================ */
+  const timeline = document.getElementById('timeline');
+  const timelineLine = document.getElementById('timelineLine');
+  const tlItems = timeline ? timeline.querySelectorAll('.tl-item') : [];
+  function updateTimeline() {
+    if (!timeline) return;
+    const r = timeline.getBoundingClientRect();
+    const wH = window.innerHeight;
+    const start = wH * 0.6;
+    const total = r.height;
+    const visible = Math.min(total, Math.max(0, start - r.top));
+    const ratio = Math.min(1, visible / total);
+    if (timelineLine) timelineLine.style.setProperty('--draw', (ratio * 100) + '%');
+    tlItems.forEach(item => {
+      const ir = item.getBoundingClientRect();
+      const center = ir.top + ir.height / 2;
+      item.classList.toggle('lit', center < wH * 0.7);
+    });
+  }
+  updateTimeline();
+  window.addEventListener('scroll', updateTimeline, { passive: true });
+
+  /* ============================================================
+     MAGNETIC LINKS
+     ============================================================ */
+  if (!isCoarse && !reduce) {
+    document.querySelectorAll('.magnetic').forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        el.style.transform = `translate(${x * 0.05}px, ${y * 0.15}px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+    });
+  }
+
+  /* ============================================================
+     SELECTED WORK — SLIDER
+     ============================================================ */
+  (function initSlider(){
+    const slider = document.getElementById('magSlider');
+    if (!slider) return;
+    const track = document.getElementById('magTrack');
+    const slides = Array.from(track.querySelectorAll('.mag-slide'));
+    const prev = document.getElementById('magPrev');
+    const next = document.getElementById('magNext');
+    const nowEl = document.getElementById('magNow');
+    const totalEl = document.getElementById('magTotal');
+    const dotsEl = document.getElementById('magDots');
+    if (!slides.length) return;
+
+    totalEl.textContent = String(slides.length).padStart(2, '0');
+
+    /* build dots */
+    slides.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'mag-dot' + (i === 0 ? ' active' : '');
+      b.setAttribute('data-cursor', 'link');
+      b.setAttribute('aria-label', `Go to project ${i + 1}`);
+      b.dataset.idx = String(i);
+      dotsEl.appendChild(b);
+    });
+    const dots = Array.from(dotsEl.querySelectorAll('.mag-dot'));
+
+    let current = 0;
+
+    function scrollToSlide(i) {
+      const target = slides[i];
+      if (!target) return;
+      const left = target.offsetLeft;
+      track.scrollTo({ left, behavior: 'smooth' });
+    }
+
+    function updateUI(i) {
+      current = i;
+      nowEl.textContent = String(i + 1).padStart(2, '0');
+      dots.forEach((d, di) => d.classList.toggle('active', di === i));
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+    }
+
+    /* watch scroll position to know which slide is active */
+    let scrollDebounce;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollDebounce);
+      scrollDebounce = setTimeout(() => {
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let closest = 0; let dist = Infinity;
+        slides.forEach((s, i) => {
+          const sc = s.offsetLeft + s.clientWidth / 2;
+          const d = Math.abs(sc - center);
+          if (d < dist) { dist = d; closest = i; }
+        });
+        if (closest !== current) updateUI(closest);
+      }, 60);
+    }, { passive: true });
+
+    prev.addEventListener('click', () => {
+      if (current > 0) scrollToSlide(current - 1);
+    });
+    next.addEventListener('click', () => {
+      if (current < slides.length - 1) scrollToSlide(current + 1);
+    });
+
+    dots.forEach(d => {
+      d.addEventListener('click', () => {
+        const i = parseInt(d.dataset.idx, 10);
+        scrollToSlide(i);
+      });
+    });
+
+    /* keyboard navigation when slider region focused */
+    slider.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); next.click(); }
+    });
+
+    updateUI(0);
+  })();
+})();
+</script>
 
 </body>
-
 </html>
