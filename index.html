@@ -1565,12 +1565,13 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .about-body p { font-size: 1.05rem; }
 
   /* === HERO MOBILE CLEANUP === */
-  /* Reduce the scope's visual presence so it stays a backdrop, not a competitor */
-  .scope-grid-svg { opacity: 0.42; }
-  [data-theme="light"] .scope-grid-svg { opacity: 0.55; }
-  /* Hide channel labels on mobile - they crowd the small viewport with text */
-  .scope-grid-svg .scope-text,
-  .scope-grid-svg text { display: none; }
+  /* CRITICAL PERFORMANCE FIX: The inline scope-grid SVG is ~39KB of path data
+     with continuous CSS animation (scope-scroll-x running infinitely at 60fps).
+     On mobile CPUs this causes janky scrolling, delayed paint, and overall
+     "broken" feel. Removing it from rendering AND animation entirely is the
+     single biggest mobile improvement. The hero still works visually without it. */
+  .scope-grid-svg { display: none !important; }
+  .scope-scroll, .scope-scroll * { animation: none !important; }
   /* Hide redundant name fragment ("embedded·sw·engineer · Sandia · 2022—present")
      since the same info appears in the hero-tag body text below */
   .name-frag { display: none !important; }
@@ -1594,6 +1595,9 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .section-num::before { width: 18px; }
   .section-num { font-size: 0.72rem; gap: 0.7rem; }
 
+  /* PERFORMANCE: Stop the constantly-running marquee animation on mobile.
+     Decorative scrolling text isn't worth the CPU/battery cost on phones. */
+  .marquee-track { animation: none !important; transform: none !important; }
   /* marquee narrower */
   .marquee-track { font-size: 1.1rem; gap: 2rem; }
   .marquee-track span { gap: 2rem; }
