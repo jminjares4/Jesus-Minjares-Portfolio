@@ -1119,6 +1119,11 @@ footer .build-status .nominal-dot {
 .mag-track-wrap {
   position: relative;
   overflow: hidden;
+  /* Hard-clip child rendering at the wrap boundary. Without `contain: paint`
+     iOS Safari occasionally lets a few sub-pixels of the adjacent slide
+     leak through during/after scroll, producing a thin bleed strip on the
+     edge of the visible slide. */
+  contain: paint;
 }
 .mag-track {
   display: flex;
@@ -1129,10 +1134,20 @@ footer .build-status .nominal-dot {
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding-bottom: 0.5rem;
+  /* Pin snap points to the exact track origin and stop overscroll from
+     drifting the scroll position off-snap. Together these make sure each
+     swipe lands cleanly on a single slide instead of leaving a sliver of
+     the neighbor visible at the edge. */
+  scroll-padding-inline: 0;
+  overscroll-behavior-x: contain;
 }
 .mag-track::-webkit-scrollbar { display: none; }
 .mag-slide {
   flex: 0 0 100%;
+  /* Belt-and-suspenders explicit width so flex-basis rounding can't make
+     the slide a sub-pixel narrower than the track viewport. */
+  width: 100%;
+  min-width: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   padding-inline: 0;
@@ -1289,9 +1304,30 @@ footer .build-status .nominal-dot {
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   padding: 0.45rem 0.85rem; border: 1px solid var(--line); font-weight: 500;
 }
+/* Slide-number badge on flow-display: tuck into the bottom-left corner by
+   default. The title bar lives at top-left and the small bracket accent at
+   bottom-right, so bottom-left is the only corner that doesn't fight other
+   elements. Desktop-first means landscape phones, tablets, and "Request
+   Desktop Site" all get the corrected position. */
 .mag-display.flow-display .mag-num {
-  left: auto;
-  right: 1rem;
+  top: auto;
+  bottom: 0.7rem;
+  left: 0.7rem;
+  right: auto;
+  font-size: 0.7rem;
+  padding: 0.35rem 0.65rem;
+}
+@media (min-width: 1000px) {
+  /* True desktop has enough horizontal room for the badge to live at
+     top-right alongside the title bar without crowding. */
+  .mag-display.flow-display .mag-num {
+    top: 1rem;
+    bottom: auto;
+    left: auto;
+    right: 1rem;
+    font-size: 0.8rem;
+    padding: 0.45rem 0.85rem;
+  }
 }
 
 .mag-meta {
@@ -1767,17 +1803,8 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  /* Slide-number badge on flow-display: tuck into the bottom-left corner.
-     The title bar lives at top-left and the small bracket accent at bottom-right,
-     so bottom-left is the only corner that doesn't fight other elements. */
-  .mag-display.flow-display .mag-num {
-    top: auto;
-    bottom: 0.7rem;
-    left: 0.7rem;
-    right: auto;
-    font-size: 0.7rem;
-    padding: 0.35rem 0.65rem;
-  }
+  /* (flow-display badge already defaults to bottom-left at the source rule;
+     no mobile override needed.) */
 
   /* footer */
   footer { padding: 2rem var(--pad-x) calc(2rem + env(safe-area-inset-bottom)); }
@@ -3123,9 +3150,15 @@ img, svg, video, canvas { max-width: 100%; }
       next.disabled = i === slides.length - 1;
     }
 
-    /* watch scroll position to know which slide is active */
+    /* watch scroll position to know which slide is active, and force-snap
+       if the position drifted off the nearest slide's start. iOS Safari's
+       native scroll-snap is unreliable mid-swipe and occasionally leaves
+       two slides simultaneously visible — this debounced correction catches
+       that case and snaps to the nearest slide cleanly. */
     let scrollDebounce;
+    let snapInProgress = false;
     track.addEventListener('scroll', () => {
+      if (snapInProgress) return; // ignore the scroll events fired by our own snap
       clearTimeout(scrollDebounce);
       scrollDebounce = setTimeout(() => {
         const center = track.scrollLeft + track.clientWidth / 2;
@@ -3136,7 +3169,18 @@ img, svg, video, canvas { max-width: 100%; }
           if (d < dist) { dist = d; closest = i; }
         });
         if (closest !== current) updateUI(closest);
-      }, 60);
+
+        // Force-snap if scroll is more than a couple pixels off the slide's start.
+        // The 2px threshold prevents thrashing on perfectly-snapped positions
+        // while still catching the multi-pixel drift visible on iOS Safari.
+        const expected = slides[closest].offsetLeft;
+        if (Math.abs(track.scrollLeft - expected) > 2) {
+          snapInProgress = true;
+          track.scrollTo({ left: expected, behavior: 'smooth' });
+          // Release the lock after the smooth-scroll completes.
+          setTimeout(() => { snapInProgress = false; }, 350);
+        }
+      }, 80);
     }, { passive: true });
 
     prev.addEventListener('click', () => {
