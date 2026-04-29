@@ -27,21 +27,30 @@
 <meta name="theme-color" content="#eef2f8" media="(prefers-color-scheme: light)">
 
 <!-- Favicon: dual-channel scope readout — orange PWM + atomic blue sine.
-     Mirrors the hero's multi-channel oscilloscope aesthetic. -->
+     Mirrors the hero's multi-channel oscilloscope aesthetic.
+     Multiple rel declarations because browsers, social-media crawlers, and
+     aggregators (including GitHub's own link-preview cards) each look for
+     different combinations of rel/sizes hints — this gives every agent a
+     declaration it understands. -->
 <link rel="icon" type="image/png" sizes="128x128" href="/assets/img/favicon-128.png">
+<link rel="icon" href="/assets/img/favicon-128.png">
+<link rel="shortcut icon" href="/assets/img/favicon-128.png">
 
-<!-- Apple touch icon: dual-channel scope at full home-screen detail (HUD frame, grid, status dot) -->
+<!-- Apple touch icon: dual-channel scope at full home-screen detail (HUD frame, grid, status dot).
+     Also used as the fallback social-card image until a dedicated 1200x630 og-image is added. -->
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon-apple.png">
 
 <!-- Indexing: allow search engines -->
 <meta name="robots" content="index, follow, max-image-preview:large">
 
-<!-- TODO BEFORE DEPLOY: replace with your actual deployed URL -->
-<!-- <link rel="canonical" href="https://jminjares.dev/"> -->
-<!-- <meta property="og:url" content="https://jminjares.dev/"> -->
-<!-- <meta property="og:image" content="https://jminjares.dev/og-image.png"> -->
-<!-- <meta name="twitter:image" content="https://jminjares.dev/og-image.png"> -->
-<!-- og-image should be 1200x630 PNG showing your name + role -->
+<!-- Currently deployed at jminjares4.github.io. Update when the custom domain
+     (jminjares.dev) is wired up. og:image points at the apple-touch-icon as a
+     placeholder so link-preview cards have *something* to show — replace with a
+     proper 1200x630 image when you create one. -->
+<link rel="canonical" href="https://jminjares4.github.io/">
+<meta property="og:url" content="https://jminjares4.github.io/">
+<meta property="og:image" content="https://jminjares4.github.io/assets/img/favicon-apple.png">
+<meta name="twitter:image" content="https://jminjares4.github.io/assets/img/favicon-apple.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -691,7 +700,15 @@ footer .build-status .nominal-dot {
 }
 .about-figure {
   display: flex; flex-direction: column; gap: 1.5rem;
-  position: sticky; top: 7rem;
+}
+@media (min-width: 1000px) {
+  /* Sticky is only safe inside the two-column desktop layout. In the
+     single-column layout (anything below 1000px, including phones AND
+     landscape phones AND tablets), the figure (row 1) and the prose (row 2)
+     occupy the same horizontal column — and a sticky figure would pin
+     itself to the top while the prose scrolls up underneath, producing
+     the photo-on-top-of-text overlap visible in the about section. */
+  .about-figure { position: sticky; top: 7rem; }
 }
 .photo-wrap {
   position: relative; width: 100%;
@@ -1662,7 +1679,7 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .marquee-track span { gap: 2rem; }
 
   /* about — mobile stack */
-  .about-figure { position: static; }
+  /* (about-figure sticky is gated to >=1000px at the source, no override needed.) */
   /* Smaller profile photo on mobile - was eating ~370px of vertical space.
      180px wrap + 4/5 ratio + frame = ~280px, ~90px shorter than before. */
   .photo-wrap { max-width: 180px; padding: 1.25rem 1.25rem 0 0; }
