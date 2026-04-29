@@ -1252,6 +1252,12 @@ footer .build-status .nominal-dot {
   background: linear-gradient(180deg, var(--bg-elev), var(--bg-deep));
   display: flex; align-items: center; justify-content: center;
   padding: 2.4rem 1.5rem 1.4rem;
+  /* Override the 5/4 aspect-ratio inherited from .mag-display so the SVG
+     drives the height naturally. Without this, the container forces a
+     fixed 5/4 box on desktop and the diagram gets letterboxed inside it,
+     causing visual "squishing" with whitespace above/below. */
+  aspect-ratio: auto;
+  min-height: 240px;
 }
 .mag-display.flow-display::before {
   content: attr(data-flow-title);
@@ -1265,6 +1271,10 @@ footer .build-status .nominal-dot {
   text-transform: uppercase;
   z-index: 2;
   font-weight: 500;
+  /* Match the parent .mag-display border-radius so the chip's top-left
+     corner curves with the container instead of leaving a visible wedge
+     of the container's bg color showing through the rounded corner. */
+  border-top-left-radius: 4px;
 }
 .mag-display.flow-display::after {
   content: ""; position: absolute; bottom: 0.55rem; right: 0.55rem;
@@ -2518,9 +2528,96 @@ img, svg, video, canvas { max-width: 100%; }
           </a>
 
           <a href="https://github.com/jminjares4/EWOD" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
-            <div class="mag-display contain-display">
+            <div class="mag-display flow-display" data-flow-title="// hardware · hv switching architecture">
               <span class="mag-num">/02</span>
-              <img src="assets/img/portfolio/ewod/EWOD_pcb.png" alt="EWOD driver PCB" loading="lazy" decoding="async"/>
+              <svg class="project-flow" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-label="EWOD driver architecture">
+                <defs>
+                  <marker id="ewod-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+                  </marker>
+                  <marker id="ewod-arr-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--signal)"/>
+                  </marker>
+                </defs>
+
+                <!-- bg lane tints (equal height, both contain a single row) -->
+                <rect x="30" y="74" width="360" height="68" rx="6" fill="var(--tint-accent-soft)" opacity="0.45"/>
+                <rect x="400" y="74" width="170" height="68" rx="6" fill="var(--tint-signal-soft)" opacity="0.5"/>
+
+                <!-- lane labels -->
+                <text x="210" y="60" text-anchor="middle" class="pf-label" style="fill: var(--accent)">high-voltage rail</text>
+                <text x="485" y="60" text-anchor="middle" class="pf-label" style="fill: var(--signal)">esp32 control</text>
+
+                <!-- HV CHAIN row -->
+                <g>
+                  <rect x="40" y="84" width="80" height="42" rx="3" class="pf-rect"/>
+                  <text x="80" y="102" text-anchor="middle" class="pf-text">AC in</text>
+                  <text x="80" y="116" text-anchor="middle" class="pf-sub">wall input</text>
+                </g>
+                <line x1="120" y1="105" x2="140" y2="105" class="pf-line" marker-end="url(#ewod-arr)"/>
+
+                <g>
+                  <rect x="140" y="84" width="100" height="42" rx="3" class="pf-rect"/>
+                  <text x="190" y="102" text-anchor="middle" class="pf-text">transformer</text>
+                  <text x="190" y="116" text-anchor="middle" class="pf-sub">step-down</text>
+                </g>
+                <line x1="240" y1="105" x2="260" y2="105" class="pf-line" marker-end="url(#ewod-arr)"/>
+
+                <g>
+                  <rect x="260" y="84" width="120" height="42" rx="3" class="pf-rect accent"/>
+                  <text x="320" y="102" text-anchor="middle" class="pf-text">164 V rail</text>
+                  <text x="320" y="116" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">3.3 V → 164 V · 7 TPs</text>
+                </g>
+
+                <!-- ESP32 control -->
+                <g>
+                  <rect x="410" y="84" width="150" height="42" rx="3" class="pf-rect mcu"/>
+                  <text x="485" y="102" text-anchor="middle" class="pf-text">ESP32</text>
+                  <text x="485" y="116" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">controller · firmware</text>
+                </g>
+
+                <!-- HV trunk down (clean vertical space below lane bg) -->
+                <line x1="320" y1="142" x2="320" y2="200" class="pf-line" marker-end="url(#ewod-arr)"/>
+                <line x1="320" y1="142" x2="320" y2="200" class="pf-line pf-pulse"/>
+                <rect x="298" y="164" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="320" y="174" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">HV</text>
+
+                <!-- GPIO trunk down -->
+                <line x1="485" y1="142" x2="485" y2="200" class="pf-line signal" marker-end="url(#ewod-arr-s)"/>
+                <rect x="463" y="164" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="485" y="174" text-anchor="middle" class="pf-sub" style="fill: var(--signal); font-weight: 600">gpio</text>
+
+                <!-- SPDT relay array (wide, centered, both trunks land inside cleanly) -->
+                <text x="40" y="194" class="pf-label">switching</text>
+                <g>
+                  <rect x="60" y="200" width="500" height="58" rx="4" class="pf-rect signal"/>
+                  <text x="310" y="222" text-anchor="middle" class="pf-text large">SPDT relay array · surface-mount</text>
+                  <text x="310" y="240" text-anchor="middle" class="pf-sub">routes high voltage to selected electrodes</text>
+                </g>
+
+                <!-- switched HV trunk down -->
+                <line x1="310" y1="258" x2="310" y2="306" class="pf-line" marker-end="url(#ewod-arr)"/>
+                <line x1="310" y1="258" x2="310" y2="306" class="pf-line pf-pulse"/>
+                <rect x="268" y="276" width="84" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="310" y="286" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">switched HV</text>
+
+                <!-- EWOD electrode grid -->
+                <text x="40" y="300" class="pf-label">actuation</text>
+                <g>
+                  <rect x="60" y="306" width="500" height="58" rx="4" class="pf-rect"/>
+                  <text x="310" y="328" text-anchor="middle" class="pf-text large">EWOD electrode grid</text>
+                  <text x="310" y="346" text-anchor="middle" class="pf-sub">droplet actuation · electrowetting on dielectric</text>
+                </g>
+
+                <!-- application note -->
+                <text x="40" y="396" class="pf-label">use</text>
+                <text x="40" y="414" class="pf-sub">software-defined fluid routing across a 2D grid · lab-on-a-chip</text>
+
+                <!-- footer -->
+                <line x1="40" y1="466" x2="560" y2="466" class="pf-line dim" stroke-dasharray="2 3"/>
+                <text x="40" y="486" class="pf-sub">kicad · pcb · esp32 firmware</text>
+                <text x="560" y="486" text-anchor="end" class="pf-sub">senior project · 2022</text>
+              </svg>
             </div>
             <div class="mag-meta">
               <div class="mag-tag-line"><span class="role">SENIOR PROJECT · UTEP</span><span class="year">2022</span></div>
@@ -2534,9 +2631,99 @@ img, svg, video, canvas { max-width: 100%; }
           </a>
 
           <a href="https://github.com/jminjares4/ESP32-Sensor-Data-Logger" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
-            <div class="mag-display contain-display paper">
+            <div class="mag-display flow-display" data-flow-title="// system · esp32 logger architecture">
               <span class="mag-num">/03</span>
-              <img src="assets/img/portfolio/sensor_data_logger/sensor_data_logger.png" alt="ESP32 sensor data logger PCB render" loading="lazy" decoding="async"/>
+              <svg class="project-flow" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-label="ESP32 sensor data logger architecture">
+                <defs>
+                  <marker id="esd-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+                  </marker>
+                  <marker id="esd-arr-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--signal)"/>
+                  </marker>
+                </defs>
+
+                <!-- bg lane tints -->
+                <rect x="30" y="74" width="240" height="118" rx="6" fill="var(--tint-accent-soft)" opacity="0.45"/>
+                <rect x="370" y="74" width="200" height="60" rx="6" fill="var(--tint-signal-soft)" opacity="0.5"/>
+
+                <!-- lane labels -->
+                <text x="150" y="60" text-anchor="middle" class="pf-label" style="fill: var(--accent)">power</text>
+                <text x="470" y="60" text-anchor="middle" class="pf-label" style="fill: var(--signal)">sensors</text>
+
+                <!-- POWER row -->
+                <g>
+                  <rect x="40" y="84" width="100" height="38" rx="3" class="pf-rect"/>
+                  <text x="90" y="100" text-anchor="middle" class="pf-text">USB-C</text>
+                  <text x="90" y="113" text-anchor="middle" class="pf-sub">5 V in</text>
+                </g>
+                <line x1="140" y1="103" x2="160" y2="103" class="pf-line" marker-end="url(#esd-arr)"/>
+
+                <g>
+                  <rect x="160" y="84" width="100" height="38" rx="3" class="pf-rect"/>
+                  <text x="210" y="100" text-anchor="middle" class="pf-text">3V3 LDO</text>
+                  <text x="210" y="113" text-anchor="middle" class="pf-sub">regulator</text>
+                </g>
+
+                <!-- coin cell RTC backup -->
+                <g>
+                  <rect x="40" y="148" width="220" height="38" rx="3" class="pf-rect deep"/>
+                  <text x="150" y="167" text-anchor="middle" class="pf-text">CR2032 · RTC backup</text>
+                  <text x="150" y="180" text-anchor="middle" class="pf-sub">timestamp continuity</text>
+                </g>
+
+                <!-- SENSORS row -->
+                <g>
+                  <rect x="380" y="84" width="85" height="38" rx="3" class="pf-rect signal"/>
+                  <text x="422" y="100" text-anchor="middle" class="pf-text">I²C bus</text>
+                  <text x="422" y="113" text-anchor="middle" class="pf-sub">addressable</text>
+                </g>
+                <g>
+                  <rect x="475" y="84" width="85" height="38" rx="3" class="pf-rect signal"/>
+                  <text x="518" y="100" text-anchor="middle" class="pf-text">GPIO</text>
+                  <text x="518" y="113" text-anchor="middle" class="pf-sub">digital</text>
+                </g>
+
+                <!-- power trunk down -->
+                <line x1="210" y1="186" x2="210" y2="240" class="pf-line" marker-end="url(#esd-arr)"/>
+                <line x1="210" y1="186" x2="210" y2="240" class="pf-line pf-pulse"/>
+                <rect x="188" y="208" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="210" y="218" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">3.3 V</text>
+
+                <!-- sensor trunk down -->
+                <line x1="470" y1="122" x2="470" y2="240" class="pf-line signal" marker-end="url(#esd-arr-s)"/>
+                <rect x="448" y="178" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="470" y="188" text-anchor="middle" class="pf-sub" style="fill: var(--signal); font-weight: 600">data</text>
+
+                <!-- ESP32 MCU -->
+                <text x="40" y="232" class="pf-label">mcu</text>
+                <g>
+                  <rect x="100" y="240" width="440" height="74" rx="4" class="pf-rect mcu"/>
+                  <text x="320" y="263" text-anchor="middle" class="pf-text large" style="fill: var(--accent)">ESP32</text>
+                  <text x="320" y="282" text-anchor="middle" class="pf-sub">esp-idf · freertos · multi-task scheduler</text>
+                  <text x="320" y="298" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">acquisition · timestamping · log writer</text>
+                </g>
+
+                <!-- ESP32 → microSD -->
+                <line x1="320" y1="314" x2="320" y2="352" class="pf-line" marker-end="url(#esd-arr)"/>
+                <rect x="278" y="324" width="84" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="320" y="334" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">SPI · log</text>
+
+                <g>
+                  <rect x="180" y="352" width="280" height="50" rx="3" class="pf-rect"/>
+                  <text x="320" y="370" text-anchor="middle" class="pf-text large">microSD storage</text>
+                  <text x="320" y="388" text-anchor="middle" class="pf-sub">timestamped sensor logs</text>
+                </g>
+
+                <!-- toolchain note -->
+                <text x="40" y="428" class="pf-label">toolchain</text>
+                <text x="40" y="446" class="pf-sub">github actions · ci builds · doxygen api docs</text>
+
+                <!-- footer -->
+                <line x1="40" y1="466" x2="560" y2="466" class="pf-line dim" stroke-dasharray="2 3"/>
+                <text x="40" y="486" class="pf-sub">esp-idf · custom pcb · iot</text>
+                <text x="560" y="486" text-anchor="end" class="pf-sub">personal · 2023</text>
+              </svg>
             </div>
             <div class="mag-meta">
               <div class="mag-tag-line"><span class="role">PERSONAL · IoT</span><span class="year">2023</span></div>
@@ -2550,9 +2737,109 @@ img, svg, video, canvas { max-width: 100%; }
           </a>
 
           <a href="https://github.com/jminjares4/Custom-NFC-Card" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
-            <div class="mag-display contain-display paper">
+            <div class="mag-display flow-display" data-flow-title="// passive · ntag tap → portfolio">
               <span class="mag-num">/04</span>
-              <img src="assets/img/portfolio/custom_nfc_card/custom_nfc_card_frontview.png" alt="Custom NFC business card" loading="lazy" decoding="async"/>
+              <svg class="project-flow" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-label="NFC business card tap flow">
+                <defs>
+                  <marker id="nfc-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+                  </marker>
+                  <marker id="nfc-arr-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--signal)"/>
+                  </marker>
+                </defs>
+
+                <!-- bg lane tints — phone | card | portfolio -->
+                <rect x="30" y="80" width="190" height="160" rx="6" fill="var(--tint-signal-soft)" opacity="0.45"/>
+                <rect x="240" y="80" width="160" height="160" rx="6" fill="var(--tint-accent-soft)" opacity="0.5"/>
+                <rect x="420" y="80" width="150" height="160" rx="6" fill="var(--tint-signal-soft)" opacity="0.45"/>
+
+                <!-- lane labels -->
+                <text x="125" y="68" text-anchor="middle" class="pf-label" style="fill: var(--signal)">phone reader</text>
+                <text x="320" y="68" text-anchor="middle" class="pf-label" style="fill: var(--accent)">flex pcb · ntag</text>
+                <text x="495" y="68" text-anchor="middle" class="pf-label" style="fill: var(--signal)">portfolio</text>
+
+                <!-- PHONE -->
+                <g>
+                  <rect x="60" y="96" width="130" height="120" rx="10" class="pf-rect deep"/>
+                  <text x="125" y="120" text-anchor="middle" class="pf-text large">phone</text>
+                  <text x="125" y="138" text-anchor="middle" class="pf-sub">nfc-enabled</text>
+                  <!-- nfc waves icon -->
+                  <path d="M 110 168 q 7.5 -4 15 0" stroke="var(--accent)" stroke-width="1.4" fill="none"/>
+                  <path d="M 102 178 q 13 -7 26 0" stroke="var(--accent)" stroke-width="1.4" fill="none"/>
+                  <path d="M 94 188 q 19 -10 38 0" stroke="var(--accent)" stroke-width="1.4" fill="none"/>
+                  <text x="125" y="208" text-anchor="middle" class="pf-sub">tap (≤ 4 cm)</text>
+                </g>
+
+                <!-- RF energy: phone → card -->
+                <line x1="190" y1="156" x2="240" y2="156" class="pf-line pf-pulse"/>
+                <line x1="190" y1="156" x2="240" y2="156" class="pf-line" marker-end="url(#nfc-arr)"/>
+                <text x="215" y="146" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">13.56 MHz</text>
+
+                <!-- CARD -->
+                <g>
+                  <rect x="250" y="96" width="140" height="120" rx="4" class="pf-rect mcu"/>
+                  <text x="320" y="118" text-anchor="middle" class="pf-text large" style="fill: var(--accent)">flex PCB</text>
+                  <text x="320" y="134" text-anchor="middle" class="pf-sub">2-layer · KiCad</text>
+                  <!-- NTAG IC inside -->
+                  <rect x="278" y="148" width="84" height="42" rx="2" class="pf-rect accent"/>
+                  <text x="320" y="166" text-anchor="middle" class="pf-text">NTAG IC</text>
+                  <text x="320" y="180" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">passive</text>
+                  <text x="320" y="208" text-anchor="middle" class="pf-sub">no battery · no app</text>
+                </g>
+
+                <!-- URL: card → portfolio -->
+                <line x1="400" y1="156" x2="420" y2="156" class="pf-line signal" marker-end="url(#nfc-arr-s)"/>
+                <text x="410" y="146" text-anchor="middle" class="pf-sub" style="fill: var(--signal); font-weight: 600">URL</text>
+
+                <!-- PORTFOLIO -->
+                <g>
+                  <rect x="430" y="96" width="130" height="120" rx="4" class="pf-rect signal"/>
+                  <text x="495" y="120" text-anchor="middle" class="pf-text large">portfolio</text>
+                  <text x="495" y="138" text-anchor="middle" class="pf-sub">jminjares4.</text>
+                  <text x="495" y="152" text-anchor="middle" class="pf-sub">github.io</text>
+                  <!-- browser bar icon -->
+                  <rect x="460" y="166" width="70" height="22" rx="2" fill="var(--bg)" stroke="var(--signal)" stroke-width="1"/>
+                  <circle cx="468" cy="177" r="2" fill="var(--accent)"/>
+                  <line x1="475" y1="177" x2="525" y2="177" stroke="var(--ink-mid)" stroke-width="1"/>
+                  <text x="495" y="208" text-anchor="middle" class="pf-sub">opens in browser</text>
+                </g>
+
+                <!-- explanatory steps -->
+                <line x1="40" y1="270" x2="560" y2="270" class="pf-line dim" stroke-dasharray="2 3"/>
+                <text x="40" y="294" class="pf-label">how it works</text>
+
+                <g>
+                  <rect x="40" y="304" width="170" height="76" rx="3" class="pf-rect"/>
+                  <text x="125" y="324" text-anchor="middle" class="pf-text">step 1 · induce</text>
+                  <text x="125" y="344" text-anchor="middle" class="pf-sub">phone's RF field</text>
+                  <text x="125" y="358" text-anchor="middle" class="pf-sub">powers the NTAG chip</text>
+                  <text x="125" y="372" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">no battery needed</text>
+                </g>
+                <g>
+                  <rect x="220" y="304" width="160" height="76" rx="3" class="pf-rect"/>
+                  <text x="300" y="324" text-anchor="middle" class="pf-text">step 2 · transmit</text>
+                  <text x="300" y="344" text-anchor="middle" class="pf-sub">NTAG reads URL out</text>
+                  <text x="300" y="358" text-anchor="middle" class="pf-sub">of stored memory</text>
+                  <text x="300" y="372" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">~ instant</text>
+                </g>
+                <g>
+                  <rect x="390" y="304" width="170" height="76" rx="3" class="pf-rect"/>
+                  <text x="475" y="324" text-anchor="middle" class="pf-text">step 3 · open</text>
+                  <text x="475" y="344" text-anchor="middle" class="pf-sub">phone navigates to</text>
+                  <text x="475" y="358" text-anchor="middle" class="pf-sub">the portfolio url</text>
+                  <text x="475" y="372" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">no app required</text>
+                </g>
+
+                <!-- design note -->
+                <text x="40" y="416" class="pf-label">design</text>
+                <text x="40" y="434" class="pf-sub">low-profile NTAG IC · 2-layer flex stack-up · credit-card form factor</text>
+
+                <!-- footer -->
+                <line x1="40" y1="466" x2="560" y2="466" class="pf-line dim" stroke-dasharray="2 3"/>
+                <text x="40" y="486" class="pf-sub">flex pcb · kicad · ntag</text>
+                <text x="560" y="486" text-anchor="end" class="pf-sub">personal · 2022</text>
+              </svg>
             </div>
             <div class="mag-meta">
               <div class="mag-tag-line"><span class="role">PERSONAL · PCB</span><span class="year">2022</span></div>
@@ -2566,16 +2853,105 @@ img, svg, video, canvas { max-width: 100%; }
           </a>
 
           <a href="https://github.com/jminjares4/Graduation-Cap-Spring-2022" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
-            <div class="mag-display contain-display paper">
+            <div class="mag-display flow-display" data-flow-title="// wearable · pickaxe led architecture">
               <span class="mag-num">/05</span>
-              <img src="assets/img/portfolio/graduation_cap/graduation_cap_front_view.png" alt="Animated graduation cap UTEP-themed PCB" loading="lazy" decoding="async"/>
+              <svg class="project-flow" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-label="Animated graduation cap architecture">
+                <defs>
+                  <marker id="cap-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--accent)"/>
+                  </marker>
+                  <marker id="cap-arr-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" style="color: var(--signal)"/>
+                  </marker>
+                </defs>
+
+                <!-- bg lane tints -->
+                <rect x="30" y="74" width="280" height="118" rx="6" fill="var(--tint-accent-soft)" opacity="0.45"/>
+                <rect x="330" y="74" width="240" height="68" rx="6" fill="var(--tint-signal-soft)" opacity="0.5"/>
+
+                <!-- lane labels -->
+                <text x="170" y="60" text-anchor="middle" class="pf-label" style="fill: var(--accent)">power</text>
+                <text x="450" y="60" text-anchor="middle" class="pf-label" style="fill: var(--signal)">motion sensing</text>
+
+                <!-- POWER chain -->
+                <g>
+                  <rect x="40" y="84" width="110" height="38" rx="3" class="pf-rect"/>
+                  <text x="95" y="100" text-anchor="middle" class="pf-text">Li-ion</text>
+                  <text x="95" y="113" text-anchor="middle" class="pf-sub">battery</text>
+                </g>
+                <line x1="150" y1="103" x2="170" y2="103" class="pf-line" marker-end="url(#cap-arr)"/>
+                <g>
+                  <rect x="170" y="84" width="130" height="38" rx="3" class="pf-rect accent"/>
+                  <text x="235" y="100" text-anchor="middle" class="pf-text">3V3 regulator</text>
+                  <text x="235" y="113" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">on-board</text>
+                </g>
+
+                <!-- USB charge/data -->
+                <g>
+                  <rect x="40" y="146" width="260" height="42" rx="3" class="pf-rect deep"/>
+                  <text x="170" y="165" text-anchor="middle" class="pf-text">USB · charge + data</text>
+                  <text x="170" y="180" text-anchor="middle" class="pf-sub">90 Ω impedance-matched lines</text>
+                </g>
+
+                <!-- SENSING -->
+                <g>
+                  <rect x="340" y="84" width="220" height="50" rx="3" class="pf-rect signal"/>
+                  <text x="450" y="103" text-anchor="middle" class="pf-text">ADXL335 · 3-axis accel</text>
+                  <text x="450" y="118" text-anchor="middle" class="pf-sub">analog X · Y · Z outputs</text>
+                  <text x="450" y="130" text-anchor="middle" class="pf-sub" style="fill: var(--signal)">tilt + motion input</text>
+                </g>
+                <text x="450" y="172" text-anchor="middle" class="pf-sub">animation responds to head motion</text>
+
+                <!-- Power trunk down -->
+                <line x1="235" y1="188" x2="235" y2="240" class="pf-line" marker-end="url(#cap-arr)"/>
+                <line x1="235" y1="188" x2="235" y2="240" class="pf-line pf-pulse"/>
+                <rect x="213" y="206" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="235" y="216" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">3.3 V</text>
+
+                <!-- Sensor trunk down -->
+                <line x1="450" y1="188" x2="450" y2="240" class="pf-line signal" marker-end="url(#cap-arr-s)"/>
+                <rect x="428" y="206" width="44" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="450" y="216" text-anchor="middle" class="pf-sub" style="fill: var(--signal); font-weight: 600">analog</text>
+
+                <!-- MCU -->
+                <text x="40" y="232" class="pf-label">mcu</text>
+                <g>
+                  <rect x="100" y="240" width="440" height="78" rx="4" class="pf-rect mcu"/>
+                  <text x="320" y="263" text-anchor="middle" class="pf-text large" style="fill: var(--accent)">RP2040 · dual ARM Cortex-M0+</text>
+                  <text x="320" y="282" text-anchor="middle" class="pf-sub">freertos · custom drivers</text>
+                  <text x="320" y="300" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">animation engine · low-power mode</text>
+                </g>
+
+                <!-- MCU → LED -->
+                <line x1="320" y1="318" x2="320" y2="356" class="pf-line" marker-end="url(#cap-arr)"/>
+                <line x1="320" y1="318" x2="320" y2="356" class="pf-line pf-pulse"/>
+                <rect x="278" y="328" width="84" height="14" rx="2" fill="var(--bg)" opacity="0.95"/>
+                <text x="320" y="338" text-anchor="middle" class="pf-sub" style="fill: var(--accent); font-weight: 600">led data</text>
+
+                <!-- LED matrix -->
+                <text x="40" y="350" class="pf-label">display</text>
+                <g>
+                  <rect x="80" y="356" width="480" height="56" rx="4" class="pf-rect"/>
+                  <text x="320" y="376" text-anchor="middle" class="pf-text large">UTEP pickaxe LED layout</text>
+                  <text x="320" y="394" text-anchor="middle" class="pf-sub">addressable RGB · school-themed animation</text>
+                </g>
+
+                <!-- Form factor -->
+                <text x="40" y="432" class="pf-label">form factor</text>
+                <text x="40" y="450" class="pf-sub">2-layer KiCad PCB · 4.74" × 4.74" · 45° rotation</text>
+
+                <!-- footer -->
+                <line x1="40" y1="466" x2="560" y2="466" class="pf-line dim" stroke-dasharray="2 3"/>
+                <text x="40" y="486" class="pf-sub">rp2040 · freertos · wearable pcb</text>
+                <text x="560" y="486" text-anchor="end" class="pf-sub">personal · 2022</text>
+              </svg>
             </div>
             <div class="mag-meta">
               <div class="mag-tag-line"><span class="role">PERSONAL · WEARABLE</span><span class="year">2022</span></div>
               <h3 class="mag-title">Animated <em>Graduation Cap</em></h3>
-              <p class="mag-desc">UTEP-themed PCB graduation cap, worn at my master's commencement. Custom firmware driving RGB-LED animation patterns on an addressable matrix laid out as the school pickaxe.</p>
+              <p class="mag-desc">UTEP-themed PCB graduation cap, worn at my master's commencement. RP2040 running FreeRTOS, with ADXL335 motion input, custom drivers, and low-power mode driving an addressable RGB matrix laid out as the school pickaxe.</p>
               <div class="mag-tags">
-                <span class="tag">MCU firmware</span><span class="tag">RGB LEDs</span><span class="tag">Wearable PCB</span>
+                <span class="tag">RP2040</span><span class="tag">FreeRTOS</span><span class="tag">ADXL335</span><span class="tag">RGB LEDs</span><span class="tag">Wearable PCB</span>
               </div>
               <span class="mag-cta">View repo</span>
             </div>
