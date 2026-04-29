@@ -143,9 +143,12 @@
   --serif: "Fraunces", ui-serif, Georgia, serif;
   --display: "Instrument Serif", "Fraunces", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
-  /* Padding scales generously - 48px (3rem) minimum on mobile for proper breathing
-     room. Vertical screens need MORE proportional padding because content is dense. */
-  --pad-x: max(clamp(3rem, 7vw, 5.5rem), env(safe-area-inset-left), env(safe-area-inset-right));
+  /* Padding scales smoothly: ~22px on a 375px phone, ~88px on desktop.
+     Earlier minimum of 3rem (48px) was chewing up 25% of the viewport on
+     phones and forcing every section to feel cramped. The lower bound is now
+     1rem so narrow screens get usable content width; the curve still reaches
+     the same desktop padding because 7vw at 1280px = 89.6px (capped at 5.5rem). */
+  --pad-x: max(clamp(1rem, 7vw, 5.5rem), env(safe-area-inset-left), env(safe-area-inset-right));
   --max: 1280px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -366,11 +369,18 @@ body.c-view .cursor-label { opacity: 1; }
   background: var(--accent); animation: pulse 1.4s infinite;
 }
 @media (max-width: 980px) {
-  .nav { grid-template-columns: auto auto auto; }
+  /* Use 1fr for nav-mark so it expands and pushes the toggle/clock to the right
+     edge. Previously `auto auto auto` left them all clustered at the left. */
+  .nav { grid-template-columns: 1fr auto auto; gap: 1rem; }
   .nav-links { display: none; }
   .nav-clock { font-size: 0.74rem; }
 }
 @media (max-width: 540px) {
+  /* On phones the clock is hidden, so collapse to a 2-column layout
+     (mark on the left, theme toggle on the right). Without this fix the
+     toggle was orphaned in the middle column with empty space beside it. */
+  .nav { grid-template-columns: 1fr auto; }
+  .nav-mark { font-size: 0.76rem; gap: 0.55rem; }
   .nav-clock { display: none; }
 }
 
@@ -1604,6 +1614,11 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .hero-meta { gap: 1rem; }
   .status-pill { font-size: 0.7rem; padding: 0.5rem 0.95rem 0.5rem 0.8rem; }
 
+  /* Hero datasheet: shrink the label column so the value column gets more room.
+     5.5rem was eating ~30% of the available width on phones. */
+  .hero-datasheet { padding: 0.85rem 1rem; }
+  .hero-datasheet .row { grid-template-columns: 4.5rem 1fr; gap: 0.75rem; }
+
   /* === BIG HEADLINES MOBILE === */
   /* Remove forced <br> word splitting - let headlines wrap naturally */
   .big-head br { display: none; }
@@ -1662,8 +1677,10 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .contact-sub { margin-bottom: 3rem; font-size: 1.1rem; }
 
   /* === MAGAZINE SLIDER MOBILE === */
-  /* More generous padding so slides don't squish the screen edges */
-  .mag-slider { padding-inline: clamp(1.5rem, 5vw, 2rem); }
+  /* The slider already lives inside .wrap (which has --pad-x). Adding more
+     inner padding here was double-padding the content, leaving slides under
+     ~230px wide on phones. Let the slider span the wrap edge-to-edge. */
+  .mag-slider { padding-inline: 0; }
 
   /* Magazine flow diagrams (IPIA, MSP432) - fit container width on mobile.
      No horizontal scroll - diagrams scale down to fit, architecture stays visible. */
@@ -1673,7 +1690,7 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
     align-items: center !important;
     padding: 2.4rem 1rem 1.4rem;
     aspect-ratio: auto;
-    min-height: 260px;
+    min-height: 200px;
     touch-action: pinch-zoom;
   }
   .project-flow {
@@ -1706,6 +1723,11 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   /* stat-strip: don't let unit/tick get squished */
   .stat-tick { font-size: 0.66rem; margin-bottom: 0.6rem; }
   .stat-cell { padding: 1.7rem 1.2rem; }
+
+  /* stack-cat: trim per-cell padding so labels and lists breathe inside the
+     already padded section. 1.95rem was too much when --pad-x was also large. */
+  .stack-cat { padding: 1.5rem 1.25rem; gap: 0.85rem; }
+  .cat-name { font-size: 1.25rem; padding-bottom: 0.6rem; }
 }
 
 @media (max-width: 480px) {
