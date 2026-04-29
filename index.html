@@ -3150,38 +3150,84 @@ img, svg, video, canvas { max-width: 100%; }
       next.disabled = i === slides.length - 1;
     }
 
-    /* watch scroll position to know which slide is active, and force-snap
-       if the position drifted off the nearest slide's start. iOS Safari's
-       native scroll-snap is unreliable mid-swipe and occasionally leaves
-       two slides simultaneously visible — this debounced correction catches
-       that case and snaps to the nearest slide cleanly. */
-    let scrollDebounce;
-    let snapInProgress = false;
-    track.addEventListener('scroll', () => {
-      if (snapInProgress) return; // ignore the scroll events fired by our own snap
-      clearTimeout(scrollDebounce);
-      scrollDebounce = setTimeout(() => {
-        const center = track.scrollLeft + track.clientWidth / 2;
-        let closest = 0; let dist = Infinity;
-        slides.forEach((s, i) => {
-          const sc = s.offsetLeft + s.clientWidth / 2;
-          const d = Math.abs(sc - center);
-          if (d < dist) { dist = d; closest = i; }
-        });
-        if (closest !== current) updateUI(closest);
+    /* === SLIDER ROBUSTNESS LAYER ===
+       The native scroll-snap leaves slides off-snap on iOS Safari, exposing
+       a sliver of the adjacent slide. Two complementary fixes: (1) pin the
+       slide widths to exact integer pixel values via JS so flex-basis
+       percentage rounding can't drift the layout, and (2) actively snap
+       after every touch / scroll-end since CSS scroll-snap-type alone is
+       unreliable on iOS. */
 
-        // Force-snap if scroll is more than a couple pixels off the slide's start.
-        // The 2px threshold prevents thrashing on perfectly-snapped positions
-        // while still catching the multi-pixel drift visible on iOS Safari.
-        const expected = slides[closest].offsetLeft;
-        if (Math.abs(track.scrollLeft - expected) > 2) {
-          snapInProgress = true;
-          track.scrollTo({ left: expected, behavior: 'smooth' });
-          // Release the lock after the smooth-scroll completes.
-          setTimeout(() => { snapInProgress = false; }, 350);
-        }
-      }, 80);
+    let snapInProgress = false;
+
+    function setSlideWidths() {
+      // Use the wrap (the visible viewport) as the reference, NOT the track,
+      // because the track is wider than the viewport (it contains all slides).
+      const w = Math.round(track.parentElement.clientWidth);
+      slides.forEach(s => {
+        s.style.flex = `0 0 ${w}px`;
+        s.style.width = w + 'px';
+        s.style.minWidth = w + 'px';
+        s.style.maxWidth = w + 'px';
+      });
+      // After resizing, re-anchor scroll to the current slide's new offset
+      // so we don't leave the user mid-slide on rotation.
+      const target = slides[current];
+      if (target) {
+        snapInProgress = true;
+        track.scrollTo({ left: target.offsetLeft, behavior: 'auto' });
+        setTimeout(() => { snapInProgress = false; }, 50);
+      }
+    }
+
+    function snapToNearest(instant) {
+      if (snapInProgress) return;
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let closest = 0, dist = Infinity;
+      slides.forEach((s, i) => {
+        const sc = s.offsetLeft + s.clientWidth / 2;
+        const d = Math.abs(sc - center);
+        if (d < dist) { dist = d; closest = i; }
+      });
+      if (closest !== current) updateUI(closest);
+
+      const expected = slides[closest].offsetLeft;
+      const drift = Math.abs(track.scrollLeft - expected);
+      // 1px threshold to catch even small drifts that produce visible bleed
+      if (drift > 1) {
+        snapInProgress = true;
+        track.scrollTo({ left: expected, behavior: instant ? 'auto' : 'smooth' });
+        setTimeout(() => { snapInProgress = false; }, instant ? 30 : 350);
+      }
+    }
+
+    // Set widths now, on resize, and on orientation change
+    setSlideWidths();
+    window.addEventListener('resize', setSlideWidths, { passive: true });
+    window.addEventListener('orientationchange', () => {
+      // Wait a tick for the new viewport size to settle
+      setTimeout(setSlideWidths, 100);
+    });
+
+    // Snap on scroll-settle (debounced fallback)
+    let scrollDebounce;
+    track.addEventListener('scroll', () => {
+      if (snapInProgress) return;
+      clearTimeout(scrollDebounce);
+      scrollDebounce = setTimeout(() => snapToNearest(false), 120);
     }, { passive: true });
+
+    // Snap on touchend — fires more reliably than scroll-debounce on iOS
+    // when the user lifts their finger but momentum scrolling continues.
+    track.addEventListener('touchend', () => {
+      // Wait for momentum scroll to mostly settle, then snap
+      setTimeout(() => snapToNearest(false), 250);
+    }, { passive: true });
+
+    // scrollend is the most accurate signal but only iOS Safari 16+ supports it
+    if ('onscrollend' in window) {
+      track.addEventListener('scrollend', () => snapToNearest(false), { passive: true });
+    }
 
     prev.addEventListener('click', () => {
       if (current > 0) scrollToSlide(current - 1);
