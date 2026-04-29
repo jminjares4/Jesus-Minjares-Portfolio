@@ -143,12 +143,12 @@
   --serif: "Fraunces", ui-serif, Georgia, serif;
   --display: "Instrument Serif", "Fraunces", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
-  /* Padding scales smoothly: ~22px on a 375px phone, ~88px on desktop.
-     Earlier minimum of 3rem (48px) was chewing up 25% of the viewport on
-     phones and forcing every section to feel cramped. The lower bound is now
-     1rem so narrow screens get usable content width; the curve still reaches
-     the same desktop padding because 7vw at 1280px = 89.6px (capped at 5.5rem). */
-  --pad-x: max(clamp(1rem, 7vw, 5.5rem), env(safe-area-inset-left), env(safe-area-inset-right));
+  /* Padding scales smoothly: ~30px on a 375px phone, 88px on desktop.
+     Floor is 1.75rem (28px) so the smallest phones still feel comfortable;
+     the 8vw curve gives 30-33px on typical iPhones (vs the cramped 26px
+     the 7vw curve was producing) and still hits the 5.5rem cap by ~1100px
+     so desktop padding is unchanged. */
+  --pad-x: max(clamp(1.75rem, 8vw, 5.5rem), env(safe-area-inset-left), env(safe-area-inset-right));
   --max: 1280px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -651,7 +651,11 @@ footer .build-status .nominal-dot {
 /* ============================================================
    SECTION CHROME
    ============================================================ */
-.section-edge { padding: clamp(5rem, 9vw, 8rem) 0 clamp(3rem, 6vw, 5rem); position: relative; }
+/* Use padding-block (vertical only) so the .wrap's horizontal padding is
+   preserved. The earlier `padding: V 0 V` shorthand was wiping out the
+   horizontal padding inherited from .wrap because both classes apply to the
+   same element — that's why text was hard against the screen edge on phones. */
+.section-edge { padding-block: clamp(5rem, 9vw, 8rem) clamp(3rem, 6vw, 5rem); position: relative; }
 .section-num {
   font-family: var(--mono); font-size: 0.78rem;
   letter-spacing: 0.18em; color: var(--ink-dim);
@@ -848,7 +852,7 @@ footer .build-status .nominal-dot {
 /* ============================================================
    CURRENT / SPOTLIGHTS
    ============================================================ */
-.current-section { padding: clamp(5rem, 9vw, 8rem) 0 clamp(2rem, 5vw, 4rem); }
+.current-section { padding-block: clamp(5rem, 9vw, 8rem) clamp(2rem, 5vw, 4rem); }
 .current-headline {
   display: grid; grid-template-columns: 1fr; gap: 1.5rem;
   margin-bottom: clamp(3rem, 6vw, 5rem); align-items: end;
@@ -1028,7 +1032,7 @@ footer .build-status .nominal-dot {
    SELECTED WORK — refined editorial grid
    smaller, balanced cards instead of dominating images
    ============================================================ */
-.work-section { padding: clamp(5rem, 9vw, 8rem) 0; position: relative; }
+.work-section { padding-block: clamp(5rem, 9vw, 8rem); position: relative; }
 .work-headline {
   display: grid; grid-template-columns: 1fr; gap: 1.5rem;
   margin-bottom: clamp(2.5rem, 4vw, 3.5rem); align-items: end;
@@ -1149,6 +1153,15 @@ footer .build-status .nominal-dot {
   transition: transform 0.7s var(--ease), filter 0.4s ease;
   filter: var(--mag-img-filter);
   color: transparent;
+  /* Suppress alt-text rendering and any browser-drawn broken-image chrome.
+     Combined with the .broken class below (set via JS on failed loads),
+     this guarantees the slide degrades cleanly to its dark backdrop. */
+  font-size: 0;
+}
+.mag-display img.broken {
+  /* Image failed to load — hide it entirely so the parent's gradient
+     backdrop shows without a broken-image rectangle or "?" icon. */
+  visibility: hidden;
 }
 .mag-slide:hover .mag-display img {
   transform: scale(1.03);
@@ -1179,13 +1192,24 @@ footer .build-status .nominal-dot {
 }
 .mag-display.contain-display::after { display: none; }
 
+/* PCB / product-shot variant. Originally pure white (#ffffff) which broke the
+   dark theme when images failed to load (a giant white rectangle is jarring).
+   Now uses the same elevated-panel + radial-accent backdrop as the regular
+   contain-display so the slide stays cohesive whether the image loads or not.
+   PCB renders with their own white/transparent backgrounds still display
+   correctly on top of this. */
 .mag-display.contain-display.paper {
-  background: #ffffff;
-  border: 1px solid color-mix(in srgb, var(--line-bright) 60%, transparent);
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 50%, var(--tint-accent-mid), transparent 70%),
+    var(--bg-elev);
+  border: 1px solid var(--line);
 }
-[data-theme="dark"] .mag-display.contain-display.paper {
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,0.08);
+[data-theme="light"] .mag-display.contain-display.paper {
+  /* In light theme, keep a near-white card so PCB photos still pop, but use a
+     subtle warm off-white instead of #ffffff so a missing-image rectangle
+     doesn't glare. */
+  background: #f5f0e6;
+  border: 1px solid color-mix(in srgb, var(--line-bright) 60%, transparent);
 }
 .mag-display.contain-display.paper img {
   padding: 4%;
@@ -1326,7 +1350,7 @@ footer .build-status .nominal-dot {
 /* ============================================================
    STACK
    ============================================================ */
-.stack-section { padding: clamp(5rem, 9vw, 8rem) 0; }
+.stack-section { padding-block: clamp(5rem, 9vw, 8rem); }
 .stack-head {
   display: grid; grid-template-columns: 1fr; gap: 1.5rem;
   margin-bottom: clamp(3rem, 5vw, 5rem); align-items: end;
@@ -1386,7 +1410,7 @@ footer .build-status .nominal-dot {
 /* ============================================================
    PATH / TIMELINE
    ============================================================ */
-.path-section { padding: clamp(5rem, 9vw, 8rem) 0; }
+.path-section { padding-block: clamp(5rem, 9vw, 8rem); }
 .path-head {
   margin-bottom: clamp(3rem, 5vw, 5rem);
   display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: end;
@@ -1476,7 +1500,7 @@ footer .build-status .nominal-dot {
    CONTACT
    ============================================================ */
 .contact-section {
-  padding: clamp(6rem, 13vw, 13rem) 0 clamp(5rem, 10vw, 9rem);
+  padding-block: clamp(6rem, 13vw, 13rem) clamp(5rem, 10vw, 9rem);
   position: relative;
 }
 .contact-headline {
@@ -1639,7 +1663,17 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
 
   /* about — mobile stack */
   .about-figure { position: static; }
-  .photo-wrap { max-width: 250px; }
+  /* Smaller profile photo on mobile - was eating ~370px of vertical space.
+     180px wrap + 4/5 ratio + frame = ~280px, ~90px shorter than before. */
+  .photo-wrap { max-width: 180px; padding: 1.25rem 1.25rem 0 0; }
+  .photo-frame { padding: 11px 11px 42px; }
+  .photo-stamp {
+    width: 58px; height: 58px;
+    font-size: 0.5rem;
+    transform: rotate(-8deg);
+  }
+  .photo-stamp .lg { font-size: 1rem; }
+  .photo-caption { bottom: 14px; left: 11px; right: 11px; font-size: 0.6rem; }
 
   /* spotlights collapse padding (flow diagrams use horizontal scroll on mobile,
      defined in MOBILE BLOCK DIAGRAM FIX section above) */
@@ -1650,7 +1684,9 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
   .mag-btn { width: 44px; height: 44px; }
   .mag-btn svg { width: 16px; height: 16px; }
   .mag-counter .now { font-size: 1.25rem; }
-  .mag-display { aspect-ratio: 16 / 11; }
+  /* Project images: 16/9 instead of 16/11 makes them ~20% shorter on phones,
+     which keeps the carousel from dominating the vertical scroll. */
+  .mag-display { aspect-ratio: 16 / 9; }
   .mag-meta { gap: 0.7rem; }
   .mag-tag-line { font-size: 0.7rem; gap: 0.5rem 0.9rem; }
   .mag-desc { font-size: 1rem; }
@@ -1688,14 +1724,18 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
     overflow: visible;
     justify-content: center !important;
     align-items: center !important;
-    padding: 2.4rem 1rem 1.4rem;
+    padding: 1.75rem 1rem 1.25rem;
     aspect-ratio: auto;
-    min-height: 200px;
+    min-height: 160px;
     touch-action: pinch-zoom;
   }
+  /* Cap the diagram width on phones so it doesn't dominate the slide. The
+     SVG keeps its aspect ratio so height shrinks proportionally — slide is
+     ~30% shorter without losing the architecture overview. Users can
+     pinch-zoom (touch-action above) to read fine details. */
   .project-flow {
     width: 100%;
-    max-width: 100%;
+    max-width: 280px;
     min-width: 0;
     height: auto;
     flex-shrink: 1;
@@ -1710,11 +1750,16 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  /* Slide-number badge for flow-display: stays at left for consistency */
+  /* Slide-number badge on flow-display: tuck into the bottom-left corner.
+     The title bar lives at top-left and the small bracket accent at bottom-right,
+     so bottom-left is the only corner that doesn't fight other elements. */
   .mag-display.flow-display .mag-num {
-    left: 1rem;
+    top: auto;
+    bottom: 0.7rem;
+    left: 0.7rem;
     right: auto;
-    top: 1rem;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.65rem;
   }
 
   /* footer */
@@ -1728,6 +1773,17 @@ footer .lang strong { color: var(--accent); font-weight: 500; }
      already padded section. 1.95rem was too much when --pad-x was also large. */
   .stack-cat { padding: 1.5rem 1.25rem; gap: 0.85rem; }
   .cat-name { font-size: 1.25rem; padding-bottom: 0.6rem; }
+
+  /* Tighten section vertical padding on mobile. Originals were tuned for
+     desktop (80-128px per section); on phones that just adds dead scroll
+     between content. This trims roughly 30% off each section transition.
+     Using padding-block so .wrap's horizontal padding is preserved. */
+  .section-edge,
+  .current-section,
+  .work-section,
+  .stack-section,
+  .path-section { padding-block: clamp(3.5rem, 9vw, 6rem) clamp(2rem, 6vw, 4rem); }
+  .contact-section { padding-block: clamp(4.5rem, 13vw, 9rem) clamp(3rem, 10vw, 6rem); }
 }
 
 @media (max-width: 480px) {
@@ -2858,6 +2914,22 @@ img, svg, video, canvas { max-width: 100%; }
   };
   onScrollProgress();
   window.addEventListener('scroll', onScrollProgress, { passive: true });
+
+  /* ============================================================
+     BROKEN IMAGE FALLBACK
+     When portfolio images fail to load (e.g. the assets aren't
+     deployed yet, or a path is wrong), hide the <img> element so
+     the slide's dark gradient backdrop shows cleanly instead of
+     iOS Safari's default broken-image rectangle + "?" placeholder.
+     ============================================================ */
+  document.querySelectorAll('.mag-display img').forEach(img => {
+    const markBroken = () => img.classList.add('broken');
+    if (img.complete && img.naturalWidth === 0) {
+      markBroken();
+    } else {
+      img.addEventListener('error', markBroken, { once: true });
+    }
+  });
 
   /* ============================================================
      NAV STATE
