@@ -1314,30 +1314,14 @@ footer .build-status .nominal-dot {
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   padding: 0.45rem 0.85rem; border: 1px solid var(--line); font-weight: 500;
 }
-/* Slide-number badge on flow-display: tuck into the bottom-left corner by
-   default. The title bar lives at top-left and the small bracket accent at
-   bottom-right, so bottom-left is the only corner that doesn't fight other
-   elements. Desktop-first means landscape phones, tablets, and "Request
-   Desktop Site" all get the corrected position. */
+/* The /01-style chip duplicates the big "01 / 06" slide-number indicator
+   shown ABOVE the slide AND it physically overlaps the SVG footer text
+   (project name on left, year on right) at the bottom-left of the diagram.
+   Hiding it on flow-display slides removes the conflict — the diagram
+   still has its own visual identity via the title chip at top-left and
+   the small bracket accent at bottom-right. */
 .mag-display.flow-display .mag-num {
-  top: auto;
-  bottom: 0.7rem;
-  left: 0.7rem;
-  right: auto;
-  font-size: 0.7rem;
-  padding: 0.35rem 0.65rem;
-}
-@media (min-width: 1000px) {
-  /* True desktop has enough horizontal room for the badge to live at
-     top-right alongside the title bar without crowding. */
-  .mag-display.flow-display .mag-num {
-    top: 1rem;
-    bottom: auto;
-    left: auto;
-    right: 1rem;
-    font-size: 0.8rem;
-    padding: 0.45rem 0.85rem;
-  }
+  display: none;
 }
 
 .mag-meta {
@@ -2528,7 +2512,7 @@ img, svg, video, canvas { max-width: 100%; }
           </a>
 
           <a href="https://github.com/jminjares4/EWOD" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
-            <div class="mag-display flow-display" data-flow-title="// hardware · hv switching architecture">
+            <div class="mag-display flow-display" data-flow-title="// hardware · hv switching">
               <span class="mag-num">/02</span>
               <svg class="project-flow" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-label="EWOD driver architecture">
                 <defs>
@@ -2853,7 +2837,7 @@ img, svg, video, canvas { max-width: 100%; }
           </a>
 
           <a href="https://github.com/jminjares4/Graduation-Cap-Spring-2022" target="_blank" rel="noopener" class="mag-slide" data-cursor="view">
-            <div class="mag-display flow-display" data-flow-title="// wearable · pickaxe led architecture">
+            <div class="mag-display flow-display" data-flow-title="// wearable · pickaxe led">
               <span class="mag-num">/05</span>
               <svg class="project-flow" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-label="Animated graduation cap architecture">
                 <defs>
