@@ -414,7 +414,14 @@ section { position: relative; z-index: 2; }
 }
 
 .scope-grid-svg {
-  position: absolute; inset: 0; width: 100%; height: 100%;
+  position: absolute;
+  /* Reserve clear bottom space for the hero-foot to live in. Without this,
+     the SVG (with viewBox 1600x900 stretched to fill the entire hero) draws
+     the UART wave at y=657/900 = 73% from top — directly into the area
+     where the hero-foot's role block sits. Bottom anchored to ~8-14rem so
+     the hero-foot has clean breathing room below the waveforms. */
+  top: 0; left: 0; right: 0;
+  bottom: clamp(8rem, 22vh, 14rem);
   z-index: 1; opacity: 0.78; pointer-events: none;
 }
 [data-theme="light"] .scope-grid-svg { opacity: 0.95; }
@@ -534,16 +541,16 @@ section { position: relative; z-index: 2; }
 }
 
 .hero-datasheet {
-  font-family: var(--mono); font-size: 0.78rem;
-  display: grid; gap: 0.45rem;
+  font-family: var(--mono); font-size: 0.88rem;
+  display: grid; gap: 0.5rem;
   background: var(--readout-bg);
-  padding: 0.95rem 1.1rem; border: 1px solid var(--line);
+  padding: 1rem 1.35rem; border: 1px solid var(--line);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .hero-datasheet .row {
-  display: grid; grid-template-columns: 5.5rem 1fr;
+  display: grid; grid-template-columns: 6rem 1fr;
   gap: 1rem; border-bottom: 1px dashed var(--line);
-  padding-bottom: 0.4rem;
+  padding-bottom: 0.45rem;
 }
 .hero-datasheet .row:last-child { border-bottom: none; padding-bottom: 0; }
 .hero-datasheet .k { color: var(--ink-dim); letter-spacing: 0.08em; }
@@ -2932,7 +2939,7 @@ img, svg, video, canvas { max-width: 100%; }
             </div>
             <div class="mag-meta">
               <div class="mag-tag-line"><span class="role">PERSONAL · WEARABLE</span><span class="year">2022</span></div>
-              <h3 class="mag-title">Animated <em>Graduation Cap</em></h3>
+              <h3 class="mag-title">PCB <em>Graduation Cap</em></h3>
               <p class="mag-desc">UTEP-themed PCB graduation cap, worn at my master's commencement. RP2040 running FreeRTOS, with ADXL335 motion input, custom drivers, and low-power mode driving an addressable RGB matrix laid out as the school pickaxe.</p>
               <div class="mag-tags">
                 <span class="tag">RP2040</span><span class="tag">FreeRTOS</span><span class="tag">ADXL335</span><span class="tag">RGB LEDs</span><span class="tag">Wearable PCB</span>
