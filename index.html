@@ -548,12 +548,18 @@ section { position: relative; z-index: 2; }
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .hero-datasheet .row {
-  display: grid; grid-template-columns: 6rem 1fr;
+  display: grid; grid-template-columns: 7rem 1fr;
   gap: 1rem; border-bottom: 1px dashed var(--line);
   padding-bottom: 0.45rem;
 }
 .hero-datasheet .row:last-child { border-bottom: none; padding-bottom: 0; }
-.hero-datasheet .k { color: var(--ink-dim); letter-spacing: 0.08em; }
+.hero-datasheet .k {
+  color: var(--ink-dim); letter-spacing: 0.08em;
+  /* Prevent STUDYING (8 chars + letter-spacing at 0.88rem) from breaking
+     mid-word on mobile, where the body's overflow-wrap: break-word would
+     otherwise split it as "STUDYIN" + "G". */
+  white-space: nowrap;
+}
 .hero-datasheet .v { color: var(--ink); }
 
 .scroll-cue {
@@ -1265,6 +1271,13 @@ footer .build-status .nominal-dot {
      causing visual "squishing" with whitespace above/below. */
   aspect-ratio: auto;
   min-height: 240px;
+  /* Don't stretch to fill the grid cell vertically on desktop. The .mag-slide
+     grid uses align-items: center, and when the meta column (description +
+     tags + view repo) is taller than the diagram, the diagram cell otherwise
+     stretches to match — creating dead space above and below the SVG inside
+     the container. align-self: start makes the container take its natural
+     height and sit at the top of the cell. */
+  align-self: start;
 }
 .mag-display.flow-display::before {
   content: attr(data-flow-title);
@@ -2557,7 +2570,7 @@ img, svg, video, canvas { max-width: 100%; }
                 <g>
                   <rect x="260" y="84" width="120" height="42" rx="3" class="pf-rect accent"/>
                   <text x="320" y="102" text-anchor="middle" class="pf-text">164 V rail</text>
-                  <text x="320" y="116" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">3.3 V → 164 V · 7 TPs</text>
+                  <text x="320" y="116" text-anchor="middle" class="pf-sub" style="fill: var(--accent)">3.3 V → 164 V</text>
                 </g>
 
                 <!-- ESP32 control -->

@@ -29,3 +29,7 @@ Built with a custom dark/light theme inspired by UTEP Miner colors, featuring sm
 **Languages & Frameworks**: C, C++, Python, MATLAB, FreeRTOS  
 **Platforms**: ARM Cortex-M, ESP32, Speedgoat, iHawk SimWB, Microgate SyncLink  
 **Tools**: HDL Coder, MATLAB/Simulink, GitLab CI/CD, KiCad, CMake
+
+## Portfolio Link
+[![Portfolio](https://img.shields.io/badge/Portfolio-⚡_View_Site-orange?style=flat&labelColor=blue)](https://jminjares4.github.io/Jesus-Minjares-Portfolio/)
+
